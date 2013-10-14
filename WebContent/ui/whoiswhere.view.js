@@ -110,6 +110,8 @@ sap.ui.jsview("ui.whoiswhere", {
 		
 
 		tab.addStyleClass("tab");
+		Segmented1.addStyleClass('segCont1');
+		Segmented2.addStyleClass('segCont2');
 		
 		var page =  new sap.m.Page({
 			title: "Who is Where",
