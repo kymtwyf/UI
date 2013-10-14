@@ -21,6 +21,45 @@ sap.ui.jsview("ui.whoiswhere", {
 		
 		var oApp = new sap.m.App("myApp");
 		
+		
+		var button1 = new sap.m.Button('button1', {
+			type: sap.m.ButtonType.Default,
+			text: "Times",
+			enabled: true,
+		});
+		
+		var button2 = new sap.m.Button('button2', {
+			type: sap.m.ButtonType.Default,
+			text: "Money",
+			enabled: true,
+		});
+		
+		var button3 = new sap.m.Button('chart', {
+			type: sap.m.ButtonType.Default,
+			text: "Chart",
+			enabled: true,
+		});
+		
+		var button4 = new sap.m.Button('table', {
+			type: sap.m.ButtonType.Default,
+			text: "Table",
+			enabled: true,
+		});
+		
+		var Segmented1= new sap.m.SegmentedButton('Segmented1', {
+			buttons: [button1, button2], 
+			selectedButton: button1
+		});
+		
+		var Segmented2= new sap.m.SegmentedButton('Segmented2', {
+			buttons: [button3, button4], 
+			selectedButton: button3
+		});
+		
+		Segmented1.addStyleClass('segCont1');
+		
+		Segmented2.addStyleClass('segCont2');
+		
 		var tab = new sap.m.IconTabBar({
 			items: [
 					new sap.m.IconTabFilter({
@@ -61,34 +100,12 @@ sap.ui.jsview("ui.whoiswhere", {
 					})
 					
 				],
-				content: new sap.m.List("list", {
-					columns: [
-						new sap.m.Column({
-							width: "2em",
-							header: new sap.m.Label({text: "ID"})
-						}),
-						new sap.m.Column({
-							width: "7em",
-							header: new sap.m.Label({text: "Name"})
-						}),
-						new sap.m.Column({
-							width: "3em",
-							header: new sap.m.Label({text: "Status"})
-						}),
-						new sap.m.Column({
-							width: "2em",
-							minScreenWidth: "Tablet",
-							hAlign: "Right",
-							header: new sap.m.Label({text: "Amount"})
-						}),
-						new sap.m.Column({
-							width: "3em",
-							hAlign: "Right",
-							minScreenWidth: "Tablet",
-							header: new sap.m.Label({text: "Price"})
-						})
-					],
-				})
+				content: [
+				          
+				          	Segmented1,Segmented2
+				          
+				          
+				          ]
 			});
 		
 
@@ -99,12 +116,7 @@ sap.ui.jsview("ui.whoiswhere", {
 			showNavButton: true,
 			navButtonText: "Page 1",
 			navButtonPress: function(){ app.back(); },
-			content: [
-			          
-				tab,
-				
-			
-			]
+			content: [ tab ]
 		});
 		
 
