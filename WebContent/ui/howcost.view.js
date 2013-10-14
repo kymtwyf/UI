@@ -13,8 +13,38 @@ sap.ui.jsview("ui.howcost", {
 	* @memberOf view.howcost
 	*/ 
 	createContent : function(oController) {
+		var oTable = new sap.m.Table({
+			  headerText: "Trip Statistics",
+			  columns: [
+			    new sap.m.Column({
+			      width : "12em",
+			      header: new sap.m.Label({text: "Country"})
+			    }),
+			    new sap.m.Column({
+			      header: new sap.m.Label({text: "Trip Count"}),
+			      minScreenWidth: "Tablet",
+			      demandPopin: true
+			    })			   
+			  ],
+			  items: {
+			    path: "/results",
+			    template: new sap.m.ColumnListItem({
+			      cells: [
+			        new sap.m.ObjectIdentifier({
+			          title: "{LANDX}",
+			          text: "{LANDX}"
+			        }),
+			        new sap.m.Text({
+			          text: "{ONE}"
+			        })
+			      ]
+			    })
+			  }
+			});
+		
  		return new sap.m.Page({
  			title: "How Cost",
+ 			content:[oTable],
 			showNavButton: true,
 			navButtonText: "Page 1",
 			navButtonPress: function(){ app.back(); },

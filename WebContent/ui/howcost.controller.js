@@ -14,9 +14,20 @@ sap.ui.controller("ui.howcost", {
 * (NOT before the first rendering! onInit() is used for that one!).
 * @memberOf view.howcost
 */
-//	onBeforeRendering: function() {
-//
-//	},
+	onBeforeRendering: function() {
+		jQuery.ajax({
+			url:"http://ld9415.wdf.sap.corp:8002/mouse/project/odata/Test.xsodata/TRIP_DEST?$select=LANDX,ONE&$filter=MANDT%20eq%20'002'&$format=json",
+			error:function(error){
+				jQuery.sap.require("sap.m.MessageToast");
+				 sap.m.MessageToast.show(error+"");
+			},
+			success:function(data){
+				console.log(data);
+				var model = new sap.ui.model.json.JSONModel(data.d);
+				sap.ui.getCore().setModel(model);
+			}
+		})
+	},
 
 /**
 * Called when the View has been rendered (so its HTML is part of the document). Post-rendering manipulations of the HTML could be done here.
