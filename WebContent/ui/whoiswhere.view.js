@@ -50,7 +50,8 @@ sap.ui.jsview("ui.whoiswhere", {
 			buttons: [button1, button2], 
 			selectedButton: button1
 		});
-		
+
+		Segmented1.addStyleClass('IconTabBar');
 		var Segmented2= new sap.m.SegmentedButton('Segmented2', {
 			buttons: [button3, button4], 
 			selectedButton: button3
@@ -60,6 +61,20 @@ sap.ui.jsview("ui.whoiswhere", {
 		
 		Segmented2.addStyleClass('segCont2');
 		
+		var bar = new sap.m.Bar({
+			contentLeft:Segmented1,
+			contentRight:Segmented2,
+			translucent:true
+		});
+		var panel1 = new sap.m.Panel({
+			  headerText: "Three Balloons and a Text",
+			  content: [
+			            bar,
+			    new sap.m.Text({
+			      text: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.  Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua."
+			    })
+			  ]
+			});
 		var tab = new sap.m.IconTabBar({
 			items: [
 					new sap.m.IconTabFilter({
@@ -67,7 +82,7 @@ sap.ui.jsview("ui.whoiswhere", {
 						iconColor: sap.ui.core.IconColor.Critical,
 						count: "1",
 						text: "Country",
-						key: "country"
+						key: "country",
 					}),
 					new sap.m.IconTabFilter({
 						icon: "sap-icon://task",
@@ -101,10 +116,7 @@ sap.ui.jsview("ui.whoiswhere", {
 					
 				],
 				content: [
-				          
-				          	Segmented1,Segmented2
-				          
-				          
+				panel1 				          
 				          ]
 			});
 		

@@ -45,6 +45,7 @@ sap.ui.jsview("ui.howcost", {
  		return new sap.m.Page({
  			title: "How Cost",
  			content:[oTable],
+ 			AppWidthLimited:true,
 			showNavButton: true,
 			navButtonText: "Page 1",
 			navButtonPress: function(){ app.back(); },
