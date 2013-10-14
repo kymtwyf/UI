@@ -14,9 +14,9 @@ sap.ui.controller("ui.index", {
 * (NOT before the first rendering! onInit() is used for that one!).
 * @memberOf demo.Demo
 */
-//	onBeforeRendering: function() {
-//
-//	},
+	onBeforeRendering: function() {
+		
+	},
 
 /**
 * Called when the View has been rendered (so its HTML is part of the document). Post-rendering manipulations of the HTML could be done here.
