@@ -6,7 +6,7 @@
 		<script src="resources/sap-ui-core.js"
 				id="sap-ui-bootstrap"
 				data-sap-ui-libs="sap.m"
-				data-sap-ui-theme="sap_mvi">
+				data-sap-ui-theme="sap_bluecrystal">
 		</script>
 		<!-- only load the mobile lib "sap.m" and the "sap_mvi" theme -->
 
@@ -19,14 +19,65 @@
 					src: url('demoAppsIconFont.eot?#iefix') format('embedded-opentype'), url('demoAppsIconFont.ttf') format('truetype');
 				}
 		</style>
+		<style>
+	        #tile1{
+	          height: 400px;
+	          
+	        }
+  		</style>
 		<script>
 			// Tell UI5 where to find app content
-			jQuery.sap.registerModulePath('Config', 'Config');
-			jQuery.sap.registerModulePath('App', 'App');
-			var homePage = sap.ui.xmlview("App", "App");
-			var app = new sap.m.App();
-			app.addPage(homePage);
+			//jQuery.sap.registerModulePath('Config', 'Config');
+			//jQuery.sap.registerModulePath('App', 'App');
+		//	var homePage = sap.ui.xmlview("App", "App");
+			sap.ui.localResources("ui");
+			var page = sap.ui.view({id:"Page", viewName:"ui.Home", type:sap.ui.core.mvc.ViewType.JS});
+			var app = new sap.m.App({id:"App"});
+			
+			app.addPage(page);
+			
+			//btn.placeAt("content");
 			app.placeAt("content");
+			
+			
+			//Alternative 1: Doesn't work (shows no tiles)  
+			/*var App = new sap.m.App({ id:"App"});  
+			App.placeAt("content");   
+			  
+			var Page = new sap.m.Page({title:"Home",id:"Page",enableScrolling: false});  
+			App.addPage(Page);   
+			  
+			var oContainer = new sap.m.TileContainer({});  
+			Page.addContent(oContainer);  
+			  
+			var T1 = new sap.m.StandardTile({title:"T1"});  
+			oContainer.addTile(T1);
+			      
+			T1.addStyleClass('customTile');
+
+			var T2 = new sap.m.StandardTile({title:"T2"});  
+			oContainer.addTile(T2);  
+			  */
+			  
+			//Alternative 2: Works (shows the two tiles as expected)  
+			 /* var T1 = new sap.m.StandardTile({title:"T1"});  
+			  var oContainer = new sap.m.TileContainer("tilecontainer", {tiles:[T1]});  
+			    
+			  new sap.m.App({  
+			                                    pages: [  
+			                                              new sap.m.Page({  
+			                                                        title: "Home",  
+			                                                        content: [ oContainer],  
+			                                              enableScrolling: false
+			                                              })  
+			                                    ]  
+			                          }).placeAt("content");  
+			    
+			  var T2 = new sap.m.StandardTile({title:"T2"});  
+			  oContainer.addTile(T2);   
+			   */ 
+			  
+			
 		</script>
 
 	<link rel="stylesheet" type="text/css" href="css/style.css">

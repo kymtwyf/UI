@@ -13,12 +13,29 @@ sap.ui.jsview("ui.Home", {
 	* @memberOf ui.Home
 	*/ 
 	createContent : function(oController) {
- 		return new sap.m.Page({
-			title: "Title",
-			content: [
-			
-			]
+// 		return new sap.m.Page({
+//			title: "Title",
+//			content: [
+//			
+//			]
+//		});
+//		var content = new sap.m.TileContainer("home", {
+//			tiles:"{/apps}",
+//		});
+		var T1 = new sap.m.StandardTile({
+			title:"T1"
 		});
+		var T2 = new sap.m.StandardTile({
+			title:"T2"
+		});
+		var tileContainer = new sap.m.TileContainer({});
+		
+		tileContainer.addTile(T1);
+		tileContainer.addTile(T2);
+		var Page = new sap.m.Page({title:"Home",enableScrolling: false});  
+		
+		Page.addContent(tileContainer);
+		return Page;
 	}
 
 });
