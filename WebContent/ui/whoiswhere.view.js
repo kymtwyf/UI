@@ -29,10 +29,8 @@ sap.ui.jsview("ui.whoiswhere", {
 		
 		var button3 = new sap.m.Button('bt_showbyChart', {
 			type: sap.m.ButtonType.Default,
-			icon: "./images/chart.png",
-			//text: "Chart"
-			press:function() {
-				
+			icon: "images/chart.png",
+			press:function() {				
 				panel1.removeAllContent();
 				panel1.addContent(bar);
 				panel1.addContent(pieChart);
@@ -41,7 +39,7 @@ sap.ui.jsview("ui.whoiswhere", {
 		
 		var button4 = new sap.m.Button('bt_showByTable', {
 			type: sap.m.ButtonType.Default,
-			icon: "./images/table.png",
+			icon: "images/table.png",
 			//text: "Table"
 			press:function() {
 				panel1.removeAllContent();
