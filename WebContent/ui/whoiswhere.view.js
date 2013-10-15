@@ -32,14 +32,10 @@ sap.ui.jsview("ui.whoiswhere", {
 			icon: "./images/chart.png",
 			//text: "Chart"
 			press:function() {
-				alert("btn3");
+				
 				panel1.removeAllContent();
 				panel1.addContent(bar);
 				panel1.addContent(pieChart);
-				panel1.addContent(
-					    new sap.m.Text({
-						     text: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.  Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua."
-						    }));
 				}
 		});
 		
@@ -48,7 +44,6 @@ sap.ui.jsview("ui.whoiswhere", {
 			icon: "./images/table.png",
 			//text: "Table"
 			press:function() {
-				alert("btn4");
 				panel1.removeAllContent();
 				panel1.addContent(bar);
 				panel1.addContent(new sap.m.Text({
@@ -83,15 +78,14 @@ sap.ui.jsview("ui.whoiswhere", {
 			  headerText: "Three Balloons and a Text",
 			  content: [
 			            bar,pieChart,
-			    new sap.m.Text({
-			     text: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.  Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua."
-			    })
+			 //   new sap.m.Text({
+			  //   text: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.  Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua."
+			  //  })
 			  ]
 			});
 		
 		
 		var tab = new sap.m.IconTabBar({
-			width:"60%",
 			items: [
 					new sap.m.IconTabFilter({
 						icon: "sap-icon://task",
@@ -118,12 +112,13 @@ sap.ui.jsview("ui.whoiswhere", {
 					new sap.m.IconTabFilter({
 						showAll: true,
 						text: "Total Cost"
-					})
+					}),
+					
 					
 				],
 				content: [panel1]
 			});
-		
+		tab.setExpandable(false);
 		tab.addStyleClass("tab");
 	//	Segmented1.addStyleClass('segCont1');
 	//	Segmented2.addStyleClass('segCont2');
@@ -133,20 +128,20 @@ sap.ui.jsview("ui.whoiswhere", {
 		
 		var oApp = new sap.m.App("myApp");
 		
-		var headerHBox = new sap.m.HBox("headerHBox", {
-			width:"100%",
-			items:[tab,
-			  new sap.m.Label('countLabel', {
-			  text: "Here some figure is displayed",
-			  design: sap.m.LabelDesign.Bold
-			})
-		]	
-		});
+//		var headerHBox = new sap.m.HBox("headerHBox", {
+//			width:"100%",
+//			items:[tab
+//			 // new sap.m.Label('countLabel', {
+//			 // text: "Here some figure is displayed",
+//			 // design: sap.m.LabelDesign.Bold
+//			//});
+//		]	
+//		});
 		var mainVBox = new sap.m.VBox("mainVBox",{
 			width:"100%",
 			height:"100%",
 			alignItems:"Center",
-			items:[headerHBox]
+			items:[tab]
 		});
 		
 		
@@ -158,7 +153,13 @@ sap.ui.jsview("ui.whoiswhere", {
 			content: [ mainVBox ]
 		});
 		
-		
+		var footer = new sap.m.Bar({ 
+			contentLeft: [],	
+			contentMiddle: [],
+			contentRight: []
+		});
+
+		page.setFooter(footer);
 		
 		oApp.addPage(page);
 		oShell.setAppWidthLimited(true);
