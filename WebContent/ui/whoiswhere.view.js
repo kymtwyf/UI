@@ -21,7 +21,6 @@ sap.ui.jsview("ui.whoiswhere", {
 		
 		var oApp = new sap.m.App("myApp");
 		
-		
 		var button1 = new sap.m.Button('button1', {
 			type: sap.m.ButtonType.Default,
 			text: "Times",
@@ -36,13 +35,13 @@ sap.ui.jsview("ui.whoiswhere", {
 		
 		var button3 = new sap.m.Button('chart', {
 			type: sap.m.ButtonType.Default,
-			text: "Chart",
+			icon: "./images/chart.png",
 			enabled: true,
 		});
 		
 		var button4 = new sap.m.Button('table', {
 			type: sap.m.ButtonType.Default,
-			text: "Table",
+			icon: "./images/table.png",
 			enabled: true,
 		});
 		
@@ -56,9 +55,43 @@ sap.ui.jsview("ui.whoiswhere", {
 			selectedButton: button3
 		});
 		
-		Segmented1.addStyleClass('segCont1');
 		
-		Segmented2.addStyleClass('segCont2');
+		Segmented2.addStyleClass('segCont');
+		
+		var PieModel = {
+				  data : [
+					{country:'China',year:'2001',profit:25},
+					{country:'China',year:'2002',profit:58},
+					{country:'USA',year:'2001',profit:58},
+					{country:'USA',year:'2002',profit:159},
+					{country:'Canada',year:'2001',profit:149},
+					{country:'Canada',year:'2002',profit:38},
+				  ]};
+				var PieData = {
+				  dimensions : [
+					{axis : 1, name : 'Country', value: "{country}"},
+					{axis : 1, name : 'Year', value: "{year}"},
+				  ],
+				  measures : [
+					{name : "Profit", value : "{profit}"},
+				  ],
+				  data : {
+					path : "/data"
+				  }
+				};
+				
+				var oChart,oDataset,oModel;
+				
+				oDataset = new sap.viz.ui5.data.FlattenedDataset(PieData);
+				oModel = new sap.ui.model.json.JSONModel(PieModel);
+				oDataset.setModel(oModel);
+			
+				oChart = new sap.viz.ui5.Pie({
+							width : "100%",
+					        height : "100%",
+							dataset: oDataset
+						});
+		
 		
 		var tab = new sap.m.IconTabBar({
 			items: [
@@ -91,22 +124,17 @@ sap.ui.jsview("ui.whoiswhere", {
 						key: "time"
 					}),
 					
-					new sap.m.IconTabSeparator(),
-					new sap.m.IconTabFilter({
-						showAll: true,
-						count: "22",
-						text: "Total Cost",
-						key: "All"
-					})
 					
 				],
 				content: [
-				          
-				          	Segmented1,Segmented2
-				          
-				          
+				          	Segmented1,Segmented2,oChart
 				          ]
 			});
+		
+		
+			
+				
+		
 		
 
 		tab.addStyleClass("tab");
