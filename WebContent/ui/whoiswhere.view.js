@@ -14,7 +14,7 @@ sap.ui.jsview("ui.whoiswhere", {
 	*/ 
 	createContent : function(oController) {
 		
-		
+		var pieChart = sap.ui.view({id:"piechart", viewName:"ui.PieChart", type:sap.ui.core.mvc.ViewType.JS});
 		
 		var button1 = new sap.m.Button('bt_showByTimes', {
 			type: sap.m.ButtonType.Default,
@@ -31,12 +31,30 @@ sap.ui.jsview("ui.whoiswhere", {
 			type: sap.m.ButtonType.Default,
 			icon: "./images/chart.png",
 			//text: "Chart"
+			press:function() {
+				alert("btn3");
+				panel1.removeAllContent();
+				panel1.addContent(bar);
+				panel1.addContent(pieChart);
+				panel1.addContent(
+					    new sap.m.Text({
+						     text: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.  Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua."
+						    }));
+				}
 		});
 		
 		var button4 = new sap.m.Button('bt_showByTable', {
 			type: sap.m.ButtonType.Default,
 			icon: "./images/table.png",
 			//text: "Table"
+			press:function() {
+				alert("btn4");
+				panel1.removeAllContent();
+				panel1.addContent(bar);
+				panel1.addContent(new sap.m.Text({
+			     text: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.  Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua."
+			    }));
+				}
 		});
 		
 		var Segmented1= new sap.m.SegmentedButton('Segmented1', {
@@ -64,12 +82,14 @@ sap.ui.jsview("ui.whoiswhere", {
 			  width:"100%",
 			  headerText: "Three Balloons and a Text",
 			  content: [
-			            bar,pieChart
-			    //new sap.m.Text({
-			     // text: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.  Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua."
-			    //})
+			            bar,pieChart,
+			    new sap.m.Text({
+			     text: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.  Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua."
+			    })
 			  ]
 			});
+		
+		
 		var tab = new sap.m.IconTabBar({
 			width:"60%",
 			items: [
@@ -104,10 +124,9 @@ sap.ui.jsview("ui.whoiswhere", {
 				content: [panel1]
 			});
 		
-		
 		tab.addStyleClass("tab");
-		Segmented1.addStyleClass('segCont1');
-		Segmented2.addStyleClass('segCont2');
+	//	Segmented1.addStyleClass('segCont1');
+	//	Segmented2.addStyleClass('segCont2');
 		
 		
 		var oShell= new sap.m.Shell("myShell");
@@ -120,7 +139,8 @@ sap.ui.jsview("ui.whoiswhere", {
 			  new sap.m.Label('countLabel', {
 			  text: "Here some figure is displayed",
 			  design: sap.m.LabelDesign.Bold
-			})]	
+			})
+		]	
 		});
 		var mainVBox = new sap.m.VBox("mainVBox",{
 			width:"100%",
@@ -129,6 +149,8 @@ sap.ui.jsview("ui.whoiswhere", {
 			items:[headerHBox]
 		});
 		
+		
+		
 		var page =  new sap.m.Page({
 			title: "Travel Analysis",
 			showNavButton: false,
@@ -136,7 +158,7 @@ sap.ui.jsview("ui.whoiswhere", {
 			content: [ mainVBox ]
 		});
 		
-		var pieChart = sap.ui.view({id:"piechart", viewName:"ui.PieChart", type:sap.ui.core.mvc.ViewType.JS});
+		
 		
 		oApp.addPage(page);
 		oShell.setAppWidthLimited(true);
