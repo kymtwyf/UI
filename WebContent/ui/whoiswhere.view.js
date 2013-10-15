@@ -14,36 +14,26 @@ sap.ui.jsview("ui.whoiswhere", {
 	*/ 
 	createContent : function(oController) {
 		
-		var oShell= new sap.m.Shell("myShell", {
-			title: "who is where",
-			
+		
+		
+		var button1 = new sap.m.Button('bt_showByTimes', {
+			type: sap.m.ButtonType.Default,
+			text: "Times"
 		});
 		
-		var oApp = new sap.m.App("myApp");
-		
-		
-		var button1 = new sap.m.Button('button1', {
+		var button2 = new sap.m.Button('bt_showByCost', {
 			type: sap.m.ButtonType.Default,
-			text: "Times",
-			enabled: true,
+			text: "Cost"
 		});
 		
-		var button2 = new sap.m.Button('button2', {
+		var button3 = new sap.m.Button('bt_showbyChart', {
 			type: sap.m.ButtonType.Default,
-			text: "Money",
-			enabled: true,
+			text: "Chart"
 		});
 		
-		var button3 = new sap.m.Button('chart', {
+		var button4 = new sap.m.Button('bt_showByTable', {
 			type: sap.m.ButtonType.Default,
-			text: "Chart",
-			enabled: true,
-		});
-		
-		var button4 = new sap.m.Button('table', {
-			type: sap.m.ButtonType.Default,
-			text: "Table",
-			enabled: true,
+			text: "Table"
 		});
 		
 		var Segmented1= new sap.m.SegmentedButton('Segmented1', {
@@ -51,7 +41,6 @@ sap.ui.jsview("ui.whoiswhere", {
 			selectedButton: button1
 		});
 
-		Segmented1.addStyleClass('IconTabBar');
 		var Segmented2= new sap.m.SegmentedButton('Segmented2', {
 			buttons: [button3, button4], 
 			selectedButton: button3
@@ -66,7 +55,9 @@ sap.ui.jsview("ui.whoiswhere", {
 			contentRight:Segmented2,
 			translucent:true
 		});
+		
 		var panel1 = new sap.m.Panel({
+			  width:"100%",
 			  headerText: "Three Balloons and a Text",
 			  content: [
 			            bar,
@@ -76,42 +67,33 @@ sap.ui.jsview("ui.whoiswhere", {
 			  ]
 			});
 		var tab = new sap.m.IconTabBar({
+			width:"60%",
 			items: [
 					new sap.m.IconTabFilter({
 						icon: "sap-icon://task",
-						iconColor: sap.ui.core.IconColor.Critical,
-						count: "1",
-						text: "Country",
-						key: "country",
+						iconColor: sap.ui.core.IconColor.Positive,
+						text: "Country"
 					}),
 					new sap.m.IconTabFilter({
 						icon: "sap-icon://task",
-						iconColor: sap.ui.core.IconColor.Critical,
-						count: "2",
-						text: "Reason",
-						key: "reason"
+						iconColor: sap.ui.core.IconColor.Positive,
+						text: "Reason"
 					}),
 					new sap.m.IconTabFilter({
 						icon: "sap-icon://instance",
-						iconColor: sap.ui.core.IconColor.Negative,
-						count: "3",
-						text: "Person",
-						key: "person"
+						iconColor: sap.ui.core.IconColor.Positive,
+						text: "Person"
 					}),
 					new sap.m.IconTabFilter({
 						icon: "sap-icon://shipping-status",
 						iconColor: sap.ui.core.IconColor.Positive,
-						count: "4",
-						text: "Time",
-						key: "time"
+						text: "Time"
 					}),
 					
 					new sap.m.IconTabSeparator(),
 					new sap.m.IconTabFilter({
 						showAll: true,
-						count: "22",
-						text: "Total Cost",
-						key: "All"
+						text: "Total Cost"
 					})
 					
 				],
@@ -125,15 +107,34 @@ sap.ui.jsview("ui.whoiswhere", {
 		Segmented1.addStyleClass('segCont1');
 		Segmented2.addStyleClass('segCont2');
 		
-		var page =  new sap.m.Page({
-			title: "Who is Where",
-			showNavButton: true,
-			navButtonText: "Page 1",
-			navButtonPress: function(){ app.back(); },
-			content: [ tab ]
+		
+		
+		var oShell= new sap.m.Shell("myShell");
+		
+		var oApp = new sap.m.App("myApp");
+		
+		
+		var headerHBox = new sap.m.HBox("headerHBox", {
+			width:"100%",
+			items:[tab,
+			  new sap.m.Label('countLabel', {
+			  text: "Here some figure is displayed",
+			  design: sap.m.LabelDesign.Bold
+			})]	
+		});
+		var mainVBox = new sap.m.VBox("mainVBox",{
+			width:"100%",
+			height:"100%",
+			alignItems:"Center",
+			items:[headerHBox]
 		});
 		
-
+		var page =  new sap.m.Page({
+			title: "Travel Analysis",
+			showNavButton: false,
+			navButtonPress: function(){ app.back(); },
+			content: [ mainVBox ]
+		});
 		oApp.addPage(page);
 		oShell.setAppWidthLimited(true);
 		oShell.setApp(oApp);
