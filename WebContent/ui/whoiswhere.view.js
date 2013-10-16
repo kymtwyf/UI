@@ -169,8 +169,7 @@ sap.ui.jsview("ui.whoiswhere", {
 			contentRight: [new sap.m.Button({
 				icon: "./images/settings.png",
 					press : function() {
-						oPopover.setPlacement(sap.m.PlacementType.Left);
-						oPopover.openBy(this);
+						
 					}	
 				})]
 		});
