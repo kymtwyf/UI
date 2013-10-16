@@ -16,6 +16,7 @@ sap.ui.jsview("ui.whoiswhere", {
 		
 		var pieChart = sap.ui.view({id:"piechart", viewName:"ui.PieChart", type:sap.ui.core.mvc.ViewType.JS});
 		
+		
 		var button1 = new sap.m.Button('bt_showByTimes', {
 			type: sap.m.ButtonType.Default,
 			text: "Times"
@@ -66,6 +67,12 @@ sap.ui.jsview("ui.whoiswhere", {
 		Segmented2.addStyleClass('segCont');
 		
 		
+		var objectheader = new sap.m.ObjectHeader({
+		      //title : "Turbine K7",
+		      number : "81.199",
+		      numberUnit : "€",
+		      attributes : [
+		      ]});
 		
 		var bar = new sap.m.Bar({
 			contentLeft:Segmented1,
@@ -74,13 +81,11 @@ sap.ui.jsview("ui.whoiswhere", {
 		});
 		
 		var panel1 = new sap.m.Panel({
-			  width:"100%",
+			//  width:"120%",
 			  headerText: "Three Balloons and a Text",
 			  content: [
-			            bar,pieChart,
-			 //   new sap.m.Text({
-			  //   text: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.  Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua."
-			  //  })
+
+			            	bar,pieChart
 			  ]
 			});
 		
@@ -108,11 +113,11 @@ sap.ui.jsview("ui.whoiswhere", {
 						text: "Time"
 					}),
 
-					new sap.m.IconTabSeparator(),
-					new sap.m.IconTabFilter({
-						showAll: true,
-						text: "Total Cost"
-					}),
+					//new sap.m.IconTabSeparator(),
+				//	new sap.m.IconTabFilter({
+				//		showAll: true,
+				//		text: "Total Cost"
+				//	}),
 					
 					
 				],
@@ -120,6 +125,9 @@ sap.ui.jsview("ui.whoiswhere", {
 			});
 		tab.setExpandable(false);
 		tab.addStyleClass("tab");
+		objectheader.addStyleClass("objecth");
+		
+	
 	//	Segmented1.addStyleClass('segCont1');
 	//	Segmented2.addStyleClass('segCont2');
 		
@@ -137,26 +145,36 @@ sap.ui.jsview("ui.whoiswhere", {
 //			//});
 //		]	
 //		});
-		var mainVBox = new sap.m.VBox("mainVBox",{
-			width:"100%",
-			height:"100%",
-			alignItems:"Center",
-			items:[tab]
+	//	var mainVBox = new sap.m.VBox("mainVBox",{
+	//		width:"100%",
+	//		height:"100%",
+	//		alignItems:"Center",
+	//		items:[tab]
+	//	});
+		
+		var oVBox1 = new sap.m.VBox("hbox1", {
+			items:[
+			       objectheader,tab
+			]
 		});
-		
-		
-		
+		oVBox1.setHeight("0%");
 		var page =  new sap.m.Page({
 			title: "Travel Analysis",
 			showNavButton: false,
+			enableScrolling:false,
 			navButtonPress: function(){ app.back(); },
-			content: [ mainVBox ]
+			content: [oVBox1]
 		});
 		
+	
 		var footer = new sap.m.Bar({ 
-			contentLeft: [],	
-			contentMiddle: [],
-			contentRight: []
+			contentRight: [new sap.m.Button({
+				icon: "./images/settings.png",
+					press : function() {
+						oPopover.setPlacement(sap.m.PlacementType.Left);
+						oPopover.openBy(this);
+					}	
+				})]
 		});
 
 		page.setFooter(footer);
@@ -164,8 +182,7 @@ sap.ui.jsview("ui.whoiswhere", {
 		oApp.addPage(page);
 		oShell.setAppWidthLimited(true);
 		oShell.setApp(oApp);
-
- 		
+		
  		return oShell;
 	}
 

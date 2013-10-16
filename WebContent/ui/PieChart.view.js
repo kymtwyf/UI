@@ -43,6 +43,7 @@ sap.ui.jsview("ui.PieChart", {
 			
 				oChart = new sap.viz.ui5.Pie({
 							width : "100%",
+							//height: "80%",
 							dataset: oDataset
 						});
 		
