@@ -19,18 +19,20 @@ sap.ui.jsview("ui.whoiswhere", {
 		
 		var button1 = new sap.m.Button('bt_showByTimes', {
 			type: sap.m.ButtonType.Default,
-			text: "Times"
+			icon: "sap-icon://line-charts",
+			//text: "Times"
 		});
 		
 
 		var button2 = new sap.m.Button('bt_showByCost', {
 			type: sap.m.ButtonType.Default,
-			text: "Cost"
+			icon: "sap-icon://lead",
+			//text: "Cost"
 		});
 		
 		var button3 = new sap.m.Button('bt_showbyChart', {
 			type: sap.m.ButtonType.Default,
-			icon: "images/chart.png",
+			icon: "sap-icon://pie-chart",
 			press:function() {				
 				panel1.removeAllContent();
 				panel1.addContent(bar);
@@ -40,7 +42,7 @@ sap.ui.jsview("ui.whoiswhere", {
 		
 		var button4 = new sap.m.Button('bt_showByTable', {
 			type: sap.m.ButtonType.Default,
-			icon: "images/table.png",
+			icon: "sap-icon://table-chart",
 			//text: "Table"
 			press:function() {
 				panel1.removeAllContent();
@@ -74,10 +76,8 @@ sap.ui.jsview("ui.whoiswhere", {
 		          text : "Overspend",
 		          icon : "sap-icon://alert",
 		          state : "Error"
-		        }),
-		  
-		      attributes : [
-		      ]});
+		        })
+		  });
 		
 		var bar = new sap.m.Bar({
 			contentLeft:Segmented1,
@@ -85,20 +85,28 @@ sap.ui.jsview("ui.whoiswhere", {
 			translucent:true
 		});
 		
-		var panel1 = new sap.m.Panel({
+		var oVBox_page = new sap.m.VBox("hbox_page", {
+			items:[
+					bar,
+					pieChart
+			]
+		});
+		
+		var page1 = new sap.m.Page("pageContent",{
+			showNavButton: false,
+			enableScrolling:false,
+			height:"100%",
 			//  width:"120%",
-			  headerText: "Three Balloons and a Text",
-			  content: [
-
-			            	bar,pieChart
-			  ]
+			//  headerText: "Three Balloons and a Text",
+			showHeader:false,
+			content: [oVBox_page] 
 			});
-		
-		
+	
+
 		var tab = new sap.m.IconTabBar({
 			items: [
 					new sap.m.IconTabFilter({
-						icon: "sap-icon://task",
+						icon: "sap-icon://globe",
 						iconColor: sap.ui.core.IconColor.Positive,
 						text: "Country"
 					}),
@@ -108,54 +116,24 @@ sap.ui.jsview("ui.whoiswhere", {
 						text: "Reason"
 					}),
 					new sap.m.IconTabFilter({
-						icon: "sap-icon://instance",
+						icon: "sap-icon://customer",
 						iconColor: sap.ui.core.IconColor.Positive,
 						text: "Person"
 					}),
 					new sap.m.IconTabFilter({
-						icon: "sap-icon://shipping-status",
+						icon: "sap-icon://history",
 						iconColor: sap.ui.core.IconColor.Positive,
 						text: "Time"
-					}),
-
-					//new sap.m.IconTabSeparator(),
-				//	new sap.m.IconTabFilter({
-				//		showAll: true,
-				//		text: "Total Cost"
-				//	}),
-					
-					
+					})
 				],
-				content: [panel1]
+				content: [page1]
 			});
 		tab.setExpandable(false);
 		tab.addStyleClass("tab");
-		//t_cost.addStyleClass("tcost");
-		
-	
-	//	Segmented1.addStyleClass('segCont1');
-	//	Segmented2.addStyleClass('segCont2');
-		
 		
 		var oShell= new sap.m.Shell("myShell");
 		
 		var oApp = new sap.m.App("myApp");
-		
-//		var headerHBox = new sap.m.HBox("headerHBox", {
-//			width:"100%",
-//			items:[tab
-//			 // new sap.m.Label('countLabel', {
-//			 // text: "Here some figure is displayed",
-//			 // design: sap.m.LabelDesign.Bold
-//			//});
-//		]	
-//		});
-	//	var mainVBox = new sap.m.VBox("mainVBox",{
-	//		width:"100%",
-	//		height:"100%",
-	//		alignItems:"Center",
-	//		items:[tab]
-	//	});
 		
 		var oVBox1 = new sap.m.VBox("hbox1", {
 			items:[
@@ -163,6 +141,7 @@ sap.ui.jsview("ui.whoiswhere", {
 			]
 		});
 		oVBox1.setHeight("0%");
+		
 		var page =  new sap.m.Page({
 			title: "Travel Analysis",
 			showNavButton: false,
@@ -174,7 +153,7 @@ sap.ui.jsview("ui.whoiswhere", {
 	
 		var footer = new sap.m.Bar({ 
 			contentRight: [new sap.m.Button({
-				icon: "./images/settings.png",
+				icon: "sap-icon://settings",
 					press : function() {
 						
 					}	

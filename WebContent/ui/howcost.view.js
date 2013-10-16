@@ -48,7 +48,7 @@ sap.ui.jsview("ui.howcost", {
  			AppWidthLimited:true,
 			showNavButton: true,
 			navButtonText: "Page 1",
-			navButtonPress: function(){ app.back(); },
+			navButtonPress: function(){ app.back();},
 		});
 	}
 
