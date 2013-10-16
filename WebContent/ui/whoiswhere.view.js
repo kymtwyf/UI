@@ -64,11 +64,18 @@ sap.ui.jsview("ui.whoiswhere", {
 		
 		Segmented2.addStyleClass('segCont');
 		
+		var t_cost = sap.m.Text({text:"81.199"} );
 		
 		var objectheader = new sap.m.ObjectHeader({
 		      //title : "Turbine K7",
-		      number : "81.199",
+		      number : t_cost.getText(),
 		      numberUnit : "€",
+		      firstStatus : new sap.m.ObjectStatus({
+		          text : "Overspend",
+		          icon : "sap-icon://alert",
+		          state : "Error"
+		        }),
+		  
 		      attributes : [
 		      ]});
 		
@@ -123,7 +130,7 @@ sap.ui.jsview("ui.whoiswhere", {
 			});
 		tab.setExpandable(false);
 		tab.addStyleClass("tab");
-		objectheader.addStyleClass("objecth");
+		//t_cost.addStyleClass("tcost");
 		
 	
 	//	Segmented1.addStyleClass('segCont1');
