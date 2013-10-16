@@ -28,11 +28,11 @@
 	</buildSpec>
 	<natures>
 		<nature>com.sap.ndb.studio.dwb.tools.core.hanaNature</nature>
-		<nature>com.sap.ide.ui5.app.plugin.webappnature</nature>
 		<nature>org.eclipse.wst.common.modulecore.ModuleCoreNature</nature>
 		<nature>org.eclipse.wst.jsdt.core.jsNature</nature>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>org.eclipse.jem.workbench.JavaEMFNature</nature>
 		<nature>org.eclipse.wst.common.project.facet.core.nature</nature>
+		<nature>com.sap.ide.ui5.app.plugin.webappnature</nature>
 	</natures>
 </projectDescription>

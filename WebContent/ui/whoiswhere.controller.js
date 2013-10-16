@@ -31,8 +31,10 @@ sap.ui.controller("ui.whoiswhere", {
 * Called when the Controller is destroyed. Use this one to free resources and finalize activities.
 * @memberOf demo.MainPage
 */
-//	onExit: function() {
-//
-//	}
+	onExit: function() {
+		//logic.utils._F_Toast("exit");
+//		console.log("user exited");
+//		Cookie.write("tableData",logic.data);
+	}
 
 });
