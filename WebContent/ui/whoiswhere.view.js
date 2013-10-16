@@ -73,14 +73,12 @@ sap.ui.jsview("ui.whoiswhere", {
 		if (c_name!=null && c_name!="")
 		  {
 			costlimit=c_name;
-		    alert(costlimit);
 		  }
 		return costlimit;
 		}
 		
 		costlimit=checkCookie();
 		
-		 alert(costlimit);
 		var objectheader = new sap.m.ObjectHeader({			//header 
 		      number : t_cost,
 		      numberUnit : "€"
@@ -192,9 +190,10 @@ sap.ui.jsview("ui.whoiswhere", {
 		
 		var inputcostlimit = new sap.m.Input({
 		      type: sap.m.InputType.Number,
-		      placeholder: 'Enter Cost Limit ...'
+		      //placeholder: 'Enter Cost Limit ...'
 		    });
 		
+		inputcostlimit.setValue(costlimit);
 		
 		var Form = new sap.ui.commons.form.SimpleForm({ //simple form in the dialog
 			  editable: true,
