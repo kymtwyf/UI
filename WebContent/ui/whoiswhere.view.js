@@ -18,17 +18,82 @@ sap.ui.jsview("ui.whoiswhere", {
 		
 		var oApp = new sap.m.App("myApp");
 		
-		var t_cost = sap.m.Text({text:"81.199"} ); 			//total cost
+		var t_cost = 81499; 			//total cost
 		
+		var overspend = new sap.m.ObjectStatus({
+	          text : "Overspend",
+	          icon : "sap-icon://alert",
+	          state : "Error"
+	      });
+		
+		var inthebudget = new sap.m.ObjectStatus({
+	          text : "In the budget",
+	          icon : "sap-icon://sys-enter",
+	          state : "Success"
+	      });
+		
+		//var closetothebudget = new sap.m.ObjectStatus({ 
+	 //         text : "Close to the budget",
+	 //         icon : "sap-icon://warning",
+	  //        state : "Warning"
+	 //     });
+		
+		var costlimit; 		//default
+		
+		
+		function getCookie(c_name)
+		{
+		if (document.cookie.length>0)
+		  {
+		  c_start=document.cookie.indexOf(c_name + "=");
+		  if (c_start!=-1)
+		    { 
+		    c_start=c_start + c_name.length+1 ;
+		    c_end=document.cookie.indexOf(";",c_start);
+		    if (c_end==-1) c_end=document.cookie.length;
+		    return unescape(document.cookie.substring(c_start,c_end));
+		    } 
+		  }
+		return "";
+		}
+
+		
+		function setCookie(value,expiredays)				//store object in cookie
+		{
+		var exdate=new Date();
+		exdate.setDate(exdate.getDate()+expiredays);
+		document.cookie="costlimit"+ "=" +escape(value)+
+		((expiredays==null) ? "" : ";expires="+exdate.toGMTString());
+		}
+		
+		function checkCookie()
+		{
+		var c_name=getCookie('costlimit');
+		var costlimit= 50000;
+		if (c_name!=null && c_name!="")
+		  {
+			costlimit=c_name;
+		    alert(costlimit);
+		  }
+		return costlimit;
+		}
+		
+		costlimit=checkCookie();
+		
+		 alert(costlimit);
 		var objectheader = new sap.m.ObjectHeader({			//header 
-		      number : t_cost.getText(),
-		      numberUnit : "€",
-		      firstStatus : new sap.m.ObjectStatus({
-		          text : "Overspend",
-		          icon : "sap-icon://alert",
-		          state : "Error"
-		        })
+		      number : t_cost,
+		      numberUnit : "€"
 		  });
+		
+		function setFirstStatus()
+		{
+			if(costlimit > t_cost)
+			objectheader.setFirstStatus(inthebudget);
+			else
+			objectheader.setFirstStatus(overspend);
+		}
+		setFirstStatus();
 		
 		var pieChart = sap.ui.view({id:"piechart", viewName:"ui.PieChart", type:sap.ui.core.mvc.ViewType.JS});
 		//pie chart of data
@@ -125,17 +190,20 @@ sap.ui.jsview("ui.whoiswhere", {
 		tab.setExpandable(false);
 		tab.addStyleClass("tab");
 		
+		var inputcostlimit = new sap.m.Input({
+		      type: sap.m.InputType.Number,
+		      placeholder: 'Enter Cost Limit ...'
+		    });
+		
+		
 		var Form = new sap.ui.commons.form.SimpleForm({ //simple form in the dialog
 			  editable: true,
 			  content : [
 			   
 			    new sap.m.Label({
 			      text: 'Cost Limit'
-			    }),
-			    new sap.m.Input({
-			      type: sap.m.InputType.Number,
-			      placeholder: 'Enter Cost Limit ...'
-			    })
+			    }), inputcostlimit
+			    
 			  ]
 			});
 				     
@@ -147,15 +215,16 @@ sap.ui.jsview("ui.whoiswhere", {
 		  leftButton: new sap.m.Button({
 		    text: "Ok",
 		    press: function () {
-		    	alert("ok");
+		    	costlimit=inputcostlimit.getValue();
+		    	setCookie(costlimit,365);
+		    	setFirstStatus();
 		    	stdDialog.close();
 		    }
 		  }),
 		  rightButton: new sap.m.Button({
 		    text: "Cancel",
 		    press: function () {
-		    	alert("cancel");
-		    	stdDialog.close();
+		     	stdDialog.close();
 		    }
 		  }),
 		  afterClose: function (oEvent) {
