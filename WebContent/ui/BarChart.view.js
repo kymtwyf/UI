@@ -45,7 +45,7 @@ sap.ui.jsview("ui.BarChart", {
 		        oDataset.setModel(oModel);
 		        oChart = new sap.viz.ui5.Bar({
 		          width : "100%",
-		          height : "100%",
+		       //   height : "100%",
 		          dataset: oDataset
 		        });
 		        return oChart;

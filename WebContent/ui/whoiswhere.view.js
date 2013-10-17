@@ -95,7 +95,8 @@ sap.ui.jsview("ui.whoiswhere", {
 		
 		var pieChart = sap.ui.view({id:"piechart", viewName:"ui.PieChart", type:sap.ui.core.mvc.ViewType.JS});
 		//pie chart of data
-		
+		var barChart = sap.ui.view({id:"barchart", viewName:"ui.BarChart", type:sap.ui.core.mvc.ViewType.JS});
+		//bar chart of data
 		
 		
 		var button1 = new sap.m.Button('bt_showByTimes', {
@@ -146,8 +147,17 @@ sap.ui.jsview("ui.whoiswhere", {
 			selectedButton: button3
 		});
 		
+		var selecttimeinterval = new sap.m.Select({
+			  items: [
+			          new sap.ui.core.Item("timeinterval1", {text: "Last month to Today"}),
+			          new sap.ui.core.Item("timeinterval12", {text:"Last two months to Today"}),
+			          new sap.ui.core.Item("timeinterval13", {text:"Last year to Today"})
+			        ]
+			      });
+	
+		
 		var bar = new sap.m.Bar({		// bar of segment buttons
-			contentLeft:Segmented1,
+			contentLeft:[selecttimeinterval,Segmented1],
 			contentRight:Segmented2,
 			translucent:true
 		});
@@ -206,7 +216,7 @@ sap.ui.jsview("ui.whoiswhere", {
 					else if (selected == 'Element sap.m.IconTabFilter#__filter2')
 					{
 						reloadPage();
-						oVBoxpage.addItem(pieChart);
+						oVBoxpage.addItem(barChart);
 					}
 					else
 					{
@@ -234,13 +244,15 @@ sap.ui.jsview("ui.whoiswhere", {
 			    new sap.m.Label({
 			      text: 'Cost Limit'
 			    }), inputcostlimit
-			    
 			  ]
 			});
+		
+
 				     
 		var stdDialog = new sap.m.Dialog();
+		
 		stdDialog = new sap.m.Dialog({// create standard dialog 
-		  title: "Configuration",
+		  title: "Setting Cost Limit",
 		  content: Form,
 		  
 		  leftButton: new sap.m.Button({
@@ -266,6 +278,8 @@ sap.ui.jsview("ui.whoiswhere", {
 		    }
 		  }
 		});
+		
+
 
 		
 		var oVBox1 = new sap.m.VBox("hbox1", {	// shorten the mergin between the object header and tab
@@ -283,15 +297,17 @@ sap.ui.jsview("ui.whoiswhere", {
 			content: [oVBox1]
 		});
 		
-	
+		
+		var settingbutton = new sap.m.Button({
+			icon: "sap-icon://settings",
+		  press : function() {
+				 sap.ui.getCore().getEventBus().publish("nav", "virtual");
+				    stdDialog.open();
+			}	
+		});
+		
 		var footer = new sap.m.Bar({ 
-			contentRight: [new sap.m.Button({
-				icon: "sap-icon://settings",
-					press : function() {
-						 sap.ui.getCore().getEventBus().publish("nav", "virtual");
-						    stdDialog.open();
-					}	
-				})]
+			contentRight: [settingbutton]
 		});
 
 		page.setFooter(footer);
