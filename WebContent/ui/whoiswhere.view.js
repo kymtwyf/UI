@@ -115,9 +115,9 @@ sap.ui.jsview("ui.whoiswhere", {
 			type: sap.m.ButtonType.Default,
 			icon: "sap-icon://pie-chart",
 			press:function() {				
-				oVBox_page.removeAllItems();
-				oVBox_page.addItem(bar);
-				oVBox_page.addItem(pieChart);
+				oVBoxpage.removeAllItems();
+				oVBoxpage.addItem(bar);
+				oVBoxpage.addItem(pieChart);
 				}
 		});
 		
@@ -126,9 +126,9 @@ sap.ui.jsview("ui.whoiswhere", {
 			icon: "sap-icon://table-chart",
 			//text: "Table"
 			press:function() {
-				oVBox_page.removeAllItems();
-				oVBox_page.addItem(bar);
-				oVBox_page.addItem(new sap.m.Text({
+				oVBoxpage.removeAllItems();
+				oVBoxpage.addItem(bar);
+				oVBoxpage.addItem(new sap.m.Text({
 			     text: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.  Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua."
 			    }));
 				
@@ -152,37 +152,79 @@ sap.ui.jsview("ui.whoiswhere", {
 			translucent:true
 		});
 		
-		var oVBox_page = new sap.m.VBox("hbox_page", {		//contain bar and pie chart 
-			items:[
-					bar,
-					pieChart
-			]
+
+		var oVBoxpage = new sap.m.VBox("hboxpage", {		//contain bar and pie chart 
+			items:[bar,pieChart
+				]
 		});
+		
+
 		
 		var tab = new sap.m.IconTabBar({	//icon tab  under the objectheader
 			items: [
 					new sap.m.IconTabFilter({
 						icon: "sap-icon://globe",
-						iconColor: sap.ui.core.IconColor.Positive,
 						text: "Country"
 					}),
+					
 					new sap.m.IconTabFilter({
 						icon: "sap-icon://task",
-						iconColor: sap.ui.core.IconColor.Positive,
 						text: "Reason"
 					}),
+					
 					new sap.m.IconTabFilter({
 						icon: "sap-icon://customer",
-						iconColor: sap.ui.core.IconColor.Positive,
 						text: "Person"
 					}),
+					
 					new sap.m.IconTabFilter({
 						icon: "sap-icon://history",
-						iconColor: sap.ui.core.IconColor.Positive,
 						text: "Time"
 					})
+					
 				],
-				content: [oVBox_page]
+				content: [oVBoxpage],
+				select: function (oEvent) {
+					var selected = oEvent.getParameter("item") ;
+					alert(selected);
+					if(selected == 'Element sap.m.IconTabFilter#__filter0')
+					{ 
+						oVBoxpage.removeAllItems();
+						oVBoxpage.addItem(bar);
+						oVBoxpage.addItem(
+								new sap.m.Text({
+						     text: selected
+						     }));
+						oVBoxpage.addItem(pieChart);
+					}
+					else if (selected == 'Element sap.m.IconTabFilter#__filter1')
+					{
+						oVBoxpage.removeAllItems();
+						oVBoxpage.addItem(bar);
+						oVBoxpage.addItem(new sap.m.Text({
+						     text: selected  }));
+						oVBoxpage.addItem(pieChart);
+						
+					}
+					else if (selected == 'Element sap.m.IconTabFilter#__filter2')
+					{
+						oVBoxpage.removeAllItems();
+						oVBoxpage.addItem(bar);
+						oVBoxpage.addItem(new sap.m.Text({
+						     text: selected  }));
+						oVBoxpage.addItem(pieChart);
+					}
+					else
+					{
+						oVBoxpage.removeAllItems();
+						oVBoxpage.addItem(bar);
+						oVBoxpage.addItem(new sap.m.Text({
+						     text: selected  }));
+						oVBoxpage.addItem(pieChart);
+					}
+					
+				  }
+			
 			});
 		
 		tab.setExpandable(false);
