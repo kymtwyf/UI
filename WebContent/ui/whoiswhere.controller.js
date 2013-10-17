@@ -5,9 +5,19 @@ sap.ui.controller("ui.whoiswhere", {
 * Can be used to modify the View before it is displayed, to bind event handlers and do other one-time initialization.
 * @memberOf demo.MainPage
 */
-//	onInit: function() {
-//
-//	},
+	onInit: function() {
+		var bus = sap.ui.getCore().getEventBus();
+		bus.subscribe("app", "DataLoaded", function () {
+			//数据取到了就需要写这个
+			/*
+			 
+			m.attachRequestCompleted(function () {//m是model
+				sap.ui.getCore().getEventBus().publish("app", "DataLoaded");//这句来触发这个event
+			}); 
+			  */
+			
+		}, this);
+	},
 
 /**
 * Similar to onAfterRendering, but this hook is invoked before the controller's View is re-rendered
