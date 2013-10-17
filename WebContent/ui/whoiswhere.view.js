@@ -158,7 +158,13 @@ sap.ui.jsview("ui.whoiswhere", {
 				]
 		});
 		
-
+		function reloadPage()
+		{
+			Segmented1.setSelectedButton(button1);
+			Segmented2.setSelectedButton(button3);
+			oVBoxpage.removeAllItems();
+			oVBoxpage.addItem(bar);
+		}
 		
 		var tab = new sap.m.IconTabBar({	//icon tab  under the objectheader
 			items: [
@@ -186,40 +192,25 @@ sap.ui.jsview("ui.whoiswhere", {
 				content: [oVBoxpage],
 				select: function (oEvent) {
 					var selected = oEvent.getParameter("item") ;
-					alert(selected);
 					if(selected == 'Element sap.m.IconTabFilter#__filter0')
 					{ 
-						oVBoxpage.removeAllItems();
-						oVBoxpage.addItem(bar);
-						oVBoxpage.addItem(
-								new sap.m.Text({
-						     text: selected
-						     }));
+						reloadPage();
 						oVBoxpage.addItem(pieChart);
 					}
 					else if (selected == 'Element sap.m.IconTabFilter#__filter1')
 					{
-						oVBoxpage.removeAllItems();
-						oVBoxpage.addItem(bar);
-						oVBoxpage.addItem(new sap.m.Text({
-						     text: selected  }));
+						reloadPage();
 						oVBoxpage.addItem(pieChart);
 						
 					}
 					else if (selected == 'Element sap.m.IconTabFilter#__filter2')
 					{
-						oVBoxpage.removeAllItems();
-						oVBoxpage.addItem(bar);
-						oVBoxpage.addItem(new sap.m.Text({
-						     text: selected  }));
+						reloadPage();
 						oVBoxpage.addItem(pieChart);
 					}
 					else
 					{
-						oVBoxpage.removeAllItems();
-						oVBoxpage.addItem(bar);
-						oVBoxpage.addItem(new sap.m.Text({
-						     text: selected  }));
+						reloadPage();
 						oVBoxpage.addItem(pieChart);
 					}
 					
@@ -240,7 +231,6 @@ sap.ui.jsview("ui.whoiswhere", {
 		var Form = new sap.ui.commons.form.SimpleForm({ //simple form in the dialog
 			  editable: true,
 			  content : [
-			   
 			    new sap.m.Label({
 			      text: 'Cost Limit'
 			    }), inputcostlimit
