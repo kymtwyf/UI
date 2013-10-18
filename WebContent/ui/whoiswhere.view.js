@@ -93,12 +93,113 @@ sap.ui.jsview("ui.whoiswhere", {
 		}
 		setFirstStatus();
 		
-
-
-		var pieChart = sap.ui.view({id:"piechart", viewName:"ui.PieChart", type:sap.ui.core.mvc.ViewType.JS});
-		//pie chart of data
-
 		
+		function CreatePieChart() {
+			
+			var PieModel = {
+					  data : [
+						{country:'China',year:'2001',profit:25},
+						{country:'China',year:'2002',profit:58},
+						{country:'USA',year:'2001',profit:58},
+						{country:'USA',year:'2002',profit:159},
+						{country:'Canada',year:'2001',profit:149},
+						{country:'Canada',year:'2002',profit:38},
+					  ]};
+					var PieData = {
+					  dimensions : [
+						{axis : 1, name : 'Country', value: "{country}"},
+						//{axis : 1, name : 'Year', value: "{year}"},
+					  ],
+					  measures : [
+						{name : "Profit", value : "{profit}"},
+					  ],
+					  data : {
+						path : "/data"
+					  }
+					};
+					
+					var oDataset,oModel;
+			
+					oDataset = new sap.viz.ui5.data.FlattenedDataset(PieData);
+					oModel = new sap.ui.model.json.JSONModel(PieModel);
+					oDataset.setModel(oModel);
+					
+					
+				
+					var oChart = new sap.viz.ui5.Pie({
+								width : "100%",
+								//height: "80%",
+								//dataset: oDataset
+							});
+					
+					oChart.setDataset(oDataset);
+			
+	 		return oChart;		
+		}
+				
+		var pieChart = CreatePieChart();
+		//pie chart of data
+		
+		
+		///////////////////////////////////////////////////////////////////////////////////////////////
+		var PieModel = {
+				  data : [
+					{country:'China',year:'2001',profit:25},
+					{country:'China',year:'2002',profit:58},
+					{country:'USA',year:'2001',profit:58},
+					{country:'USA',year:'2002',profit:159},
+					{country:'Canada',year:'2001',profit:149},
+					{country:'Canada',year:'2002',profit:38},
+				  ]};
+				var PieData = {
+				  dimensions : [
+					{axis : 1, name : 'Country', value: "{country}"},
+					//{axis : 1, name : 'Year', value: "{year}"},
+				  ],
+				  measures : [
+					{name : "Profit", value : "{profit}"},
+				  ],
+				  data : {
+					path : "/data"
+				  }
+				};
+				
+				var oDataset,oModel;
+		
+				oDataset = new sap.viz.ui5.data.FlattenedDataset(PieData);
+				oModel = new sap.ui.model.json.JSONModel(PieModel);
+				oDataset.setModel(oModel);
+	
+		var PieModel2 = {
+				  data : [
+					{country:'China',year:'2001',profit:25},
+					{country:'China',year:'2002',profit:58},
+					{country:'USA',year:'2001',profit:58},
+					{country:'USA',year:'2002',profit:159},
+					{country:'Canada',year:'2001',profit:149},
+					{country:'Canada',year:'2002',profit:38},
+				  ]};
+				var PieData2 = {
+				  dimensions : [
+					{axis : 1, name : 'Country', value: "{country}"},
+					{axis : 1, name : 'Year', value: "{year}"},
+				  ],
+				  measures : [
+					{name : "Profit", value : "{profit}"},
+				  ],
+				  data : {
+					path : "/data"
+				  }
+				};
+				
+				var oDataset2,oModel2;
+		
+				oDataset2 = new sap.viz.ui5.data.FlattenedDataset(PieData2);
+				oModel2 = new sap.ui.model.json.JSONModel(PieModel2);
+				oDataset2.setModel(oModel2);
+				/////////////test data for changing the tab
+				
+				
 		var barChart = sap.ui.view({id:"barchart", viewName:"ui.BarChart", type:sap.ui.core.mvc.ViewType.JS});
 		//bar chart of data
 		
@@ -201,11 +302,14 @@ sap.ui.jsview("ui.whoiswhere", {
 					if(selected == 'Element sap.m.IconTabFilter#__filter0')
 					{ 
 						reloadPage();
+						pieChart.setDataset(oDataset);
 						oVBoxpage.addItem(pieChart);
 					}
 					else if (selected == 'Element sap.m.IconTabFilter#__filter1')
 					{
 						reloadPage();
+						//pieChart.destroyDataset();
+						pieChart.setDataset(oDataset2);
 						oVBoxpage.addItem(pieChart);
 						
 					}
