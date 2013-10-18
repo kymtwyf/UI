@@ -13,6 +13,9 @@ sap.ui.jsview("ui.PieChart", {
 	* @memberOf ui.PieChart
 	*/ 
 	createContent : function(oController) {
+		
+		
+		
 		var PieModel = {
 				  data : [
 					{country:'China',year:'2001',profit:25},
