@@ -30,6 +30,8 @@
 				sap.ui.localResources("ui");
 				sap.ui.localResources("logic");
 				jQuery.sap.require("logic.queries");
+				jQuery.sap.require("logic.data");
+				jQuery.sap.require("logic.utils");
 				var app = new sap.m.App({initialPage:"idDemo2"});
 				var page = sap.ui.view({id:"idDemo1", viewName:"ui.index", type:sap.ui.core.mvc.ViewType.JS});
 				var page2 = sap.ui.view({id:"idDemo2", viewName:"ui.whoiswhere", type:sap.ui.core.mvc.ViewType.JS});

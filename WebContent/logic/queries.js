@@ -1,8 +1,8 @@
 jQuery.sap.declare("logic.queries");
 
 logic.queries = {
-		getQuery:function(field,countOrCost,client){
-			client = client?client:"002";
+		getQuery:function(field,countOrCost,filters){
+			var client = filters.client?filters.client:"002";
 			countOrCost = countOrCost?countOrCost:"ONE";//ONE for count and TRIP_TOTAL for total cost
 			var query = "http://ld9415.wdf.sap.corp:8002/mouse/project/odata/Test.xsodata/TRIP_DEST?"+"$select="+field+","+countOrCost+"&$filter=MANDT eq "+client+"&$format=json";
 			console.log("The query is "+query);
