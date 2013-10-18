@@ -93,8 +93,12 @@ sap.ui.jsview("ui.whoiswhere", {
 		}
 		setFirstStatus();
 		
+
+
 		var pieChart = sap.ui.view({id:"piechart", viewName:"ui.PieChart", type:sap.ui.core.mvc.ViewType.JS});
 		//pie chart of data
+
+		
 		var barChart = sap.ui.view({id:"barchart", viewName:"ui.BarChart", type:sap.ui.core.mvc.ViewType.JS});
 		//bar chart of data
 		
@@ -147,17 +151,9 @@ sap.ui.jsview("ui.whoiswhere", {
 			selectedButton: button3
 		});
 		
-		var selecttimeinterval = new sap.m.Select({
-			  items: [
-			          new sap.ui.core.Item("timeinterval1", {text: "Last month to Today"}),
-			          new sap.ui.core.Item("timeinterval12", {text:"Last two months to Today"}),
-			          new sap.ui.core.Item("timeinterval13", {text:"Last year to Today"})
-			        ]
-			      });
-	
 		
 		var bar = new sap.m.Bar({		// bar of segment buttons
-			contentLeft:[selecttimeinterval,Segmented1],
+			contentLeft:[Segmented1,selecttimeinterval],
 			contentRight:Segmented2,
 			translucent:true
 		});
@@ -238,6 +234,15 @@ sap.ui.jsview("ui.whoiswhere", {
 		
 		inputcostlimit.setValue(costlimit);
 		
+		var selecttimeinterval = new sap.m.Select({
+			  items: [
+			          new sap.ui.core.Item("timeinterval1", {text: "Last month to Today"}),
+			          new sap.ui.core.Item("timeinterval12", {text:"Last two months to Today"}),
+			          new sap.ui.core.Item("timeinterval13", {text:"Last year to Today"})
+			        ]
+			      });
+	
+		
 		var Form = new sap.ui.commons.form.SimpleForm({ //simple form in the dialog
 			  editable: true,
 			  content : [
@@ -247,9 +252,18 @@ sap.ui.jsview("ui.whoiswhere", {
 			  ]
 			});
 		
-
-				     
+		var Form2 = new sap.ui.commons.form.SimpleForm({ //simple form in the dialog
+			  editable: true,
+			  content : [
+			    new sap.m.Label({
+			      text: 'Time Interval'
+			    }), selecttimeinterval
+			  ]
+			});
+		
+			     
 		var stdDialog = new sap.m.Dialog();
+		var stdDialog2 = new sap.m.Dialog();
 		
 		stdDialog = new sap.m.Dialog({// create standard dialog 
 		  title: "Setting Cost Limit",
@@ -279,6 +293,34 @@ sap.ui.jsview("ui.whoiswhere", {
 		  }
 		});
 		
+		
+		stdDialog2 = new sap.m.Dialog({// create standard dialog 
+			  title: "Setting Time Interval",
+			  content: Form2,
+			  
+			  leftButton: new sap.m.Button({
+			    text: "Ok",
+			    press: function () {
+			    	costlimit=inputcostlimit.getValue();
+			    	setCookie(costlimit,365);
+			    	setFirstStatus();
+			    	stdDialog2.close();
+			    }
+			  }),
+			  rightButton: new sap.m.Button({
+			    text: "Cancel",
+			    press: function () {
+			     	stdDialog2.close();
+			    }
+			  }),
+			  afterClose: function (oEvent) {
+			    // if dialog is closed by pressing on one of the buttons in dialog, 
+			    // a history back needs to be called.
+			    if (oEvent.getParameter("origin")) {
+			      sap.ui.getCore().getEventBus().publish("nav", "back");
+			    }
+			  }
+			});
 
 
 		
@@ -306,8 +348,16 @@ sap.ui.jsview("ui.whoiswhere", {
 			}	
 		});
 		
+		var settingbutton2 = new sap.m.Button({
+			icon: "sap-icon://past",
+		  press : function() {
+				 sap.ui.getCore().getEventBus().publish("nav", "virtual");
+				    stdDialog2.open();
+			}	
+		});
+		
 		var footer = new sap.m.Bar({ 
-			contentRight: [settingbutton]
+			contentRight: [settingbutton2,settingbutton]
 		});
 
 		page.setFooter(footer);
