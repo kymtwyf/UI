@@ -14,8 +14,6 @@ sap.ui.jsview("ui.PieChart", {
 	*/ 
 	createContent : function(oController) {
 		
-		
-		
 		var PieModel = {
 				  data : [
 					{country:'China',year:'2001',profit:25},
@@ -38,17 +36,21 @@ sap.ui.jsview("ui.PieChart", {
 				  }
 				};
 				
-				var oChart,oDataset,oModel;
-				
+				var oDataset,oModel;
+		
 				oDataset = new sap.viz.ui5.data.FlattenedDataset(PieData);
 				oModel = new sap.ui.model.json.JSONModel(PieModel);
 				oDataset.setModel(oModel);
+				
+				
 			
-				oChart = new sap.viz.ui5.Pie({
+				var oChart = new sap.viz.ui5.Pie({
 							width : "100%",
 							//height: "80%",
-							dataset: oDataset
+							//dataset: oDataset
 						});
+				
+				oChart.setDataset(oDataset);
 		
  		return oChart;
 	}
