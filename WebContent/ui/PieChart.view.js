@@ -49,6 +49,13 @@ sap.ui.jsview("ui.PieChart", {
 							//height: "80%",
 							dataset: oDataset
 						});
+				
+				var customData = new sap.ui.core.CustomData({
+					key: "data",
+					value: "hello world"
+				});
+				
+				oChart.insertCustomData(customData);
 		
  		return oChart;
 	}

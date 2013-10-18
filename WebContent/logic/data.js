@@ -1,6 +1,10 @@
 jQuery.sap.declare("logic.data");
 
 logic.data = {
+		_TEST_DATA:{
+			label:null,
+			content:null
+		},
 		_CURRENT_DATA:null,//当前图表使用的数据
 		_D_COUNTRY_COUNT:null,
 		_D_COUNTRY_COST:null,

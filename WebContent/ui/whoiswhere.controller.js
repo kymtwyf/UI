@@ -17,6 +17,21 @@ sap.ui.controller("ui.whoiswhere", {
 			  */
 			
 		}, this);
+		
+		jQuery.ajax({
+			url:"http://ld9415.wdf.sap.corp:8002/mouse/project/odata/Test.xsodata/TRIP_DEST?$select=LANDTEXT,ONE&$filter=MANDT%20eq%20'002'&$format=json",
+			error:function(error){
+				//jQuery.sap.require("sap.m.MessageToast");
+				 //sap.m.MessageToast.show(error+"");
+				logic.utils._F_Toast(error+"");
+			},
+			success:function(data){
+				
+				logic.utils._F_Toast("success loaded data");
+				logic.data._TEST_DATA.label = "{LANDTEXT}";
+				logic.data._TEST_DATA.content = data.d.results;
+			}
+		});
 	},
 
 /**
