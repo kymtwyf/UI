@@ -92,53 +92,41 @@ sap.ui.jsview("ui.whoiswhere", {
 			objectheader.setFirstStatus(overspend);
 		}
 		setFirstStatus();
+		var pieChart = new sap.viz.ui5.Pie({
+			width : "100%",
+			//height: "80%",
+			//dataset: oDataset
+		});
 		
-		
-		function CreatePieChart() {
+		function refreshPieChart(channelId, eventId, oData) {
+			console.log("entered refresh");
+			var PieModel = {  data : oData.content};
+			var PieData = {
+			  dimensions : [
+				{axis : 1, name : oData.label, value: oData.label},
+				//{axis : 1, name : 'Year', value: "{year}"},
+			  ],
+			  measures : [
+				{name : oData.measure, value : oData.measure},
+			  ],
+			  data : {
+				path : "/data"
+			  }
+			};
 			
-			var PieModel = {
-					  data : [
-						{country:'China',year:'2001',profit:25},
-						{country:'China',year:'2002',profit:58},
-						{country:'USA',year:'2001',profit:58},
-						{country:'USA',year:'2002',profit:159},
-						{country:'Canada',year:'2001',profit:149},
-						{country:'Canada',year:'2002',profit:38},
-					  ]};
-					var PieData = {
-					  dimensions : [
-						{axis : 1, name : 'Country', value: "{country}"},
-						//{axis : 1, name : 'Year', value: "{year}"},
-					  ],
-					  measures : [
-						{name : "Profit", value : "{profit}"},
-					  ],
-					  data : {
-						path : "/data"
-					  }
-					};
+			var oDataset,oModel;
+	
+			oDataset = new sap.viz.ui5.data.FlattenedDataset(PieData);
+			oModel = new sap.ui.model.json.JSONModel(PieModel);
+			oDataset.setModel(oModel);
+			pieChart.setDataset(oDataset);
 					
-					var oDataset,oModel;
-			
-					oDataset = new sap.viz.ui5.data.FlattenedDataset(PieData);
-					oModel = new sap.ui.model.json.JSONModel(PieModel);
-					oDataset.setModel(oModel);
-					
-					
-				
-					var oChart = new sap.viz.ui5.Pie({
-								width : "100%",
-								//height: "80%",
-								//dataset: oDataset
-							});
-					
-					oChart.setDataset(oDataset);
-			
-	 		return oChart;		
 		}
-				
-		var pieChart = CreatePieChart();
-		//pie chart of data
+		var bus = sap.ui.getCore().getEventBus();
+		bus.subscribe("pieChart","refresh",refreshPieChart,this);
+//				
+//		var pieChart = CreatePieChart();
+//		//pie chart of data
 		
 		
 		///////////////////////////////////////////////////////////////////////////////////////////////

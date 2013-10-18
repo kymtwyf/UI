@@ -17,7 +17,7 @@ sap.ui.controller("ui.whoiswhere", {
 			  */
 			
 		}, this);
-		
+		console.log("entered on init");
 		jQuery.ajax({
 			url:"http://ld9415.wdf.sap.corp:8002/mouse/project/odata/Test.xsodata/TRIP_DEST?$select=LANDTEXT,ONE&$filter=MANDT%20eq%20'002'&$format=json",
 			error:function(error){
@@ -30,6 +30,8 @@ sap.ui.controller("ui.whoiswhere", {
 				logic.utils._F_Toast("success loaded data");
 				logic.data._TEST_DATA.label = "{LANDTEXT}";
 				logic.data._TEST_DATA.content = data.d.results;
+				logic.data._TEST_DATA.measure = "{ONE}";
+				bus.publish("pieChart","refresh",logic.data._TEST_DATA);
 			}
 		});
 	},
