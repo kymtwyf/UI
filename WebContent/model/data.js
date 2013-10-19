@@ -1,6 +1,6 @@
-jQuery.sap.declare("logic.data");
+jQuery.sap.declare("model.data");
 
-logic.data = {
+model.data = {
 		_TEST_DATA:{
 			label:null,
 			content:null,

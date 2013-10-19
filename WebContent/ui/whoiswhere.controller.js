@@ -23,15 +23,15 @@ sap.ui.controller("ui.whoiswhere", {
 			error:function(error){
 				//jQuery.sap.require("sap.m.MessageToast");
 				 //sap.m.MessageToast.show(error+"");
-				logic.utils._F_Toast(error+"");
+				util.tools._F_Toast(error+"");
 			},
 			success:function(data){
 				
-				logic.utils._F_Toast("success loaded data");
-				logic.data._TEST_DATA.label = "{LANDTEXT}";
-				logic.data._TEST_DATA.content = data.d.results;
-				logic.data._TEST_DATA.measure = "{ONE}";
-				bus.publish("pieChart","refresh",logic.data._TEST_DATA);
+				util.tools._F_Toast("success loaded data");
+				model.data._TEST_DATA.label = "{LANDTEXT}";
+				model.data._TEST_DATA.content = data.d.results;
+				model.data._TEST_DATA.measure = "{ONE}";
+				bus.publish("pieChart","refresh",model.data._TEST_DATA);
 			}
 		});
 	},
@@ -59,9 +59,9 @@ sap.ui.controller("ui.whoiswhere", {
 * @memberOf demo.MainPage
 */
 	onExit: function() {
-		//logic.utils._F_Toast("exit");
+		//util.tools._F_Toast("exit");
 //		console.log("user exited");
-//		Cookie.write("tableData",logic.data);
+//		Cookie.write("tableData",model.data);
 	}
 
 });

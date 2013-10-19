@@ -40,7 +40,11 @@ sap.ui.jsview("ui.whoiswhere", {
 		
 		var costlimit; 		//default
 		
-		
+		var objectheader = new sap.m.ObjectHeader({			//header 
+		      number : t_cost,
+		      numberUnit : "€"
+		 });
+
 		function getCookie(c_name)
 		{
 		if (document.cookie.length>0)
@@ -60,29 +64,24 @@ sap.ui.jsview("ui.whoiswhere", {
 		
 		function setCookie(value,expiredays)				//store object in cookie
 		{
-		var exdate=new Date();
-		exdate.setDate(exdate.getDate()+expiredays);
-		document.cookie="costlimit"+ "=" +escape(value)+
-		((expiredays==null) ? "" : ";expires="+exdate.toGMTString());
+			var exdate=new Date();
+			exdate.setDate(exdate.getDate()+expiredays);
+			document.cookie="costlimit"+ "=" +escape(value)+
+			((expiredays==null) ? "" : ";expires="+exdate.toGMTString());
 		}
 		
 		function checkCookie()
 		{
-		var c_name=getCookie('costlimit');
-		var costlimit= 50000;
-		if (c_name!=null && c_name!="")
-		  {
-			costlimit=c_name;
-		  }
-		return costlimit;
+			var c_name=getCookie('costlimit');
+			var costlimit= 50000;
+			if (c_name!=null && c_name!="")
+			{
+				costlimit=c_name;
+			}
+			return costlimit;
 		}
 		
-		costlimit=checkCookie();
-		
-		var objectheader = new sap.m.ObjectHeader({			//header 
-		      number : t_cost,
-		      numberUnit : "€"
-		  });
+		costlimit=checkCookie();			
 		
 		function setFirstStatus()
 		{
@@ -92,6 +91,7 @@ sap.ui.jsview("ui.whoiswhere", {
 			objectheader.setFirstStatus(overspend);
 		}
 		setFirstStatus();
+
 		var pieChart = new sap.viz.ui5.Pie({
 			width : "100%",
 			//height: "80%",
@@ -208,7 +208,7 @@ sap.ui.jsview("ui.whoiswhere", {
 		var button3 = new sap.m.Button('bt_showbyChart', {		//chart button
 			type: sap.m.ButtonType.Default,
 			icon: "sap-icon://pie-chart",
-			press:function() {				
+			press: function(){				
 				oVBoxpage.removeAllItems();
 				oVBoxpage.addItem(bar);
 				oVBoxpage.addItem(pieChart);
@@ -219,7 +219,8 @@ sap.ui.jsview("ui.whoiswhere", {
 			type: sap.m.ButtonType.Default,
 			icon: "sap-icon://table-chart",
 			//text: "Table"
-			press:function() {
+			press: function(){
+				console.log("btn_table pressed");
 				oVBoxpage.removeAllItems();
 				oVBoxpage.addItem(bar);
 				oVBoxpage.addItem(new sap.m.Text({
@@ -249,8 +250,7 @@ sap.ui.jsview("ui.whoiswhere", {
 		
 
 		var oVBoxpage = new sap.m.VBox("hboxpage", {		//contain bar and pie chart 
-			items:[bar,pieChart
-				]
+			items:[bar,pieChart]
 		});
 		
 		function reloadPage()
@@ -412,7 +412,7 @@ sap.ui.jsview("ui.whoiswhere", {
 			      sap.ui.getCore().getEventBus().publish("nav", "back");
 			    }
 			  }
-			});
+		});
 
 
 		
@@ -427,7 +427,6 @@ sap.ui.jsview("ui.whoiswhere", {
 			title: "Travel Analysis",
 			showNavButton: false,
 			enableScrolling:false,
-			navButtonPress: function(){ app.back(); },
 			content: [oVBox1]
 		});
 		

@@ -1,6 +1,6 @@
-jQuery.sap.declare("logic.queries");
+jQuery.sap.declare("util.queries");
 
-logic.queries = {
+util.queries = {
 		getQuery:function(field,countOrCost,filters){
 			var client = filters.client?filters.client:"002";
 			countOrCost = countOrCost?countOrCost:"ONE";//ONE for count and TRIP_TOTAL for total cost

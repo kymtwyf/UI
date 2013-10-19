@@ -1,6 +1,6 @@
-jQuery.sap.declare("logic.utils");
+jQuery.sap.declare("util.tools");
 
-logic.utils = {
+util.tools = {
 		_F_Toast:function(message){
 			jQuery.sap.require("sap.m.MessageToast");
 			 sap.m.MessageToast.show(message);
@@ -10,7 +10,7 @@ logic.utils = {
 			switch(whichOne){
 			case 1:
 				if(!logic.data._D_COUNTRY_COUNT.content){
-					var url = logic.queries.getQuery()
+					var url = util.queries.getQuery()
 				}
 				break;//_D_COUNTRY_COUNT
 			case 2:break;//_D_COUNTRY_COST
