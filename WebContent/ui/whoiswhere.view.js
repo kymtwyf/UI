@@ -47,18 +47,18 @@ sap.ui.jsview("ui.whoiswhere", {
 
 		function getCookie(c_name)
 		{
-		if (document.cookie.length>0)
-		  {
-		  c_start=document.cookie.indexOf(c_name + "=");
-		  if (c_start!=-1)
-		    { 
-		    c_start=c_start + c_name.length+1 ;
-		    c_end=document.cookie.indexOf(";",c_start);
-		    if (c_end==-1) c_end=document.cookie.length;
-		    return unescape(document.cookie.substring(c_start,c_end));
-		    } 
-		  }
-		return "";
+			if (document.cookie.length>0)
+			  {
+			  c_start=document.cookie.indexOf(c_name + "=");
+			  if (c_start!=-1)
+			    { 
+			    c_start=c_start + c_name.length+1 ;
+			    c_end=document.cookie.indexOf(";",c_start);
+			    if (c_end==-1) c_end=document.cookie.length;
+			    return unescape(document.cookie.substring(c_start,c_end));
+			    } 
+			  }
+			return "";
 		}
 
 		
@@ -192,17 +192,16 @@ sap.ui.jsview("ui.whoiswhere", {
 		//bar chart of data
 		
 		
-		var button1 = new sap.m.Button('bt_showByTimes', {
-			type: sap.m.ButtonType.Default,
-			icon: "sap-icon://line-charts",
-																//times button 
-		});
-		
-
-		var button2 = new sap.m.Button('bt_showByCost', {
+		var button1 = new sap.m.Button('bt_showByCost', {
 			type: sap.m.ButtonType.Default,
 			icon: "sap-icon://lead",
 																//cost button
+		});
+
+		var button2 = new sap.m.Button('bt_showByTimes', {
+			type: sap.m.ButtonType.Default,
+			icon: "sap-icon://line-charts",
+																//times button 
 		});
 		
 		var button3 = new sap.m.Button('bt_showbyChart', {		//chart button
@@ -446,8 +445,27 @@ sap.ui.jsview("ui.whoiswhere", {
 				    stdDialog2.open();
 			}	
 		});
-		
+
+		var pullRefresh = new sap.m.PullToRefresh({
+			//description:"description here",
+			iconDensityAware:false,
+			refresh:function(){
+				pullRefresh.hide();
+				refreshLabel.setText("clicked to refresh")
+				//pullRefresh.setDescription("helloPul");
+			}
+		});
+		var refreshLabel = new sap.m.Label({
+			text:"hello"
+		})
+		pullRefresh.addStyleClass('refresh');
+		var refreshHBox = new sap.m.HBox({
+			items:[
+			pullRefresh,refreshLabel
+			]
+		})
 		var footer = new sap.m.Bar({ 
+			contentLeft: [refreshHBox],
 			contentRight: [settingbutton2,settingbutton]
 		});
 
