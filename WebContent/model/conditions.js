@@ -8,12 +8,16 @@ model.conditions = {
 	prepare:function(){
 		jQuery.sap.require("model.status");
 		switch(model.status.iconTab){
-			case 'country': this.dimensions.push("LANDTEXT"); break;
+			case 'country': this.dimensions.push("LANDTEXT"); 
+							this.path = '0';
+							break;
 			//敬请期待
 		};
 		switch(model.staus.measure){
 			case 'cost': this.dimensions.push("TRIP_TOTAL");
 			case 'times': this.dimensions.push('ONE');
-		}
+		};
+
 	}
 }
+model.conditions.prepare();

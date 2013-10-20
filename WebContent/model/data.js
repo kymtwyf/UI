@@ -1,5 +1,13 @@
 jQuery.sap.declare("model.data");
 //用来存数据 ，key 是path
+
+//每个data里面需要存的数据：
+/*
+	1.content: 内容
+	2.dimension 和measure
+	3.path:怎样的drill down的路线
+	4.time:更新时间
+*/
 model.data = {
 		_TEST_DATA:{
 			label:null,
