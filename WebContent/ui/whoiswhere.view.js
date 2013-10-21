@@ -130,17 +130,23 @@ sap.ui.jsview("ui.whoiswhere", {
 								width : "100%",
 								//height: "80%",
 								//dataset: oDataset
+								selectData: function(oControlEvent){
+									alert(oControlEvent.getParameter("measure"));
+								}
 							});
 					
 					oChart.setDataset(oDataset);
-			
+					
+					
+
+					
 	 		return oChart;		
 		}
 				
 		var pieChart = CreatePieChart();
 		//pie chart of data
 		
-		
+		var temp ="{country}";
 		///////////////////////////////////////////////////////////////////////////////////////////////
 		var PieModel = {
 				  data : [
@@ -153,7 +159,7 @@ sap.ui.jsview("ui.whoiswhere", {
 				  ]};
 				var PieData = {
 				  dimensions : [
-					{axis : 1, name : 'Country', value: "{country}"},
+					{axis : 1, name : 'Country', value: temp},
 					//{axis : 1, name : 'Year', value: "{year}"},
 				  ],
 				  measures : [
