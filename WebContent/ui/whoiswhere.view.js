@@ -13,6 +13,11 @@ sap.ui.jsview("ui.whoiswhere", {
 	* @memberOf demo.MainPage
 	*/ 
 	createContent : function(oController) {
+		
+		var mouseMOVE= false;
+		var dataSelected = -1;
+		var mousePositionX=0,mousePositionY=0;
+		
 		function mousePosition(ev){
 			if(ev.pageX || ev.pageY){
 				return {x:ev.pageX, y:ev.pageY};
@@ -25,28 +30,84 @@ sap.ui.jsview("ui.whoiswhere", {
 		
 		document.onclick = mouseClick;
 		
-		function mouseClick(ev){
+		function mouseClick(ev){ 			//get the position of mouse , help to adjust the position of popover
 			ev = ev || window.event;
 		    var mousePos = mousePosition(ev);
-			alert("x:"+mousePos.x+"  y:"+mousePos.y);
-			
+			console.log("move:"+mouseMOVE+"  ds:"+dataSelected);
+			mousePositionX = mousePos.x;
+			mousePositionY = mousePos.y;  
 		} 
 		
-		  
+		document.ondblclick = mouseDBClick;
+		function mouseDBClick(ev){				//double click will popover
+		   if(dataSelected != -1){
+			     adjustPopover(mousePositionX,mousePositionY);
+				 popover.openBy(pieChart);
+			 }
+		   dataSelected = -1;
+		}
 		
 		
 		
 		
+		var popoverlist = new sap.m.List();
+
+		var aliCountry=new sap.m.ActionListItem({
+			tap:function(oControlEvent){
+				alert("country");
+			}
+		});
+		aliCountry.setText("To Country");
+		
+		var aliReason=new sap.m.ActionListItem({
+			tap:function(oControlEvent){
+				alert("country");
+			}
+		});
+		aliReason.setText("To Reason");
+		
+		var aliExpenseType=new sap.m.ActionListItem({
+			tap:function(oControlEvent){
+				alert("country");
+			}
+		});
+		aliExpenseType.setText("To Expense Type");
+		
+		var aliCostCenter=new sap.m.ActionListItem({
+			press:function(oControlEvent){
+				alert("country");
+			}
+		});
+		aliCostCenter.setText("To Cost Center");
+		
+		var aliTime=new sap.m.ActionListItem({
+			tap:function(oControlEvent){
+				alert("country");
+			}
+		});
+		aliTime.setText("To Time")
+		
+		popoverlist.insertItem(aliReason, 0);
+		popoverlist.insertItem(aliExpenseType, 1);
+		popoverlist.insertItem(aliCostCenter, 2);
+		popoverlist.insertItem(aliTime, 3);
 		
 		
 		
+		var popover = new sap.m.Popover({
+			title: "Drilldown...",
+			placement: sap.m.PlacementType.Right,
+			content: popoverlist
+			});
 		
 		
-		
-		
-		
-		
-		
+		function adjustPopover(mousePositionX,mousePositionY){
+			var px=1299;
+			var py=477;
+			popover.setOffsetX(mousePositionX-px);
+			if(py>popover) popover.setOffsetY(py-mousePositionY);
+			else  popover.setOffsetY(mousePositionY-py);
+		}
 		
 		var oShell= new sap.m.Shell("myShell");
 		
@@ -131,7 +192,11 @@ sap.ui.jsview("ui.whoiswhere", {
 			//height: "80%",
 			//dataset: oDataset
 			selectData: function(oControlEvent){
-			alert(oControlEvent.mParameters.data[0].data[0].ctx.path.dii_a1	);
+				dataSelected =  oControlEvent.mParameters.data[0].data[0].ctx.path.dii_a1;
+			    //console.log(mouseMOVE);
+				
+
+			console.log("Selected: "+ oControlEvent.mParameters.data[0].data[0].ctx.path.dii_a1	);
 			}
 		});
 		
