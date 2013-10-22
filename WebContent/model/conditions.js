@@ -1,7 +1,7 @@
 jQuery.sap.declare("model.conditions");
 
 model.conditions = {
-	client : '002',//default client
+	client : '578',//default client
 	dimensions : [],
 	filters:{},
 	path:'',
