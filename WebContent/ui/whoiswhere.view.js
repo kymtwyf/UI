@@ -152,38 +152,49 @@ sap.ui.jsview("ui.whoiswhere", {
 
 		var aliCountry=new sap.m.ActionListItem({											//action list item
 			tap:function(oControlEvent){
-				alert(path2 = path + data1 + "Country");
+				alert(path2 = path + "//" + data1 + "//" + "Country");
+				
 			}
 		});
 		aliCountry.setText("To Country");
 		
 		var aliReason=new sap.m.ActionListItem({											//action list item
 			tap:function(oControlEvent){
-				alert(path2 = path + data1 + "Reason");
+				alert(path2 = path + "//" + data1 + "//" + "Reason");
+				pieChart.setDataset(oDataset2);									//You can either change the dataset or change the chart type when drilling down
+				//oVBoxpage.removeAllItems();
+				//oVBoxpage.insertItem(barChart);
+				//oVBoxpage.insertItem(bar);
+				
 			}
 		});
 		aliReason.setText("To Reason");
 		
 		var aliExpenseType=new sap.m.ActionListItem({											//action list item
 			tap:function(oControlEvent){
-				alert(path2 = path + data1 + "Expense Type");
+				alert(path2 = path + "//" + data1 + "//" + "Expense Type");
 			}
 		});
 		aliExpenseType.setText("To Expense Type");
 		
 		var aliCostCenter=new sap.m.ActionListItem({											//action list item
 			press:function(oControlEvent){
-				alert(path2 = path + data1 + "Cost Center");
+				alert(path2 = path + "//" + data1 + "//" + "Cost Center");
 			}
 		});
 		aliCostCenter.setText("To Cost Center");
 		
 		var aliTime=new sap.m.ActionListItem({											//action list item
 			tap:function(oControlEvent){
-				alert(path2 = path + data1 + "Time");
+				alert(path2 = path + "//" + data1 + "//" + "Time");
 			}
 		});
 		aliTime.setText("To Time");
+		
+		function adjustPopoverList(path){ 
+			//you may need to adjust the content of the popover list according to the current path
+		}
+		
 		
 		popoverlist.insertItem(aliReason, 0);
 		popoverlist.insertItem(aliExpenseType, 1);
@@ -195,7 +206,7 @@ sap.ui.jsview("ui.whoiswhere", {
 			title: "Drilldown...",
 			placement: sap.m.PlacementType.Right,
 			content: popoverlist
-			});
+			});		
 		
 		document.ondblclick = mouseDBClick;
 		
@@ -535,7 +546,6 @@ sap.ui.jsview("ui.whoiswhere", {
 		});
 
 
-		
 		var oVBox1 = new sap.m.VBox("hbox1", {	// shorten the mergin between the object header and tab
 			items:[
 			       objectheader,tab
