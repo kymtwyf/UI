@@ -13,26 +13,22 @@ sap.ui.jsview("ui.whoiswhere", {
 	* @memberOf demo.MainPage
 	*/ 
 	createContent : function(oController) {
-
-		jQuery.sap.require("model.conditions");
-		jQuery.sap.require("model.status");
-
+		
 		var bus = sap.ui.getCore().getEventBus();
+
+		var path="Country";
 		
 		var dataSelected = -1;
-		var pathdata = -1;
 		
-		var mousePositionX=0,mousePositionY=0;
+		var mousePositionX=0,
+			mousePositionY=0;
 		
 		var oShell= new sap.m.Shell("myShell");
 		
 		var oApp = new sap.m.App("myApp");
 		
-		//var t_cost = 0; 			//total cost
+		var costlimit; 		//default你需要parseFloat(costlimit)反它转为数字再比较
 		
-		
-
-		//console.log("the t_cost = "+t_cost);
 		var overspend = new sap.m.ObjectStatus({
 	          text : "Overspend",
 	          icon : "sap-icon://alert",
@@ -45,33 +41,24 @@ sap.ui.jsview("ui.whoiswhere", {
 	          state : "Success"
 	      });
 		
-		//var closetothebudget = new sap.m.ObjectStatus({ 
-	 //         text : "Close to the budget",
-	 //         icon : "sap-icon://warning",
-	  //        state : "Warning"
-	 //     });
-		
-		var costlimit=0; 		//default
 		
 		var objectheader = new sap.m.ObjectHeader({			//header 
 		      number : 0,
-		      numberUnit : "€"
+		      numberUnit : "EUR"
 		 });
 
+		function setFirstStatus(){
+			if(parseFloat(costlimit) > objectheader.getNumber())
+				objectheader.setFirstStatus(inthebudget);
+			else
+				objectheader.setFirstStatus(overspend);
+		}			
 		function updateTotal(channelId,eventId,data){
 			console.log("data's value "+data.value);
-			objectheader.setNumber(data.value);
-			function updateStatus(){
-				if(costlimit > data.value)
-					objectheader.setFirstStatus(inthebudget);
-				else
-					objectheader.setFirstStatus(overspend);
-			}
-			updateStatus();
-			console.log("the t_cost is changed to "+objectheader.getNumber());
+			objectheader.setNumber(data.value);			
+			setFirstStatus();
 		}
-
-		bus.subscribe("total","refresh",updateTotal,this);
+		bus.subscribe("total","refresh",updateTotal,this);//triggerred when the data need to be refreshed 
 
 		function getCookie(c_name)
 		{
@@ -110,23 +97,14 @@ sap.ui.jsview("ui.whoiswhere", {
 		}
 		
 		costlimit=checkCookie();			
-		
-		// function setFirstStatus()
-		// {
-		// 	if(costlimit > t_cost)
-		// 	objectheader.setFirstStatus(inthebudget);
-		// 	else
-		// 	objectheader.setFirstStatus(overspend);
-		// }
-		// setFirstStatus();
 
 		var pieChart = new sap.viz.ui5.Column({
 			width : "100%",
-			//height: "80%",
-			//dataset: oDataset
 			selectData: function(oControlEvent){
+				console.log("oControlEvent");
+				console.log(oControlEvent);
 				dataSelected =  oControlEvent.mParameters.data[0].data[0].ctx.path.dii_a1;
-				pathdata=dataSelected;
+				data1=dataSelected;
 				console.log("Selected: "+ oControlEvent.mParameters.data[0].data[0].ctx.path.dii_a1	);
 			}
 		});
@@ -155,20 +133,16 @@ sap.ui.jsview("ui.whoiswhere", {
 
 		var aliCountry=new sap.m.ActionListItem({											//action list item
 			tap:function(oControlEvent){
-				//alert(path2 = path + "." + pathdata + "." + "Country");
-				model.conditions.path.push(pathdata);
-				model.conditions.path.push("Country");
+				alert(path2 = path + "//" + data1 + "//" + "Country");
+				
 			}
 		});
 		aliCountry.setText("To Country");
 		
 		var aliReason=new sap.m.ActionListItem({											//action list item
 			tap:function(oControlEvent){
-				//alert(path2 = path + "//" + pathdata + "//" + "Reason");
-				model.conditions.path.push(pathdata);
-				model.conditions.path.push("Reason");
+				alert(path2 = path + "//" + data1 + "//" + "Reason");
 				pieChart.setDataset(oDataset2);									//You can either change the dataset or change the chart type when drilling down
-				
 				//oVBoxpage.removeAllItems();
 				//oVBoxpage.insertItem(barChart);
 				//oVBoxpage.insertItem(bar);
@@ -179,76 +153,37 @@ sap.ui.jsview("ui.whoiswhere", {
 		
 		var aliExpenseType=new sap.m.ActionListItem({											//action list item
 			tap:function(oControlEvent){
-				//alert(path2 = path + "//" + pathdata + "//" + "Expense Type");
-				model.conditions.path.push(pathdata);
-				model.conditions.path.push("Expense Type");
+				alert(path2 = path + "//" + data1 + "//" + "Expense Type");
 			}
 		});
 		aliExpenseType.setText("To Expense Type");
 		
 		var aliCostCenter=new sap.m.ActionListItem({											//action list item
 			press:function(oControlEvent){
-				//alert(path2 = path + "//" + pathdata + "//" + "Cost Center");
-				model.conditions.path.push(pathdata);
-				model.conditions.path.push("Cost Center");
+				alert(path2 = path + "//" + data1 + "//" + "Cost Center");
 			}
 		});
 		aliCostCenter.setText("To Cost Center");
 		
 		var aliTime=new sap.m.ActionListItem({											//action list item
 			tap:function(oControlEvent){
-				//alert(path2 = path + "//" + pathdata + "//" + "Time");
-				model.conditions.path.push(pathdata);
-				model.conditions.path.push("Time");
+				alert(path2 = path + "//" + data1 + "//" + "Time");
 			}
 		});
 		aliTime.setText("To Time");
 		
-		var arrayOfActionListItem = new Array();		//An array which contains all action list items
-	
-		
-		function adjustPopoverList(){ 
+		function adjustPopoverList(path){ 
 			//you may need to adjust the content of the popover list according to the current path
-		console.log("path:"+model.conditions.path[0]);
-		console.log("length:"+model.conditions.path.length);
-		popoverlist.removeAllItems();
-				
-		arrayOfActionListItem.push(aliCountry);
-		arrayOfActionListItem.push(aliReason);
-		arrayOfActionListItem.push(aliExpenseType);
-		arrayOfActionListItem.push(aliCostCenter);
-		arrayOfActionListItem.push(aliTime);			
-					
-		for (var i = model.conditions.path.length; i--;) {	//pop the action list item which exists in path
-			console.log(model.conditions.path[0]);
-			
-			switch (model.conditions.path[0])
-			{
-			case "Country":
-				 arrayOfActionListItem.splice(0,1);
-			  break;
-			case "Reason":
-		    	 arrayOfActionListItem.splice(1,1);
-			  break;
-			case "Expense Type":
-				 arrayOfActionListItem.splice(2,1);
-			  break;
-			case "Cost Center":
-				arrayOfActionListItem.splice(3,1);
-			  break;
-			case "Time":
-				arrayOfActionListItem.splice(4,1);
-			  break;
-			} 	
 		}
 		
-		for (var j = 0; j < arrayOfActionListItem.length; j++) {
-			popoverlist.insertItem(arrayOfActionListItem[j], j);
-		}
-	}
+		
+		popoverlist.insertItem(aliReason, 0);
+		popoverlist.insertItem(aliExpenseType, 1);
+		popoverlist.insertItem(aliCostCenter, 2);
+		popoverlist.insertItem(aliTime, 3);
 		
 		
-		var popover = new sap.m.Popover({									//popover
+		var popover = new sap.m.Popover({													//popover
 			title: "Drilldown...",
 			placement: sap.m.PlacementType.Right,
 			content: popoverlist
@@ -257,9 +192,8 @@ sap.ui.jsview("ui.whoiswhere", {
 		document.ondblclick = mouseDBClick;
 		
 		function mouseDBClick(ev){				//double click will pop over
-			if(dataSelected != -1){
+		   if(dataSelected != -1){
 			     adjustPopover(mousePositionX,mousePositionY);
-			     adjustPopoverList();
 				 popover.openBy(pieChart);
 			 }
 		   dataSelected = -1;
@@ -463,20 +397,14 @@ sap.ui.jsview("ui.whoiswhere", {
 					var selected = oEvent.getParameter("item") ;
 					if(selected == 'Element sap.m.IconTabFilter#__filter0')
 					{ 
-						model.status.iconTab = "Country";	//
-						model.conditions.path.length = 0; 	//remove all items in path when choosing a new icon tab
-						model.conditions.path.push(model.status.iconTab); //push the icontab
+						path = "Country";
 						reloadPage();
 						pieChart.setDataset(oDataset);
 						oVBoxpage.addItem(pieChart);
 					}
 					else if (selected == 'Element sap.m.IconTabFilter#__filter1')
 					{
-						model.status.iconTab  = "Reason";
-						model.conditions.path.length = 0; 	//remove all items in path when choosing a new icon tab
-						
-						model.conditions.path.push(model.status.iconTab); //push the icontab
-						
+						path = "Reason";
 						reloadPage();
 						//pieChart.destroyDataset();
 						pieChart.setDataset(oDataset2);
@@ -485,17 +413,13 @@ sap.ui.jsview("ui.whoiswhere", {
 					}
 					else if (selected == 'Element sap.m.IconTabFilter#__filter2')
 					{
-						model.status.iconTab = "PersonID";
-						model.conditions.path.length = 0; 	//remove all items in path when choosing a new icon tab
-						model.conditions.path.push(model.status.iconTab); //push the icontab
+						path = "PersonID";
 						reloadPage();
 						oVBoxpage.addItem(barChart);
 					}
 					else
 					{
-						model.status.iconTab  = "Time";
-						model.conditions.path.length = 0; 	//remove all items in path when choosing a new icon tab
-						model.conditions.path.push(model.status.iconTab); //push the icontab
+						path = "Time";
 						reloadPage();
 						oVBoxpage.addItem(pieChart);
 					}

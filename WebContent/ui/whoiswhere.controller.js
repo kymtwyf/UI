@@ -18,19 +18,31 @@ sap.ui.controller("ui.whoiswhere", {
 			
 		}, this);
 		console.log("entered on init");
+		var year = new Date().getFullYear();
+		console.log("year is "+year);
+		var totalUrl = "http://ld9415.wdf.sap.corp:8002/mouse/project/odata/Query.xsodata/Query?$select=TRIP_TOTAL&$filter=MANDT eq '578' and YEAR eq '"+2009+"'&$format=json";
+		console.log("totalUrl = "+totalUrl);
 		jQuery.ajax({//get the total cost
-			url:"http://ld9415.wdf.sap.corp:8002/mouse/project/odata/Query.xsodata/Query?$select=TRIP_TOTAL&$filter=MANDT%20eq%20'578'&$format=json",
+			url:totalUrl,
 			error:function(){
 				jQuery.sap.require("sap.m.MessageToast");
 				 sap.m.MessageToast.show("Some error occurred when querying, please check the network and try again");
 			},
 			success:function(data){
-				var total = data.d.results[0].TRIP_TOTAL
-				console.log("TOTAL "+total);
-				model.data.TOTAL = total;
-				bus.publish("total","refresh",{
-					value:total
-				})
+				console.log("data d length "+data.d.results.length );
+				if(data.d.results.length>0){
+					var total = data.d.results[0].TRIP_TOTAL;
+					console.log("TOTAL "+total);
+					model.data.TOTAL = total;
+					bus.publish("total","refresh",{
+						value:total
+					})
+				}else{
+					bus.publish("total","refresh",{
+						value:0
+					})
+				}
+
 				jQuery.ajax({
 					url:"http://ld9415.wdf.sap.corp:8002/mouse/project/odata/Test.xsodata/TRIP_DEST?$select=LANDTEXT,ONE&$filter=MANDT%20eq%20'002'&$format=json",
 					error:function(error){
