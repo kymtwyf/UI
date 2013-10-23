@@ -4,7 +4,7 @@ model.conditions = {
 	client : '578',//default client
 	dimensions : [],
 	filters:{},
-	path:'',
+	path:[],
 	prepare:function(){
 		jQuery.sap.require("model.status");
 		switch(model.status.iconTab){
@@ -13,11 +13,12 @@ model.conditions = {
 							break;
 			//敬请期待
 		};
-		switch(model.staus.measure){
-			case 'cost': this.dimensions.push("TRIP_TOTAL");
+		switch(model.status.measure){
+			case 'cost': this.dimensions.push("TRIP_TOTAL");break;
 			case 'times': this.dimensions.push('ONE');
 		};
 
 	}
 }
 model.conditions.prepare();
+console.log(model.conditions);

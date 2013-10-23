@@ -14,6 +14,8 @@ sap.ui.jsview("ui.whoiswhere", {
 	*/ 
 	createContent : function(oController) {
 		
+		var bus = sap.ui.getCore().getEventBus();
+
 		var path="Country";
 		
 		var dataSelected = -1;
@@ -24,8 +26,11 @@ sap.ui.jsview("ui.whoiswhere", {
 		
 		var oApp = new sap.m.App("myApp");
 		
-		var t_cost = 81499; 			//total cost
+		var t_cost = 0; 			//total cost
 		
+		
+
+		//console.log("the t_cost = "+t_cost);
 		var overspend = new sap.m.ObjectStatus({
 	          text : "Overspend",
 	          icon : "sap-icon://alert",
@@ -47,9 +52,23 @@ sap.ui.jsview("ui.whoiswhere", {
 		var costlimit; 		//default
 		
 		var objectheader = new sap.m.ObjectHeader({			//header 
-		      number : t_cost,
+		      number : 0,
 		      numberUnit : "€"
 		 });
+		function updateTotal(channelId,eventId,data){
+			console.log("data's value "+data.value);
+			objectheader.setNumber(data.value);
+			function updateStatus(){
+				if(costlimit > data.value)
+					objectheader.setFirstStatus(inthebudget);
+				else
+					objectheader.setFirstStatus(overspend);
+			}
+			updateStatus();
+			console.log("the t_cost is changed to "+objectheader.getNumber());
+		}
+
+		bus.subscribe("total","refresh",updateTotal,this);
 
 		function getCookie(c_name)
 		{
@@ -89,14 +108,14 @@ sap.ui.jsview("ui.whoiswhere", {
 		
 		costlimit=checkCookie();			
 		
-		function setFirstStatus()
-		{
-			if(costlimit > t_cost)
-			objectheader.setFirstStatus(inthebudget);
-			else
-			objectheader.setFirstStatus(overspend);
-		}
-		setFirstStatus();
+		// function setFirstStatus()
+		// {
+		// 	if(costlimit > t_cost)
+		// 	objectheader.setFirstStatus(inthebudget);
+		// 	else
+		// 	objectheader.setFirstStatus(overspend);
+		// }
+		// setFirstStatus();
 
 		var pieChart = new sap.viz.ui5.Column({
 			width : "100%",
@@ -221,7 +240,6 @@ sap.ui.jsview("ui.whoiswhere", {
 					
 
 		}
-		var bus = sap.ui.getCore().getEventBus();
 		bus.subscribe("pieChart","refresh",refreshPieChart,this);
 //				
 //		var pieChart = CreatePieChart();
@@ -567,6 +585,17 @@ sap.ui.jsview("ui.whoiswhere", {
 		
 		pullRefresh.addStyleClass('refresh');
 		
+		bus.subscribe("refreshButton","start",function(){
+			pullRefresh.fireRefresh();
+		},this);
+		bus.subscribe("refreshButton","stop",function(channelId,eventId,data){
+			pullRefresh.hide();
+			refreshLabel.setText(data.text);
+		},this);
+		
+		// function startRefresh(channelId,eventId,data){
+		// 	pullRefresh.fireRefresh()
+		// }
 		var refreshHBox = new sap.m.HBox({
 			items:[
 			pullRefresh,refreshLabel

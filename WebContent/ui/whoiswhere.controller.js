@@ -18,22 +18,41 @@ sap.ui.controller("ui.whoiswhere", {
 			
 		}, this);
 		console.log("entered on init");
-		jQuery.ajax({
-			url:"http://ld9415.wdf.sap.corp:8002/mouse/project/odata/Test.xsodata/TRIP_DEST?$select=LANDTEXT,ONE&$filter=MANDT%20eq%20'002'&$format=json",
-			error:function(error){
-				//jQuery.sap.require("sap.m.MessageToast");
-				 //sap.m.MessageToast.show(error+"");
-				util.tools._F_Toast(error+"");
+		jQuery.ajax({//get the total cost
+			url:"http://ld9415.wdf.sap.corp:8002/mouse/project/odata/Query.xsodata/Query?$select=TRIP_TOTAL&$filter=MANDT%20eq%20'578'&$format=json",
+			error:function(){
+				jQuery.sap.require("sap.m.MessageToast");
+				 sap.m.MessageToast.show("Some error occurred when querying, please check the network and try again");
 			},
 			success:function(data){
-				
-				util.tools._F_Toast("success loaded data");
-				model.data._TEST_DATA.label = "{LANDTEXT}";
-				model.data._TEST_DATA.content = data.d.results;
-				model.data._TEST_DATA.measure = "{ONE}";
-				bus.publish("pieChart","refresh",model.data._TEST_DATA);
+				var total = data.d.results[0].TRIP_TOTAL
+				console.log("TOTAL "+total);
+				model.data.TOTAL = total;
+				bus.publish("total","refresh",{
+					value:total
+				})
+				jQuery.ajax({
+					url:"http://ld9415.wdf.sap.corp:8002/mouse/project/odata/Test.xsodata/TRIP_DEST?$select=LANDTEXT,ONE&$filter=MANDT%20eq%20'002'&$format=json",
+					error:function(error){
+						//jQuery.sap.require("sap.m.MessageToast");
+						 //sap.m.MessageToast.show(error+"");
+						util.tools._F_Toast(error+"");
+					},
+					success:function(data){
+						bus.publish("refreshButton","stop",{
+							text:'loaded'
+						});
+						util.tools._F_Toast("success loaded data");
+						model.data._TEST_DATA.label = "{LANDTEXT}";
+						model.data._TEST_DATA.content = data.d.results;
+						model.data._TEST_DATA.measure = "{ONE}";
+						bus.publish("pieChart","refresh",model.data._TEST_DATA);
+
+					}
+				});
 			}
 		});
+		
 	},
 
 /**

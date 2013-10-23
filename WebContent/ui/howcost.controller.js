@@ -15,8 +15,18 @@ sap.ui.controller("ui.howcost", {
 * @memberOf view.howcost
 */
 	onBeforeRendering: function() {
+		// jQuery.ajax({
+		// 	url:"http://ld9415.wdf.sap.corp:8002/mouse/project/odata/Query.xsodata/Query?$select=TRIP_TOTAL&$filter=MANDT%20eq%20'578'&$format=json",
+		// 	error:function(){
+		// 		jQuery.sap.require("sap.m.MessageToast");
+		// 		 sap.m.MessageToast.show("Some error occurred when querying, please check the network and try again");
+		// 	},
+		// 	success:function(data){
+		// 		console.log("total data "+data.d);
+		// 	}
+		// });
 		jQuery.ajax({
-			url:"http://ld9415.wdf.sap.corp:8002/mouse/project/odata/Test.xsodata/TRIP_DEST?$select=LANDX,ONE&$filter=MANDT%20eq%20'002'&$format=json",
+			url:"http://ld9415.wdf.sap.corp:8002/mouse/project/odata/Test.xsodata/TRIP_DEST?$select=LANDTEXX,ONE&$filter=MANDT%20eq%20'002'&$format=json",
 			error:function(error){
 				jQuery.sap.require("sap.m.MessageToast");
 				 sap.m.MessageToast.show(error+"");

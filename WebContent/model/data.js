@@ -9,6 +9,7 @@ jQuery.sap.declare("model.data");
 	4.time:更新时间
 */
 model.data = {
+		TOTAL:null,
 		_TEST_DATA:{
 			label:null,
 			content:null,

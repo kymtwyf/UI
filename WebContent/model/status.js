@@ -3,5 +3,5 @@ jQuery.sap.declare("model.status");
 model.status = {
 	iconTab : 'country',//初始值country 
 	measure : 'cost',//1 cost 2 times
-	showType : 'pieChart',//1 pieChart 2 table
+	showType : 'barChart'//1 barChart 2 table //可能需要PieChart
 }
