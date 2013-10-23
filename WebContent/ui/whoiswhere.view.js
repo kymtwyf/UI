@@ -172,6 +172,11 @@ sap.ui.jsview("ui.whoiswhere", {
 		});
 		aliTime.setText("To Time");
 		
+		function adjustPopoverList(path){ 
+			//you may need to adjust the content of the popover list according to the current path
+		}
+		
+		
 		popoverlist.insertItem(aliReason, 0);
 		popoverlist.insertItem(aliExpenseType, 1);
 		popoverlist.insertItem(aliCostCenter, 2);
