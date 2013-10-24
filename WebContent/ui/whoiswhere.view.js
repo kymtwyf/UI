@@ -23,6 +23,7 @@ sap.ui.jsview("ui.whoiswhere", {
 		var path="Country";
 		
 		var dataSelected = -1;
+		var pathdata = -1;  
 		
 		var mousePositionX=0,
 			mousePositionY=0;
