@@ -9,7 +9,7 @@ model.conditions = {
 		jQuery.sap.require("model.status");
 		switch(model.status.iconTab){
 			case 'country': this.dimensions.push("LANDTEXT"); 
-							this.path = '0';
+							this.path.push("Country");
 							break;
 			//敬请期待
 		};
