@@ -9,9 +9,9 @@ sap.ui.jsview("ui.whoiswhere", {
 		jQuery.sap.require("util.tools");
         jQuery.sap.require("model.conditions");
         jQuery.sap.require("model.status");
+        jQuery.sap.require("model.data");
+        
 		var bus = sap.ui.getCore().getEventBus();
-
-		var path="Country";
 		
 		var dataSelected = -1;
 		var pathdata = -1;  
@@ -93,11 +93,10 @@ sap.ui.jsview("ui.whoiswhere", {
 			mousePositionY = mousePos.y;  
 		} 
 		
-		var popoverlist = new sap.m.List();													//list 
+		var popoverlist = new sap.m.List();								//list 
 
                 var aliCountry=new sap.m.ActionListItem({                                                                                        //action list item
                         tap:function(oControlEvent){
-                                //alert(path2 = path + "." + pathdata + "." + "Country");
                                 model.conditions.path.push(pathdata);
                                 model.conditions.path.push("Country");
                         }
@@ -106,22 +105,13 @@ sap.ui.jsview("ui.whoiswhere", {
                 
                 var aliReason=new sap.m.ActionListItem({                                                                                        //action list item
                         tap:function(oControlEvent){
-                                //alert(path2 = path + "//" + pathdata + "//" + "Reason");
-                                model.conditions.path.push(pathdata);
-                                model.conditions.path.push("Reason");
-                                pieChart.setDataset(oDataset2);                                                                        //You can either change the dataset or change the chart type when drilling down
-                                
-                                //oVBoxpage.removeAllItems();
-                                //oVBoxpage.insertItem(barChart);
-                                //oVBoxpage.insertItem(bar);
-                                
-                        }
+                                pieChart.setDataset(oDataset2); 
+                        }      
                 });
                 aliReason.setText("To Reason");
                 
                 var aliExpenseType=new sap.m.ActionListItem({                                                                                        //action list item
                         tap:function(oControlEvent){
-                                //alert(path2 = path + "//" + pathdata + "//" + "Expense Type");
                                 model.conditions.path.push(pathdata);
                                 model.conditions.path.push("Expense Type");
                         }
@@ -130,7 +120,6 @@ sap.ui.jsview("ui.whoiswhere", {
                 
                 var aliCostCenter=new sap.m.ActionListItem({                                                                                        //action list item
                         press:function(oControlEvent){
-                                //alert(path2 = path + "//" + pathdata + "//" + "Cost Center");
                                 model.conditions.path.push(pathdata);
                                 model.conditions.path.push("Cost Center");
                         }
@@ -139,59 +128,15 @@ sap.ui.jsview("ui.whoiswhere", {
                 
                 var aliTime=new sap.m.ActionListItem({                                                                                        //action list item
                         tap:function(oControlEvent){
-                                //alert(path2 = path + "//" + pathdata + "//" + "Time");
                                 model.conditions.path.push(pathdata);
                                 model.conditions.path.push("Time");
-                        }
+                        }        
                 });
                 aliTime.setText("To Time");
                 
-                var arrayOfActionListItem = new Array();                //An array which contains all action list items
-        
                 
-                function adjustPopoverList(){ 
-                        //you may need to adjust the content of the popover list according to the current path
-                console.log(model.conditions.path[0]);
-                popoverlist.removeAllItems();
-                arrayOfActionListItem.length=0;
-                                
-                arrayOfActionListItem.push(aliCountry);
-                arrayOfActionListItem.push(aliReason);
-                arrayOfActionListItem.push(aliExpenseType);
-                arrayOfActionListItem.push(aliCostCenter);
-                arrayOfActionListItem.push(aliTime);                        
-                                        
-                for (var i = model.conditions.path.length; i--;) {        //pop the action list item which exists in path
-                        console.log(model.conditions.path[0]);
-                        console.log("length:"+ model.conditions.path.length);
-                        switch (model.conditions.path[0])
-                        {
-                        case "Country":
-                             arrayOfActionListItem.splice(0,1);
-                          break;
-                        case "Reason":
-                             arrayOfActionListItem.splice(1,1);
-                          break;
-                        case "Expense Type":
-                                 arrayOfActionListItem.splice(2,1);
-                          break;
-                        case "Cost Center":
-                                arrayOfActionListItem.splice(3,1);
-                          break;
-                        case "Time":
-                                arrayOfActionListItem.splice(4,1);
-                          break;
-                        }         
-                }
-                
-                for (var j = 0; j < arrayOfActionListItem.length; j++) {
-                        popoverlist.insertItem(arrayOfActionListItem[j], j);
-                }
-                console.log("length:"+ arrayOfActionListItem.length);
-                
-        }
-                
-                
+               
+                       
                 var popover = new sap.m.Popover({                                                                                                        //popover
                         title: "Drilldown...",
                         placement: sap.m.PlacementType.Right,
@@ -203,7 +148,7 @@ sap.ui.jsview("ui.whoiswhere", {
                 function mouseDBClick(ev){                                //double click will pop over
                    if(dataSelected != -1){
                              adjustPopover(mousePositionX,mousePositionY);
-                             adjustPopoverList();
+                             util.tools.adjustPopoverList(popoverlist,aliCountry,aliReason,aliExpenseType,aliCostCenter,aliTime);
                              popover.openBy(pieChart);
                          }
                    dataSelected = -1;
@@ -218,7 +163,6 @@ sap.ui.jsview("ui.whoiswhere", {
                 }
                 //这个refresh需要增加：多个dimensions的显示功能
                 function refreshPieChart(channelId, eventId, oData) {
-                        console.log("entered refresh");
                         var PieModel = {  data : oData.content};
                         var PieData = {
                           dimensions : [
@@ -338,7 +282,6 @@ sap.ui.jsview("ui.whoiswhere", {
                         icon: "sap-icon://table-chart",
                         //text: "Table"
                         press: function(){
-                                console.log("btn_table pressed");
                                 oVBoxpage.removeAllItems();
                                 oVBoxpage.addItem(bar);
                                 oVBoxpage.addItem(new sap.m.Text({
@@ -497,10 +440,10 @@ sap.ui.jsview("ui.whoiswhere", {
                     text: "Ok",
                     press: function () {
                             costlimit=inputcostlimit.getValue();
-		    	util.tools.setCookie(costlimit,365);
+                            util.tools.setCookie(costlimit,365);
                             setFirstStatus();
                             stdDialog.close();
-		    	util.tools._F_Toast("cost limit is updated");
+                            util.tools._F_Toast("cost limit is updated");
                     }
                   }),
                   rightButton: new sap.m.Button({
@@ -527,7 +470,7 @@ sap.ui.jsview("ui.whoiswhere", {
                             text: "Ok",
                             press: function () {
                                     costlimit=inputcostlimit.getValue();
-			    	util.tools.setCookie(costlimit,365);
+                                    util.tools.setCookie(costlimit,365);
                                     setFirstStatus();
                                     stdDialog2.close();
                             }

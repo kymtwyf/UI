@@ -24,13 +24,26 @@ util.tools = {
 			case 8:break;//_D_YEAR_COST
 			}
 		},
-		onChangeDataSource:function(newPath){
+		onChangeDataSource:function(data,drilldown){
+			
 			//1 save the old data
-
+            	 var oldpath= "";	 
+            	 var newpath= "";
+            	 for(var i=0; i<model.conditions.path.length;i++)
+            		 oldpath = oldpath + model.conditions.path[i] + "." ;
+            	 model.data[oldpath]=oldpath;
 			//2 prepare the new data
+            	  model.conditions.path.push(data);
+                  model.conditions.path.push(drilldown);
+             	 for(var i=0; i<model.conditions.path.length;i++)
+             		 newpath = newpath + model.conditions.path[i] + "." ;
 			//2.1 search if the required data exists in the model.data["newPath"]
+               
+        
+            	 if(model.data[newpath])
+            		 
 			//2.2 if not they send another request to get the data
-
+            	 else
 			//3 show the new data
 			
 		},
@@ -64,8 +77,59 @@ util.tools = {
 			exdate.setDate(exdate.getDate()+expiredays);
 			document.cookie="costlimit"+ "=" +escape(value)+
 			((expiredays==null) ? "" : ";expires="+exdate.toGMTString());
-		}
+		},
 		///在cookie 存放cost limit到此结束
+
+		 adjustPopoverList:  function(popoverlist,aliCountry,aliReason,aliExpenseType,aliCostCenter,aliTime){ 
+             //you may need to adjust the content of the popover list according to the current path
+             
+             var arrayOfActionListItem = new Array();       //An array which contains all action list items
+             var arrayOfFlag = new Array(true,true,true,true,true);				 //set the flag of items whose data is in path
+        
+             popoverlist.removeAllItems();
+             arrayOfActionListItem.length=0;
+                             
+             arrayOfActionListItem.push(aliCountry);
+             arrayOfActionListItem.push(aliReason);
+             arrayOfActionListItem.push(aliExpenseType);
+             arrayOfActionListItem.push(aliCostCenter);
+             arrayOfActionListItem.push(aliTime);         
+
+                                     
+             for (var i=0; i<model.conditions.path.length; i++) {        //pop the action list item which exists in path
+                     console.log(model.conditions.path[i]);
+                     switch (model.conditions.path[i])
+                     {
+                     case "Country":
+                     	arrayOfFlag[0]=false;
+                       break;
+                     case "Reason":
+                     	arrayOfFlag[1]=false;
+                       break;
+                     case "Expense Type":
+                     	arrayOfFlag[2]=false;
+                       break;
+                     case "Cost Center":
+                     	arrayOfFlag[3]=false;
+                       break;
+                     case "Time":
+                     	arrayOfFlag[4]=false;
+                       break;
+                     }         
+             }
+             
+             for(var k =arrayOfFlag.length; k>0; k--){
+             	if(arrayOfFlag[k-1] == false)
+             		arrayOfActionListItem.splice(k-1,1); 
+             }
+
+             for (var j = 0; j <= arrayOfActionListItem.length; j++) {
+                     popoverlist.insertItem(arrayOfActionListItem[j], j);
+             }
+		 	},
+            
+
 }
+
 var bus = sap.ui.getCore().getEventBus();
 bus.subscribe("app","onChangeDataSource",util.tools.onChangeDataSource,this);
