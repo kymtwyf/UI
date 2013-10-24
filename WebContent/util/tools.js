@@ -68,4 +68,4 @@ util.tools = {
 		///在cookie 存放cost limit到此结束
 }
 var bus = sap.ui.getCore().getEventBus();
-bus.subscribe("data","onChangeDataSource",util.tools.onChangeDataSource,this);
+bus.subscribe("app","onChangeDataSource",util.tools.onChangeDataSource,this);

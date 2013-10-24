@@ -216,7 +216,7 @@ sap.ui.jsview("ui.whoiswhere", {
                         if(py>popover) popover.setOffsetY(py-mousePositionY);
                         else  popover.setOffsetY(mousePositionY-py);
                 }
-                
+                //这个refresh需要增加：多个dimensions的显示功能
                 function refreshPieChart(channelId, eventId, oData) {
                         console.log("entered refresh");
                         var PieModel = {  data : oData.content};
@@ -566,7 +566,6 @@ sap.ui.jsview("ui.whoiswhere", {
                 var settingbutton = new sap.m.Button({
                         icon: "sap-icon://settings",
                   press : function() {
-                                 sap.ui.getCore().getEventBus().publish("nav", "virtual");
                                     stdDialog.open();
                         }        
                 });
@@ -574,7 +573,6 @@ sap.ui.jsview("ui.whoiswhere", {
                 var settingbutton2 = new sap.m.Button({
                         icon: "sap-icon://past",
                   press : function() {
-                                 sap.ui.getCore().getEventBus().publish("nav", "virtual");
                                     stdDialog2.open();
                         }        
                 });
