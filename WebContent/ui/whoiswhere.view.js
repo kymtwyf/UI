@@ -14,6 +14,8 @@ sap.ui.jsview("ui.whoiswhere", {
 	*/ 
 	createContent : function(oController) {
 		
+		//sap.ui.localResources("model");
+		jQuery.sap.require("util.tools");
 		var bus = sap.ui.getCore().getEventBus();
 
 		var path="Country";
@@ -55,48 +57,50 @@ sap.ui.jsview("ui.whoiswhere", {
 		}			
 		function updateTotal(channelId,eventId,data){
 			console.log("data's value "+data.value);
-			objectheader.setNumber(data.value);			
+			if((data.value)||data.value==0){
+				objectheader.setNumber(data.value);		
+			}
 			setFirstStatus();
 		}
 		bus.subscribe("total","refresh",updateTotal,this);//triggerred when the data need to be refreshed 
 
-		function getCookie(c_name)
-		{
-			if (document.cookie.length>0)
-			  {
-			  c_start=document.cookie.indexOf(c_name + "=");
-			  if (c_start!=-1)
-			    { 
-			    c_start=c_start + c_name.length+1 ;
-			    c_end=document.cookie.indexOf(";",c_start);
-			    if (c_end==-1) c_end=document.cookie.length;
-			    return unescape(document.cookie.substring(c_start,c_end));
-			    } 
-			  }
-			return "";
-		}
+		// function getCookie(c_name)
+		// {
+		// 	if (document.cookie.length>0)
+		// 	  {
+		// 	  c_start=document.cookie.indexOf(c_name + "=");
+		// 	  if (c_start!=-1)
+		// 	    { 
+		// 	    c_start=c_start + c_name.length+1 ;
+		// 	    c_end=document.cookie.indexOf(";",c_start);
+		// 	    if (c_end==-1) c_end=document.cookie.length;
+		// 	    return unescape(document.cookie.substring(c_start,c_end));
+		// 	    } 
+		// 	  }
+		// 	return "";
+		// }
 
 		
-		function setCookie(value,expiredays)				//store object in cookie
-		{
-			var exdate=new Date();
-			exdate.setDate(exdate.getDate()+expiredays);
-			document.cookie="costlimit"+ "=" +escape(value)+
-			((expiredays==null) ? "" : ";expires="+exdate.toGMTString());
-		}
+		// function setCookie(value,expiredays)				//store object in cookie
+		// {
+		// 	var exdate=new Date();
+		// 	exdate.setDate(exdate.getDate()+expiredays);
+		// 	document.cookie="costlimit"+ "=" +escape(value)+
+		// 	((expiredays==null) ? "" : ";expires="+exdate.toGMTString());
+		// }
 		
-		function checkCookie()
-		{
-			var c_name=getCookie('costlimit');
-			var costlimit= 50000;
-			if (c_name!=null && c_name!="")
-			{
-				costlimit=c_name;
-			}
-			return costlimit;
-		}
+		// function checkCookie()
+		// {
+		// 	var c_name=getCookie('costlimit');
+		// 	var costlimit= 50000;
+		// 	if (c_name!=null && c_name!="")
+		// 	{
+		// 		costlimit=c_name;
+		// 	}
+		// 	return costlimit;
+		// }
 		
-		costlimit=checkCookie();			
+		costlimit=util.tools.checkCookie();			
 
 		var pieChart = new sap.viz.ui5.Column({
 			width : "100%",
@@ -477,9 +481,10 @@ sap.ui.jsview("ui.whoiswhere", {
 		    text: "Ok",
 		    press: function () {
 		    	costlimit=inputcostlimit.getValue();
-		    	setCookie(costlimit,365);
+		    	util.tools.setCookie(costlimit,365);
 		    	setFirstStatus();
 		    	stdDialog.close();
+		    	util.tools._F_Toast("cost limit is updated");
 		    }
 		  }),
 		  rightButton: new sap.m.Button({
@@ -506,7 +511,7 @@ sap.ui.jsview("ui.whoiswhere", {
 			    text: "Ok",
 			    press: function () {
 			    	costlimit=inputcostlimit.getValue();
-			    	setCookie(costlimit,365);
+			    	util.tools.setCookie(costlimit,365);
 			    	setFirstStatus();
 			    	stdDialog2.close();
 			    }

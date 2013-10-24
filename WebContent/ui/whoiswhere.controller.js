@@ -7,17 +7,9 @@ sap.ui.controller("ui.whoiswhere", {
 */
 	onInit: function() {
 		var bus = sap.ui.getCore().getEventBus();
-		bus.subscribe("app", "DataLoaded", function () {
-			//数据取到了就需要写这个
-			/*
-			 
-			m.attachRequestCompleted(function () {//m是model
-				sap.ui.getCore().getEventBus().publish("app", "DataLoaded");//这句来触发这个event
-			}); 
-			  */
+		// bus.subscribe("app", "DataLoaded", function () {
 			
-		}, this);
-		console.log("entered on init");
+		// }, this);
 		var year = new Date().getFullYear();
 		console.log("year is "+year);
 		var totalUrl = "http://ld9415.wdf.sap.corp:8002/mouse/project/odata/Query.xsodata/Query?$select=TRIP_TOTAL&$filter=MANDT eq '578' and YEAR eq '"+2009+"'&$format=json";
