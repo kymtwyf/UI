@@ -97,31 +97,22 @@ sap.ui.jsview("ui.whoiswhere", {
 
                 var aliCountry=new sap.m.ActionListItem({                                                                                        //action list item
                         tap:function(oControlEvent){
-                                //alert(path2 = path + "." + pathdata + "." + "Country");
                                 model.conditions.path.push(pathdata);
-                                model.conditions.path.push("Country");
                         }
                 });
                 aliCountry.setText("To Country");
                 
                 var aliReason=new sap.m.ActionListItem({                                                                                        //action list item
                         tap:function(oControlEvent){
-                                //alert(path2 = path + "//" + pathdata + "//" + "Reason");
                                 model.conditions.path.push(pathdata);
                                 model.conditions.path.push("Reason");
-                                pieChart.setDataset(oDataset2);                                                                        //You can either change the dataset or change the chart type when drilling down
-                                
-                                //oVBoxpage.removeAllItems();
-                                //oVBoxpage.insertItem(barChart);
-                                //oVBoxpage.insertItem(bar);
-                                
-                        }
+                                pieChart.setDataset(oDataset2); 
+                        }      
                 });
                 aliReason.setText("To Reason");
                 
                 var aliExpenseType=new sap.m.ActionListItem({                                                                                        //action list item
                         tap:function(oControlEvent){
-                                //alert(path2 = path + "//" + pathdata + "//" + "Expense Type");
                                 model.conditions.path.push(pathdata);
                                 model.conditions.path.push("Expense Type");
                         }
@@ -130,7 +121,6 @@ sap.ui.jsview("ui.whoiswhere", {
                 
                 var aliCostCenter=new sap.m.ActionListItem({                                                                                        //action list item
                         press:function(oControlEvent){
-                                //alert(path2 = path + "//" + pathdata + "//" + "Cost Center");
                                 model.conditions.path.push(pathdata);
                                 model.conditions.path.push("Cost Center");
                         }
@@ -139,19 +129,19 @@ sap.ui.jsview("ui.whoiswhere", {
                 
                 var aliTime=new sap.m.ActionListItem({                                                                                        //action list item
                         tap:function(oControlEvent){
-                                //alert(path2 = path + "//" + pathdata + "//" + "Time");
                                 model.conditions.path.push(pathdata);
                                 model.conditions.path.push("Time");
-                        }
+                        }        
                 });
                 aliTime.setText("To Time");
                 
-                var arrayOfActionListItem = new Array();                //An array which contains all action list items
-        
                 
                 function adjustPopoverList(){ 
-                        //you may need to adjust the content of the popover list according to the current path
-                console.log(model.conditions.path[0]);
+                //you may need to adjust the content of the popover list according to the current path
+                
+                var arrayOfActionListItem = new Array();       //An array which contains all action list items
+                var arrayOfFlag = new Array(true,true,true,true,true);				 //set the flag of items whose data is in path
+           
                 popoverlist.removeAllItems();
                 arrayOfActionListItem.length=0;
                                 
@@ -161,33 +151,36 @@ sap.ui.jsview("ui.whoiswhere", {
                 arrayOfActionListItem.push(aliCostCenter);
                 arrayOfActionListItem.push(aliTime);                        
                                         
-                for (var i = model.conditions.path.length; i--;) {        //pop the action list item which exists in path
-                        console.log(model.conditions.path[0]);
-                        console.log("length:"+ model.conditions.path.length);
-                        switch (model.conditions.path[0])
+                for (var i=0; i<model.conditions.path.length; i++) {        //pop the action list item which exists in path
+                        console.log(model.conditions.path[i]);
+                        switch (model.conditions.path[i])
                         {
                         case "Country":
-                             arrayOfActionListItem.splice(0,1);
+                        	arrayOfFlag[0]=false;
                           break;
                         case "Reason":
-                             arrayOfActionListItem.splice(1,1);
+                        	arrayOfFlag[1]=false;
                           break;
                         case "Expense Type":
-                                 arrayOfActionListItem.splice(2,1);
+                        	arrayOfFlag[2]=false;
                           break;
                         case "Cost Center":
-                                arrayOfActionListItem.splice(3,1);
+                        	arrayOfFlag[3]=false;
                           break;
                         case "Time":
-                                arrayOfActionListItem.splice(4,1);
+                        	arrayOfFlag[4]=false;
                           break;
                         }         
                 }
                 
-                for (var j = 0; j < arrayOfActionListItem.length; j++) {
+                for(var k =arrayOfFlag.length; k>0; k--){
+                	if(arrayOfFlag[k-1] == false)
+                		arrayOfActionListItem.splice(k-1,1); 
+                }
+                
+                for (var j = 0; j <= arrayOfActionListItem.length; j++) {
                         popoverlist.insertItem(arrayOfActionListItem[j], j);
                 }
-                console.log("length:"+ arrayOfActionListItem.length);
                 
         }
                 
@@ -218,7 +211,6 @@ sap.ui.jsview("ui.whoiswhere", {
                 }
                 
                 function refreshPieChart(channelId, eventId, oData) {
-                        console.log("entered refresh");
                         var PieModel = {  data : oData.content};
                         var PieData = {
                           dimensions : [
@@ -338,7 +330,6 @@ sap.ui.jsview("ui.whoiswhere", {
                         icon: "sap-icon://table-chart",
                         //text: "Table"
                         press: function(){
-                                console.log("btn_table pressed");
                                 oVBoxpage.removeAllItems();
                                 oVBoxpage.addItem(bar);
                                 oVBoxpage.addItem(new sap.m.Text({
