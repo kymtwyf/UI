@@ -1,23 +1,14 @@
 sap.ui.jsview("ui.whoiswhere", {
 
-        /** Specifies the Controller belonging to this View. 
-        * In the case that it is not implemented, or that "null" is returned, this View does not have a Controller.
-        * @memberOf demo.MainPage
-        */ 
         getControllerName : function() {
                 return "ui.whoiswhere";
         },
 
-        /** Is initially called once after the Controller has been instantiated. It is the place where the UI is constructed. 
-        * Since the Controller is given to this method, its event handlers can be attached right away. 
-        * @memberOf demo.MainPage
-        */ 
         createContent : function(oController) {
 
-		//sap.ui.localResources("model");
 		jQuery.sap.require("util.tools");
-                jQuery.sap.require("model.conditions");
-                jQuery.sap.require("model.status");
+        jQuery.sap.require("model.conditions");
+        jQuery.sap.require("model.status");
 		var bus = sap.ui.getCore().getEventBus();
 
 		var path="Country";
@@ -67,42 +58,7 @@ sap.ui.jsview("ui.whoiswhere", {
 		}
 		bus.subscribe("total","refresh",updateTotal,this);//triggerred when the data need to be refreshed 
 
-		// function getCookie(c_name)
-		// {
-		// 	if (document.cookie.length>0)
-		// 	  {
-		// 	  c_start=document.cookie.indexOf(c_name + "=");
-		// 	  if (c_start!=-1)
-		// 	    { 
-		// 	    c_start=c_start + c_name.length+1 ;
-		// 	    c_end=document.cookie.indexOf(";",c_start);
-		// 	    if (c_end==-1) c_end=document.cookie.length;
-		// 	    return unescape(document.cookie.substring(c_start,c_end));
-		// 	    } 
-		// 	  }
-		// 	return "";
-		// }
-
-                
-		// function setCookie(value,expiredays)				//store object in cookie
-		// {
-		// 	var exdate=new Date();
-		// 	exdate.setDate(exdate.getDate()+expiredays);
-		// 	document.cookie="costlimit"+ "=" +escape(value)+
-		// 	((expiredays==null) ? "" : ";expires="+exdate.toGMTString());
-		// }
-                
-		// function checkCookie()
-		// {
-		// 	var c_name=getCookie('costlimit');
-		// 	var costlimit= 50000;
-		// 	if (c_name!=null && c_name!="")
-		// 	{
-		// 		costlimit=c_name;
-		// 	}
-		// 	return costlimit;
-		// }
-                
+		                
 		costlimit=util.tools.checkCookie();			
 
 		var pieChart = new sap.viz.ui5.Column({
@@ -111,7 +67,8 @@ sap.ui.jsview("ui.whoiswhere", {
 				console.log("oControlEvent");
 				console.log(oControlEvent);
 				dataSelected =  oControlEvent.mParameters.data[0].data[0].ctx.path.dii_a1;
-				data1=dataSelected;
+				//data1=dataSelected;
+                pathdata=dataSelected;
 				console.log("Selected: "+ oControlEvent.mParameters.data[0].data[0].ctx.path.dii_a1	);
 			}
 		});

@@ -24,12 +24,15 @@ util.tools = {
 			case 8:break;//_D_YEAR_COST
 			}
 		},
-		onChangeData:function(newPath){
+		onChangeDataSource:function(newPath){
 			//1 save the old data
 
 			//2 prepare the new data
+			//2.1 search if the required data exists in the model.data["newPath"]
+			//2.2 if not they send another request to get the data
 
 			//3 show the new data
+			
 		},
 
 		//这些是用来存放cost limit在cookie里面的
@@ -65,4 +68,4 @@ util.tools = {
 		///在cookie 存放cost limit到此结束
 }
 var bus = sap.ui.getCore().getEventBus();
-bus.subscribe("data","onChange",util.tools.onChangeData,this);
+bus.subscribe("data","onChangeDataSource",util.tools.onChangeDataSource,this);
