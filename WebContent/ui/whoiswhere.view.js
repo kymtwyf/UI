@@ -9,9 +9,9 @@ sap.ui.jsview("ui.whoiswhere", {
 		jQuery.sap.require("util.tools");
         jQuery.sap.require("model.conditions");
         jQuery.sap.require("model.status");
+        jQuery.sap.require("model.data");
+        
 		var bus = sap.ui.getCore().getEventBus();
-
-		var path="Country";
 		
 		var dataSelected = -1;
 		var pathdata = -1;  
@@ -93,7 +93,7 @@ sap.ui.jsview("ui.whoiswhere", {
 			mousePositionY = mousePos.y;  
 		} 
 		
-		var popoverlist = new sap.m.List();													//list 
+		var popoverlist = new sap.m.List();								//list 
 
                 var aliCountry=new sap.m.ActionListItem({                                                                                        //action list item
                         tap:function(oControlEvent){
@@ -105,8 +105,6 @@ sap.ui.jsview("ui.whoiswhere", {
                 
                 var aliReason=new sap.m.ActionListItem({                                                                                        //action list item
                         tap:function(oControlEvent){
-                                model.conditions.path.push(pathdata);
-                                model.conditions.path.push("Reason");
                                 pieChart.setDataset(oDataset2); 
                         }      
                 });
@@ -137,54 +135,7 @@ sap.ui.jsview("ui.whoiswhere", {
                 aliTime.setText("To Time");
                 
                 
-                function adjustPopoverList(){ 
-                //you may need to adjust the content of the popover list according to the current path
-                
-                var arrayOfActionListItem = new Array();       //An array which contains all action list items
-                var arrayOfFlag = new Array(true,true,true,true,true);				 //set the flag of items whose data is in path
-           
-                popoverlist.removeAllItems();
-                arrayOfActionListItem.length=0;
-                                
-                arrayOfActionListItem.push(aliCountry);
-                arrayOfActionListItem.push(aliReason);
-                arrayOfActionListItem.push(aliExpenseType);
-                arrayOfActionListItem.push(aliCostCenter);
-                arrayOfActionListItem.push(aliTime);         
-
-                                        
-                for (var i=0; i<model.conditions.path.length; i++) {        //pop the action list item which exists in path
-                        console.log(model.conditions.path[i]);
-                        switch (model.conditions.path[i])
-                        {
-                        case "Country":
-                        	arrayOfFlag[0]=false;
-                          break;
-                        case "Reason":
-                        	arrayOfFlag[1]=false;
-                          break;
-                        case "Expense Type":
-                        	arrayOfFlag[2]=false;
-                          break;
-                        case "Cost Center":
-                        	arrayOfFlag[3]=false;
-                          break;
-                        case "Time":
-                        	arrayOfFlag[4]=false;
-                          break;
-                        }         
-                }
-                
-                for(var k =arrayOfFlag.length; k>0; k--){
-                	if(arrayOfFlag[k-1] == false)
-                		arrayOfActionListItem.splice(k-1,1); 
-                }
-
-                for (var j = 0; j <= arrayOfActionListItem.length; j++) {
-                        popoverlist.insertItem(arrayOfActionListItem[j], j);
-                }
-                
-        }
+               
                        
                 var popover = new sap.m.Popover({                                                                                                        //popover
                         title: "Drilldown...",
@@ -197,7 +148,7 @@ sap.ui.jsview("ui.whoiswhere", {
                 function mouseDBClick(ev){                                //double click will pop over
                    if(dataSelected != -1){
                              adjustPopover(mousePositionX,mousePositionY);
-                             adjustPopoverList();
+                             util.tools.adjustPopoverList(popoverlist,aliCountry,aliReason,aliExpenseType,aliCostCenter,aliTime);
                              popover.openBy(pieChart);
                          }
                    dataSelected = -1;
@@ -489,10 +440,10 @@ sap.ui.jsview("ui.whoiswhere", {
                     text: "Ok",
                     press: function () {
                             costlimit=inputcostlimit.getValue();
-		    	util.tools.setCookie(costlimit,365);
+                            util.tools.setCookie(costlimit,365);
                             setFirstStatus();
                             stdDialog.close();
-		    	util.tools._F_Toast("cost limit is updated");
+                            util.tools._F_Toast("cost limit is updated");
                     }
                   }),
                   rightButton: new sap.m.Button({
@@ -519,7 +470,7 @@ sap.ui.jsview("ui.whoiswhere", {
                             text: "Ok",
                             press: function () {
                                     costlimit=inputcostlimit.getValue();
-			    	util.tools.setCookie(costlimit,365);
+                                    util.tools.setCookie(costlimit,365);
                                     setFirstStatus();
                                     stdDialog2.close();
                             }
@@ -558,7 +509,7 @@ sap.ui.jsview("ui.whoiswhere", {
                 var settingbutton = new sap.m.Button({
                         icon: "sap-icon://settings",
                   press : function() {
-                                 sap.ui.getCore().getEventBus().publish("nav", "virtual");
+//                               //  sap.ui.getCore().getEventBus().publish("nav", "virtual");
                                     stdDialog.open();
                         }        
                 });
