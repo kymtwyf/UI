@@ -1,138 +1,99 @@
 sap.ui.jsview("ui.whoiswhere", {
 
-        /** Specifies the Controller belonging to this View. 
-        * In the case that it is not implemented, or that "null" is returned, this View does not have a Controller.
-        * @memberOf demo.MainPage
-        */ 
         getControllerName : function() {
                 return "ui.whoiswhere";
         },
 
-        /** Is initially called once after the Controller has been instantiated. It is the place where the UI is constructed. 
-        * Since the Controller is given to this method, its event handlers can be attached right away. 
-        * @memberOf demo.MainPage
-        */ 
         createContent : function(oController) {
 
-                jQuery.sap.require("model.conditions");
-                jQuery.sap.require("model.status");
-                
-                var dataSelected = -1; 		
-                var pathdata = -1;  
-                
-                var mousePositionX=0,mousePositionY=0;
-                
-                var oShell= new sap.m.Shell("myShell");
-                
-                var oApp = new sap.m.App("myApp");
-                
-                var t_cost = 0;                         //total cost
-                
-                var overspend = new sap.m.ObjectStatus({
-                  text : "Overspend",
-                  icon : "sap-icon://alert",
-                  state : "Error"
-              });
-                
-                var inthebudget = new sap.m.ObjectStatus({
-                  text : "In the budget",
-                  icon : "sap-icon://sys-enter",
-                  state : "Success"
-              });
-                
-                //var closetothebudget = new sap.m.ObjectStatus({ 
-         //         text : "Close to the budget",
-         //         icon : "sap-icon://warning",
-          //        state : "Warning"
-         //     });
-                
-                var costlimit;                 //default
-                
-                var objectheader = new sap.m.ObjectHeader({                        //header 
-                      number : t_cost,
-                      numberUnit : "€"
-                 });
-                objectheader.setNumber(102239430.94);
+		jQuery.sap.require("util.tools");
+        jQuery.sap.require("model.conditions");
+        jQuery.sap.require("model.status");
+		var bus = sap.ui.getCore().getEventBus();
 
-                function getCookie(c_name)
-                {
-                        if (document.cookie.length>0)
-                          {
-                          c_start=document.cookie.indexOf(c_name + "=");
-                          if (c_start!=-1)
-                            { 
-                            c_start=c_start + c_name.length+1 ;
-                            c_end=document.cookie.indexOf(";",c_start);
-                            if (c_end==-1) c_end=document.cookie.length;
-                            return unescape(document.cookie.substring(c_start,c_end));
-                            } 
-                          }
-                        return "";
-                }
+		var path="Country";
+		
+		var dataSelected = -1;
+		var pathdata = -1;  
+		
+		var mousePositionX=0,
+			mousePositionY=0;
+		
+		var oShell= new sap.m.Shell("myShell");
+		
+		var oApp = new sap.m.App("myApp");
+		
+		var costlimit; 		//default你需要parseFloat(costlimit)反它转为数字再比较
+		
+		var overspend = new sap.m.ObjectStatus({
+	          text : "Overspend",
+	          icon : "sap-icon://alert",
+	          state : "Error"
+	      });
+		
+		var inthebudget = new sap.m.ObjectStatus({
+	          text : "In the budget",
+	          icon : "sap-icon://sys-enter",
+	          state : "Success"
+	      });
+		
+		
+		var objectheader = new sap.m.ObjectHeader({			//header 
+		      number : 0,
+		      numberUnit : "EUR"
+		 });
 
-                
-                function setCookie(value,expiredays)                                //store object in cookie
-                {
-                        var exdate=new Date();
-                        exdate.setDate(exdate.getDate()+expiredays);
-                        document.cookie="costlimit"+ "=" +escape(value)+
-                        ((expiredays==null) ? "" : ";expires="+exdate.toGMTString());
-                }
-                
-                function checkCookie()
-                {
-                        var c_name=getCookie('costlimit');
-                        var costlimit= 50000;
-                        if (c_name!=null && c_name!="")
-                        {
-                                costlimit=c_name;
-                        }
-                        return costlimit;
-                }
-                
-                costlimit=checkCookie();                        
-                
-                function setFirstStatus()
-                {
-                        if(costlimit > t_cost)
-                        objectheader.setFirstStatus(inthebudget);
-                        else
-                        objectheader.setFirstStatus(overspend);
-                }
-                setFirstStatus();
+		function setFirstStatus(){
+			if(parseFloat(costlimit) > objectheader.getNumber())
+				objectheader.setFirstStatus(inthebudget);
+			else
+				objectheader.setFirstStatus(overspend);
+		}			
+		function updateTotal(channelId,eventId,data){
+			console.log("data's value "+data.value);
+			if((data.value)||data.value==0){
+				objectheader.setNumber(data.value);		
+			}
+			setFirstStatus();
+		}
+		bus.subscribe("total","refresh",updateTotal,this);//triggerred when the data need to be refreshed 
 
-                var pieChart = new sap.viz.ui5.Column({
-                        width : "100%",
-                        //height: "80%",
-                        //dataset: oDataset
-                        selectData: function(oControlEvent){
-                                dataSelected =  oControlEvent.mParameters.data[0].data[0].ctx.path.dii_a1;
-                                pathdata=dataSelected;
-                                console.log("Selected: "+ oControlEvent.mParameters.data[0].data[0].ctx.path.dii_a1        );
-                        }
-                });
-                
-                //mouse event 
-                function mousePosition(ev){             //get mouse position 
-                        if(ev.pageX || ev.pageY){
-                                return {x:ev.pageX, y:ev.pageY};
-                        }
-                        return {
-                                x:ev.clientX + document.body.scrollLeft - document.body.clientLeft,
-                                y:ev.clientY + document.body.scrollTop  - document.body.clientTop
-                        };
-                }
-                
-                document.onclick = mouseClick;
-                
-                function mouseClick(ev){                         //get the position of mouse , help to adjust the position of popover
-                        ev = ev || window.event;
-                    var mousePos = mousePosition(ev);
-                        mousePositionX = mousePos.x;
-                        mousePositionY = mousePos.y;  
-                } 
-                
-                var popoverlist = new sap.m.List();                                                                                                        //list 
+		                
+		costlimit=util.tools.checkCookie();			
+
+		var pieChart = new sap.viz.ui5.Column({
+			width : "100%",
+			selectData: function(oControlEvent){
+				console.log("oControlEvent");
+				console.log(oControlEvent);
+				dataSelected =  oControlEvent.mParameters.data[0].data[0].ctx.path.dii_a1;
+				//data1=dataSelected;
+                pathdata=dataSelected;
+				console.log("Selected: "+ oControlEvent.mParameters.data[0].data[0].ctx.path.dii_a1	);
+			}
+		});
+		
+		//mouse event 
+		function mousePosition(ev){	     //get mouse position 
+			if(ev.pageX || ev.pageY){
+				return {x:ev.pageX, y:ev.pageY};
+			}
+			return {
+				x:ev.clientX + document.body.scrollLeft - document.body.clientLeft,
+				y:ev.clientY + document.body.scrollTop  - document.body.clientTop
+			};
+		}
+		
+		document.onclick = mouseClick;
+		
+		function mouseClick(ev){ 			//get the position of mouse , help to adjust the position of popover
+			ev = ev || window.event;
+		    var mousePos = mousePosition(ev);
+			mousePositionX = mousePos.x;
+			mousePositionY = mousePos.y;  
+		} 
+		
+		var popoverlist = new sap.m.List();													//list 
 
                 var aliCountry=new sap.m.ActionListItem({                                                                                        //action list item
                         tap:function(oControlEvent){
@@ -272,82 +233,81 @@ sap.ui.jsview("ui.whoiswhere", {
                         pieChart.setDataset(oDataset);
                                         
 
-                }
-                var bus = sap.ui.getCore().getEventBus();
-                bus.subscribe("pieChart","refresh",refreshPieChart,this);
-//                                
-//                var pieChart = CreatePieChart();
-//                //pie chart of data
-                
-                var temp ="{country}";
-                ///////////////////////////////////////////////////////////////////////////////////////////////
-                var PieModel = {
-                                  data : [
-                                        {country:'China',year:'2001',profit:25},
-                                        {country:'China',year:'2002',profit:58},
-                                        {country:'USA',year:'2001',profit:58},
-                                        {country:'USA',year:'2002',profit:159},
-                                        {country:'Canada',year:'2001',profit:149},
-                                        {country:'Canada',year:'2002',profit:38},
-                                  ]};
-                                var PieData = {
-                                  dimensions : [
-                                        {axis : 1, name : 'Country', value: temp},
-                                        //{axis : 1, name : 'Year', value: "{year}"},
-                                  ],
-                                  measures : [
-                                        {name : "Profit", value : "{profit}"},
-                                  ],
-                                  data : {
-                                        path : "/data"
-                                  }
-                                };
-                                
-                                var oDataset,oModel;
-                
-                                oDataset = new sap.viz.ui5.data.FlattenedDataset(PieData);
-                                oModel = new sap.ui.model.json.JSONModel(PieModel);
-                                oDataset.setModel(oModel);
-        
-                var PieModel2 = {
-                                  data : [
-                                        {country:'China',year:'2001',profit:25},
-                                        {country:'China',year:'2002',profit:58},
-                                        {country:'USA',year:'2001',profit:58},
-                                        {country:'USA',year:'2002',profit:159},
-                                        {country:'Canada',year:'2001',profit:149},
-                                        {country:'Canada',year:'2002',profit:38},
-                                  ]};
-                                var PieData2 = {
-                                  dimensions : [
-                                        {axis : 1, name : 'Country', value: "{country}"},
-                                        {axis : 1, name : 'Year', value: "{year}"},
-                                  ],
-                                  measures : [
-                                        {name : "Profit", value : "{profit}"},
-                                  ],
-                                  data : {
-                                        path : "/data"
-                                  }
-                                };
-                                
-                                var oDataset2,oModel2;
-                
-                                oDataset2 = new sap.viz.ui5.data.FlattenedDataset(PieData2);
-                                oModel2 = new sap.ui.model.json.JSONModel(PieModel2);
-                                oDataset2.setModel(oModel2);
-                                /////////////test data for changing the tab
-                                
-                                
-                var barChart = sap.ui.view({id:"barchart", viewName:"ui.BarChart", type:sap.ui.core.mvc.ViewType.JS});
-                //bar chart of data
-                
-                
-                var button1 = new sap.m.Button('bt_showByCost', {
-                        type: sap.m.ButtonType.Default,
-                        icon: "sap-icon://lead",
-                                                                                                                                //cost button
-                });
+		}
+		bus.subscribe("pieChart","refresh",refreshPieChart,this);
+//				
+//		var pieChart = CreatePieChart();
+//		//pie chart of data
+		
+		var temp ="{country}";
+		///////////////////////////////////////////////////////////////////////////////////////////////
+		var PieModel = {
+				  data : [
+					{country:'China',year:'2001',profit:25},
+					{country:'China',year:'2002',profit:58},
+					{country:'USA',year:'2001',profit:58},
+					{country:'USA',year:'2002',profit:159},
+					{country:'Canada',year:'2001',profit:149},
+					{country:'Canada',year:'2002',profit:38},
+				  ]};
+				var PieData = {
+				  dimensions : [
+					{axis : 1, name : 'Country', value: temp},
+					//{axis : 1, name : 'Year', value: "{year}"},
+				  ],
+				  measures : [
+					{name : "Profit", value : "{profit}"},
+				  ],
+				  data : {
+					path : "/data"
+				  }
+				};
+				
+				var oDataset,oModel;
+		
+				oDataset = new sap.viz.ui5.data.FlattenedDataset(PieData);
+				oModel = new sap.ui.model.json.JSONModel(PieModel);
+				oDataset.setModel(oModel);
+	
+		var PieModel2 = {
+				  data : [
+					{country:'China',year:'2001',profit:25},
+					{country:'China',year:'2002',profit:58},
+					{country:'USA',year:'2001',profit:58},
+					{country:'USA',year:'2002',profit:159},
+					{country:'Canada',year:'2001',profit:149},
+					{country:'Canada',year:'2002',profit:38},
+				  ]};
+				var PieData2 = {
+				  dimensions : [
+					{axis : 1, name : 'Country', value: "{country}"},
+					{axis : 1, name : 'Year', value: "{year}"},
+				  ],
+				  measures : [
+					{name : "Profit", value : "{profit}"},
+				  ],
+				  data : {
+					path : "/data"
+				  }
+				};
+				
+				var oDataset2,oModel2;
+		
+				oDataset2 = new sap.viz.ui5.data.FlattenedDataset(PieData2);
+				oModel2 = new sap.ui.model.json.JSONModel(PieModel2);
+				oDataset2.setModel(oModel2);
+				/////////////test data for changing the tab
+				
+				
+		var barChart = sap.ui.view({id:"barchart", viewName:"ui.BarChart", type:sap.ui.core.mvc.ViewType.JS});
+		//bar chart of data
+		
+		
+		var button1 = new sap.m.Button('bt_showByCost', {
+			type: sap.m.ButtonType.Default,
+			icon: "sap-icon://lead",
+																//cost button
+		});
 
                 var button2 = new sap.m.Button('bt_showByTimes', {
                         type: sap.m.ButtonType.Default,
@@ -528,9 +488,10 @@ sap.ui.jsview("ui.whoiswhere", {
                     text: "Ok",
                     press: function () {
                             costlimit=inputcostlimit.getValue();
-                            setCookie(costlimit,365);
+		    	util.tools.setCookie(costlimit,365);
                             setFirstStatus();
                             stdDialog.close();
+		    	util.tools._F_Toast("cost limit is updated");
                     }
                   }),
                   rightButton: new sap.m.Button({
@@ -557,7 +518,7 @@ sap.ui.jsview("ui.whoiswhere", {
                             text: "Ok",
                             press: function () {
                                     costlimit=inputcostlimit.getValue();
-                                    setCookie(costlimit,365);
+			    	util.tools.setCookie(costlimit,365);
                                     setFirstStatus();
                                     stdDialog2.close();
                             }
