@@ -27,23 +27,20 @@ util.tools = {
 		onChangeDataSource:function(data,drilldown){
 			
 			//1 save the old data
-            	 var oldpath= "";	 
-            	 var newpath= "";
-            	 for(var i=0; i<model.conditions.path.length;i++)
-            		 oldpath = oldpath + model.conditions.path[i] + "." ;
+            	 var oldpath= this.ArrayToString(model.conditions.path);	 
             	 model.data[oldpath]=oldpath;
 			//2 prepare the new data
             	  model.conditions.path.push(data);
                   model.conditions.path.push(drilldown);
-             	 for(var i=0; i<model.conditions.path.length;i++)
-             		 newpath = newpath + model.conditions.path[i] + "." ;
+             	 var newpath= ArrayToString(model.conditions.path);	 
 			//2.1 search if the required data exists in the model.data["newPath"]
-               
-        
-            	 if(model.data[newpath])
-            		 
+            	 if(model.data[newpath]){
+            		 model.conditions.path= this.StringToArray(newpath);
+            	 }
 			//2.2 if not they send another request to get the data
-            	 else
+            	 else{
+            		 
+            	 } 
 			//3 show the new data
 			
 		},
@@ -127,7 +124,80 @@ util.tools = {
                      popoverlist.insertItem(arrayOfActionListItem[j], j);
              }
 		 	},
-            
+		 	ArrayToString: function(array){
+		 		var string="";
+		 		for(var i = 0;i<array.length;i++){
+		 			string = string +array[i]+".";
+		 		}
+		 		return string;
+		 	},
+		 	getCurrentMonth: function(){
+		 		  var date = new Date();
+	  	    	  var year = date.getFullYear().toString();
+	  	    	  var month = date.getMonth()+1;
+	  	    	  month = month.toString();
+	  	    	 var currentMonth;
+	  	    	  if(month<10)
+	  	    	 currentMonth = year+'0'+month;
+	  	    	  else
+	  	    		currentMonth = year + month;
+	  	    	  return currentMonth;
+		 	},
+		 	getCurrentSeason: function(){ 
+		 		var date = new Date();
+		 		var year = date.getFullYear().toString();
+		 		var month = date.getMonth()+1;
+		 		var season;
+		 		switch(month)
+		 		{
+		 		case 1:
+		 			season="01";
+                    break;
+		 		case 2:
+		 			season="01";
+                    break;
+		 		case 3:
+		 			season="01";
+                    break;
+		 		case 4:
+		 			season="04";
+                    break;
+		 		case 5:
+		 			season="04";
+                    break;
+		 		case 6:
+		 			season="04";
+                    break;
+		 		case 7:
+		 			season="07";
+                    break;
+		 		case 8:
+		 			season="07";
+                    break;
+		 		case 9:
+		 			season="07";
+                    break;
+		 		case 10:
+		 			season="10";
+                    break;
+		 		case 11:
+		 			season="10";
+                    break;
+		 		case 12:
+		 			season="10";
+                    break;
+		 		}
+		 		var currentSeason = year+season.toString();
+		 		return currentSeason;
+		 		
+		 	},
+		 	getCurrentYear: function(){
+		 		  var date = new Date();
+	  	    	  var year = date.getFullYear().toString();
+	  	    	 var currentYear = year + "01";
+	  	    	  return currentYear;
+		 	}
+		 	
 
 }
 
