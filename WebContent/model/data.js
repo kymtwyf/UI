@@ -4,25 +4,30 @@ jQuery.sap.declare("model.data");
 //每个data里面需要存的数据：
 /*
 	1.content: 内容
-	2.dimension 和measure
+	2.dimension 
+	
+	{
+	axis:
+	name:
+	value
+	}
+	//和measure
+	
+	{
+	name:
+	value:
+	}
+	
 	3.path:怎样的drill down的路线
 	4.time:更新时间
 */
 model.data = {
-		TOTAL:null,
-		_TEST_DATA:{
-			label:null,
-			content:null,
-			measure:null,
-		},
-
-		// _CURRENT_DATA:null,//当前图表使用的数据
-		// _D_COUNTRY_COUNT:null,
-		// _D_COUNTRY_COST:null,
-		// _D_REASON_COUNT:null,
-		// _D_REASON_COST:null,
-		// _D_PEOPLE_COUNT:null,
-		// _D_PEOPLE_COST:null,
-		// _D_YEAR_COUNT:null,
-		// _D_YEAR_COST:null
 }
+// bus.publish("channel",'event',{
+// 	from:12305,
+// 	to:
+// },this)
+// function somethign(channel,event, data){
+// 	data.from
+// }
+// bus.subscribe("channel",'event',somethign);

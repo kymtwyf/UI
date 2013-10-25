@@ -12,7 +12,7 @@ sap.ui.controller("ui.whoiswhere", {
 		// }, this);
 		var year = new Date().getFullYear();
 		console.log("year is "+year);
-		var totalUrl = "http://ld9415.wdf.sap.corp:8002/mouse/project/odata/Query.xsodata/Query?$select=TRIP_TOTAL&$filter=MANDT eq '578' and YEAR eq '"+2009+"'&$format=json";
+		var totalUrl = "http://ld9415.wdf.sap.corp:8002/mouse/project/odata/Query.xsodata/Query?$select=TRIP_TOTAL&$filter=MANDT eq '002' and YEAR eq '"+2010+"'&$format=json";
 		console.log("totalUrl = "+totalUrl);
 		jQuery.ajax({//get the total cost
 			url:totalUrl,
@@ -36,21 +36,37 @@ sap.ui.controller("ui.whoiswhere", {
 				}
 
 				jQuery.ajax({
-					url:"http://ld9415.wdf.sap.corp:8002/mouse/project/odata/Test.xsodata/TRIP_DEST?$select=LANDTEXT,ONE&$filter=MANDT%20eq%20'002'&$format=json",
+					url:"http://ld9415.wdf.sap.corp:8002/mouse/project/odata/Query.xsodata/Query?$select=LANDTEXT,TRIP_TOTAL&$filter=MANDT%20eq%20'002'&$format=json",
 					error:function(error){
-						//jQuery.sap.require("sap.m.MessageToast");
-						 //sap.m.MessageToast.show(error+"");
 						util.tools._F_Toast(error+"");
 					},
 					success:function(data){
 						bus.publish("refreshButton","stop",{
 							text:'loaded'
 						});
+						var template = function(){
+							var content,
+							time,
+							measures,
+							dimensions
+						}
 						util.tools._F_Toast("success loaded data");
-						model.data._TEST_DATA.label = "{LANDTEXT}";
-						model.data._TEST_DATA.content = data.d.results;
-						model.data._TEST_DATA.measure = "{ONE}";
-						bus.publish("pieChart","refresh",model.data._TEST_DATA);
+						var name = "CURRENT_DATA";
+						model.data[name] = new template();
+						model.data[name].content = data.d.results;
+						model.data[name].time = new Date();
+						model.data[name].dimensions = model.status.dimensions.slice(0);
+						model.data[name].measures = model.status.measures.slice(0);
+						var oData = {};
+						oData.content = data.d.results;
+						oData.dimensions = {
+							axis:1,
+							name:"LANDTEXT",
+							value:"{LANDTEXT}"};
+						oData.measures = {
+							name:"TRIP_TOTAL",
+							value:"{TRIP_TOTAL}"}
+						bus.publish("pieChart","refresh",oData);
 
 					}
 				});

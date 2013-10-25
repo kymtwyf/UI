@@ -7,13 +7,14 @@ sap.ui.jsview("ui.whoiswhere", {
         createContent : function(oController) {
 
 		jQuery.sap.require("util.tools");
-        jQuery.sap.require("model.conditions");
         jQuery.sap.require("model.status");
         jQuery.sap.require("model.data");
+        jQuery.sap.require("model.dimensions");
         
 		var bus = sap.ui.getCore().getEventBus();
 		
-		var dataSelected = -1;
+		var dataSelected = '';
+
 		var pathdata = -1;  
 		
 		var mousePositionX=0,
@@ -23,7 +24,7 @@ sap.ui.jsview("ui.whoiswhere", {
 		
 		var oApp = new sap.m.App("myApp");
 		
-		var costlimit; 		//default你需要parseFloat(costlimit)反它转为数字再比较
+		var costlimit=util.tools.checkCookie(); 		//default你需要parseFloat(costlimit)反它转为数字再比较
 		
 		var overspend = new sap.m.ObjectStatus({
 	          text : "Overspend",
@@ -57,19 +58,37 @@ sap.ui.jsview("ui.whoiswhere", {
 			setFirstStatus();
 		}
 		bus.subscribe("total","refresh",updateTotal,this);//triggerred when the data need to be refreshed 
-
-		                
-		costlimit=util.tools.checkCookie();			
+	
 
 		var pieChart = new sap.viz.ui5.Column({
 			width : "100%",
 			selectData: function(oControlEvent){
-				console.log("oControlEvent");
-				console.log(oControlEvent);
-				dataSelected =  oControlEvent.mParameters.data[0].data[0].ctx.path.dii_a1;
-				//data1=dataSelected;
-                pathdata=dataSelected;
-				console.log("Selected: "+ oControlEvent.mParameters.data[0].data[0].ctx.path.dii_a1	);
+				console.log('selectDat');
+				console.log(oControlEvent.getParameters());	
+				// console.log("oControlEvent");
+				// console.log(oControlEvent);
+				// dataSelected =  oControlEvent.mParameters.data[0].data[0].ctx.path.dii_a1;
+				// //data1=dataSelected;
+    //             pathdata=dataSelected;
+    //             var currentData = model.data.CURRENT_DATA;
+
+    //             var landtexts = util.tools.filterLabel(model.data.CURRENT_DATA.content,"LANDTEXT");
+    //             console.log("landtest  = " +landtexts);
+    //             console.log(landtexts[pathdata]);
+				// console.log("Selected: "+ oControlEvent.mParameters.data[0].data[0].ctx.path.dii_a1	);
+			},
+			showTooltip:function(oControlEvent){
+				console.log("showTooltip");
+			    var p = oControlEvent.getParameters();
+				console.log(p);
+				dataSelected = p.data.footer[0].value.val;
+				//console.log(dataselected);
+				// console.log(p.data);
+				// console.log(p.footer);
+				// console.log(p.plotArea);
+				// console.log(p.plotArea);
+
+
 			}
 		});
 		
@@ -90,99 +109,177 @@ sap.ui.jsview("ui.whoiswhere", {
 			ev = ev || window.event;
 		    var mousePos = mousePosition(ev);
 			mousePositionX = mousePos.x;
-			mousePositionY = mousePos.y;  
+			mousePositionY = mousePos.y; 
+			if(popover.isOpen()){
+				popover.close();
+			}
 		} 
 		
+		///********************************pop over 的items*******************************8/
+		//这个顺序不能随便换 是根据model.dimensions来的
 		var popoverlist = new sap.m.List();								//list 
+		var aliArray = new Array();
+        var aliCountry=new sap.m.ActionListItem({                                                                                        //action list item
+                tap:function(oControlEvent){
+                        model.status.path.push(dataSelected);
+                        dataSelected = '';
+                        model.status.path.push("LANDTEXT");
+                        var index  = model.status.dimensions.length
+                        model.status.dimensions.push({
+                        	axis:index+1,
+							name:'LANDTEXT',
+							value:'{LANDTEXT}'
+                        })
+                }
+        });
+        aliCountry.setText("By Country");
+        aliArray.push(aliCountry);
+        var aliLocation=new sap.m.ActionListItem({                                                                                        //action list item
+                tap:function(oControlEvent){
+                        model.status.path.push(dataSelected);
+                        dataSelected = '';
+                        model.status.path.push("ZORT1");
+                        var index  = model.status.dimensions.length
+                        model.status.dimensions.push({
+                        	axis:index+1,
+							name:'ZORT1',
+							value:'{ZORT1}'
+                        })
+                }
+        });
+        aliLocation.setText("By Location");
+        aliArray.push(aliLocation);
 
-                var aliCountry=new sap.m.ActionListItem({                                                                                        //action list item
-                        tap:function(oControlEvent){
-                                model.conditions.path.push(pathdata);
-                                model.conditions.path.push("Country");
-                        }
-                });
-                aliCountry.setText("To Country");
-                
-                var aliReason=new sap.m.ActionListItem({                                                                                        //action list item
-                        tap:function(oControlEvent){
-                                pieChart.setDataset(oDataset2); 
-                        }      
-                });
-                aliReason.setText("To Reason");
-                
-                var aliExpenseType=new sap.m.ActionListItem({                                                                                        //action list item
-                        tap:function(oControlEvent){
-                                model.conditions.path.push(pathdata);
-                                model.conditions.path.push("Expense Type");
-                        }
-                });
-                aliExpenseType.setText("To Expense Type");
-                
-                var aliCostCenter=new sap.m.ActionListItem({                                                                                        //action list item
-                        press:function(oControlEvent){
-                                model.conditions.path.push(pathdata);
-                                model.conditions.path.push("Cost Center");
-                        }
-                });
-                aliCostCenter.setText("To Cost Center");
-                
-                var aliTime=new sap.m.ActionListItem({                                                                                        //action list item
-                        tap:function(oControlEvent){
-                                model.conditions.path.push(pathdata);
-                                model.conditions.path.push("Time");
-                        }        
-                });
-                aliTime.setText("To Time");
-                
-                
-               
-                       
-                var popover = new sap.m.Popover({                                                                                                        //popover
-                        title: "Drilldown...",
-                        placement: sap.m.PlacementType.Right,
-                        content: popoverlist
-                        });                
-                
-                document.ondblclick = mouseDBClick;
-                
-                function mouseDBClick(ev){                                //double click will pop over
-                   if(dataSelected != -1){
-                             adjustPopover(mousePositionX,mousePositionY);
-                             util.tools.adjustPopoverList(popoverlist,aliCountry,aliReason,aliExpenseType,aliCostCenter,aliTime);
-                             popover.openBy(pieChart);
-                         }
-                   dataSelected = -1;
+		var aliCostCenter=new sap.m.ActionListItem({                                                                                        //action list item
+                press:function(oControlEvent){
+                        model.status.path.push(dataSelected);
+                        dataSelected = '';
+                        model.status.path.push("CENTER_TEXT");
+                        var index  = model.status.dimensions.length
+                        model.status.dimensions.push({
+                        	axis:index+1,
+							name:'CENTER_TEXT',
+							value:'{CENTER_TEXT}'
+                        })
                 }
-                
-                function adjustPopover(mousePositionX,mousePositionY){
-                        var px=1299;
-                        var py=477;
-                        popover.setOffsetX(mousePositionX-px);
-                        if(py>popover) popover.setOffsetY(py-mousePositionY);
-                        else  popover.setOffsetY(mousePositionY-py);
+        });
+        aliCostCenter.setText("By Cost Center");
+        aliArray.push(aliCostCenter);
+
+        var aliControlArea=new sap.m.ActionListItem({                                                                                        //action list item
+                press:function(oControlEvent){
+                        model.status.path.push(dataSelected);
+                        dataSelected = '';                  
+                        model.status.path.push("CONTROL_AREA_TEXT");
+                        var index  = model.status.dimensions.length
+                        model.status.dimensions.push({
+                        	axis:index+1,
+							name:'CONTROL_AREA_TEXT',
+							value:'{CONTROL_AREA_TEXT}'
+                        })
                 }
-                //这个refresh需要增加：多个dimensions的显示功能
-                function refreshPieChart(channelId, eventId, oData) {
-                        var PieModel = {  data : oData.content};
-                        var PieData = {
-                          dimensions : [
-                                {axis : 1, name : oData.label, value: oData.label},
-                                //{axis : 1, name : 'Year', value: "{year}"},
-                          ],
-                          measures : [
-                                {name : oData.measure, value : oData.measure},
-                          ],
-                          data : {
-                                path : "/data"
-                          }
-                        };
-                        
-                        var oDataset,oModel;
+        });
+        aliControlArea.setText("By Controlling Area");
+        aliArray.push(aliControlArea);
+
+        var aliReason=new sap.m.ActionListItem({                                                                                        //action list item
+                tap:function(oControlEvent){
+                        model.status.path.push(dataSelected);
+                        dataSelected = '';
+                        model.status.path.push("KUNDE");
+                    	var index  = model.status.dimensions.length
+                        model.status.dimensions.push({
+                        	axis:index+1,
+							name:'KUNDE',
+							value:'{KUNDE}'
+                        })
+                       // pieChart.setDataset(oDataset2); 
+                }      
+        });
+        aliReason.setText("By Reason");
+        aliArray.push(aliReason);
+                
+        var aliYear=new sap.m.ActionListItem({                                                                                        //action list item
+                tap:function(oControlEvent){
+                        model.status.path.push(dataSelected);
+                        dataSelected = '';
+                        model.status.path.push("YEAR");
+                    	var index  = model.status.dimensions.length
+                        model.status.dimensions.push({
+                        	axis:index+1,
+							name:'YEAR',
+							value:'{YEAR}'
+                        })
+                }        
+        });
+        aliYear.setText("By Year");
+        aliArray.push(aliYear);
+
+		var aliMonth=new sap.m.ActionListItem({                                                                                        //action list item
+                tap:function(oControlEvent){
+                        model.status.path.push(dataSelected);
+                        dataSelected = '';
+                        model.status.path.push("MONTH");
+                        var index  = model.status.dimensions.length
+                        model.status.dimensions.push({
+                        	axis:index+1,
+							name:'MONTH',
+							value:'{MONTH}'
+                        })
+                }        
+        });
+        aliMonth.setText("By Month");
+        aliArray.push(aliMonth);
+
+        ///********************************pop over 的items*******************************8/
         
-                        oDataset = new sap.viz.ui5.data.FlattenedDataset(PieData);
-                        oModel = new sap.ui.model.json.JSONModel(PieModel);
-                        oDataset.setModel(oModel);
-                        pieChart.setDataset(oDataset);
+       
+               
+        var popover = new sap.m.Popover({                                                                                                        //popover
+                title: "Drilldown...",
+                placement: sap.m.PlacementType.Right,
+                content: popoverlist
+                });                
+        
+        document.ondblclick = mouseDBClick;
+        
+        function mouseDBClick(ev){                                //double click will pop over
+           console.log('event '+dataSelected);
+           if(dataSelected != ''){
+                     adjustPopover(mousePositionX,mousePositionY);
+                     util.tools.adjustPopoverList(popoverlist,aliArray);
+                     popover.openBy(pieChart);
+                 }
+        }
+        
+        function adjustPopover(mousePositionX,mousePositionY){
+                var px=1299;
+                var py=477;
+                popover.setOffsetX(mousePositionX-px);
+                if(py>popover) popover.setOffsetY(py-mousePositionY);
+                else  popover.setOffsetY(mousePositionY-py);
+        }
+        //这个refresh需要增加：多个dimensions的显示功能
+        function refreshPieChart(channelId, eventId, oData) {
+        		console.log(oData.content);
+        		console.log(oData.dimensions);
+        		console.log(oData.measures);
+
+                var PieModel = {  data : oData.content};
+                var PieData = {
+                  dimensions : oData.dimensions,
+                  measures : oData.measures,
+                  data : {
+                        path : "/data"
+                  }
+                };
+                
+                var oDataset,oModel;
+
+                oDataset = new sap.viz.ui5.data.FlattenedDataset(PieData);
+                oModel = new sap.ui.model.json.JSONModel(PieModel);
+                oDataset.setModel(oModel);
+                pieChart.setDataset(oDataset);
                                         
 
 		}
@@ -314,7 +411,7 @@ sap.ui.jsview("ui.whoiswhere", {
                         items:[bar,pieChart]
                 });
                 
-                function reloadPage()
+                function reloadPage()//这个需要改变
                 {
                         Segmented1.setSelectedButton(button1);
                         Segmented2.setSelectedButton(button3);
@@ -327,64 +424,68 @@ sap.ui.jsview("ui.whoiswhere", {
                                         new sap.m.IconTabFilter({
                                                 icon: "sap-icon://globe",
                                                 text: "Country"
-                                        }),
-                                        
+                                        }),                                        
+                                        // new sap.m.IconTabFilter({
+                                        //         icon: "sap-icon://map",
+                                        //         text: "Location"
+                                        // }),                                    
                                         new sap.m.IconTabFilter({
-                                                icon: "sap-icon://task",
-                                                text: "Reason"
+                                                icon: "sap-icon://official-service",
+                                                text: "Controll Area"
                                         }),
-                                        
-                                        new sap.m.IconTabFilter({
-                                                icon: "sap-icon://customer",
-                                                text: "Person"
-                                        }),
-                                        
+                                        // new sap.m.IconTabFilter({
+                                        //         icon: "sap-icon://task",
+                                        //         text: "Reason"
+                                        // }),
                                         new sap.m.IconTabFilter({
                                                 icon: "sap-icon://history",
-                                                text: "Time"
+                                                text: "Year"
                                         })
-                                        
                                 ],
                                 content: [oVBoxpage],
                                 select: function (oEvent) {
                                         var selected = oEvent.getParameter("item") ;
-                                        if(selected == 'Element sap.m.IconTabFilter#__filter0')
+                                        if(selected == 'Element sap.m.IconTabFilter#__filter0'&&model.status.iconTab!='LANDTEXT')
                                         { 
-                                                model.status.iconTab = "Country";        //
-                                                model.conditions.path.length = 0;         //remove all items in path when choosing a new icon tab
-                                                model.conditions.path.push(model.status.iconTab); //push the icontab
-                                                reloadPage();
-                                                pieChart.setDataset(oDataset);
-                                                oVBoxpage.addItem(pieChart);
-                                        }
-                                        else if (selected == 'Element sap.m.IconTabFilter#__filter1')
+                                        	bus.publish('app','onChangeIconTab',{
+                                        		s_newIconTab:'LANDTEXT',
+                                        		s_newMeasure:'TRIP_TOTAL',
+                                        		s_showType:'barChart'
+                                        	})
+                                                //model.status.iconTab = "LANDTEXT";        //
+                                                // model.status.path.length = [];         //remove all items in path when choosing a new icon tab
+                                                // model.status.path.push(model.status.iconTab); //push the icontab
+                                                // reloadPage();
+                                                // pieChart.setDataset(oDataset);
+                                                // oVBoxpage.addItem(pieChart);
+
+                                        }                                        
+                                        else if (selected == 'Element sap.m.IconTabFilter#__filter1'&&model.status.iconTab!='CONTROL_AREA_TEXT')
                                         {
-                                                model.status.iconTab  = "Reason";
-                                                model.conditions.path.length = 0;         //remove all items in path when choosing a new icon tab
-                                                
-                                                model.conditions.path.push(model.status.iconTab); //push the icontab
-                                                
-                                                reloadPage();
-                                                //pieChart.destroyDataset();
-                                                pieChart.setDataset(oDataset2);
-                                                oVBoxpage.addItem(pieChart);
-                                                
+                                        	bus.publish('app','onChangeIconTab',{
+                                        		s_newIconTab:'CONTROL_AREA_TEXT',
+                                        		s_newMeasure:'TRIP_TOTAL',
+                                        		s_showType:'barChart'
+                                        	})
+                                               // model.status.iconTab = "CONTROL_AREA_TEXT";
+                                                // model.status.path.length = [];         //remove all items in path when choosing a new icon tab
+                                                // model.status.path.push(model.status.iconTab); //push the icontab
+                                                // reloadPage();
+                                                // oVBoxpage.addItem(barChart);
                                         }
-                                        else if (selected == 'Element sap.m.IconTabFilter#__filter2')
+                                        
+                                        else if (selected == 'Element sap.m.IconTabFilter#__filter2'&&model.status.iconTab!='YEAR')
                                         {
-                                                model.status.iconTab = "PersonID";
-                                                model.conditions.path.length = 0;         //remove all items in path when choosing a new icon tab
-                                                model.conditions.path.push(model.status.iconTab); //push the icontab
-                                                reloadPage();
-                                                oVBoxpage.addItem(barChart);
-                                        }
-                                        else
-                                        {
-                                                model.status.iconTab  = "Time";
-                                                model.conditions.path.length = 0;         //remove all items in path when choosing a new icon tab
-                                                model.conditions.path.push(model.status.iconTab); //push the icontab
-                                                reloadPage();
-                                                oVBoxpage.addItem(pieChart);
+                                        	bus.publish('app','onChangeIconTab',{
+                                        		s_newIconTab:'YEAR',
+                                        		s_newMeasure:'TRIP_TOTAL',
+                                        		s_showType:'barChart'
+                                        	})
+                                               // model.status.iconTab  = "YEAR";
+                                                // model.status.path.length = [];         //remove all items in path when choosing a new icon tab
+                                                // model.status.path.push(model.status.iconTab); //push the icontab
+                                                // reloadPage();
+                                                // oVBoxpage.addItem(pieChart);
                                         }
                                         
                                   }
