@@ -107,7 +107,7 @@ model.status = {
 	prepare:function(){
 		jQuery.sap.require("model.status");
 		switch(model.status.iconTab){
-			case 'country': var index = model.status.measures.length;
+			case 'LANDTEXT': var index = model.status.measures.length;
 								model.status.dimensions.push({
 								axis:index+1,
 								name:"LANDTEXT",

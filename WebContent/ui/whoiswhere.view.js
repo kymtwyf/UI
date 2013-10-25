@@ -124,12 +124,15 @@ sap.ui.jsview("ui.whoiswhere", {
                         model.status.path.push(dataSelected);
                         dataSelected = '';
                         model.status.path.push("LANDTEXT");
+                        model.status.dimensions = [];
                         var index  = model.status.dimensions.length
                         model.status.dimensions.push({
                         	axis:index+1,
 							name:'LANDTEXT',
 							value:'{LANDTEXT}'
                         })
+		bus.publish('app','onChangeDataSource');
+
                 }
         });
         aliCountry.setText("By Country");
@@ -139,12 +142,15 @@ sap.ui.jsview("ui.whoiswhere", {
                         model.status.path.push(dataSelected);
                         dataSelected = '';
                         model.status.path.push("ZORT1");
+                        model.status.dimensions = [];
                         var index  = model.status.dimensions.length
                         model.status.dimensions.push({
                         	axis:index+1,
 							name:'ZORT1',
 							value:'{ZORT1}'
                         })
+		bus.publish('app','onChangeDataSource');
+
                 }
         });
         aliLocation.setText("By Location");
@@ -154,13 +160,16 @@ sap.ui.jsview("ui.whoiswhere", {
                 press:function(oControlEvent){
                         model.status.path.push(dataSelected);
                         dataSelected = '';
-                        model.status.path.push("CENTER_TEXT");
+                        model.status.path.push("CENTER__TEXT");
+                        model.status.dimensions = [];
                         var index  = model.status.dimensions.length
                         model.status.dimensions.push({
                         	axis:index+1,
-							name:'CENTER_TEXT',
-							value:'{CENTER_TEXT}'
+							name:'CENTER__TEXT',
+							value:'{CENTER__TEXT}'
                         })
+		bus.publish('app','onChangeDataSource');
+
                 }
         });
         aliCostCenter.setText("By Cost Center");
@@ -171,12 +180,15 @@ sap.ui.jsview("ui.whoiswhere", {
                         model.status.path.push(dataSelected);
                         dataSelected = '';                  
                         model.status.path.push("CONTROL_AREA_TEXT");
+                        model.status.dimensions = [];
                         var index  = model.status.dimensions.length
                         model.status.dimensions.push({
                         	axis:index+1,
 							name:'CONTROL_AREA_TEXT',
 							value:'{CONTROL_AREA_TEXT}'
                         })
+		bus.publish('app','onChangeDataSource');
+
                 }
         });
         aliControlArea.setText("By Controlling Area");
@@ -187,12 +199,15 @@ sap.ui.jsview("ui.whoiswhere", {
                         model.status.path.push(dataSelected);
                         dataSelected = '';
                         model.status.path.push("KUNDE");
+                        model.status.dimensions = [];
                     	var index  = model.status.dimensions.length
                         model.status.dimensions.push({
                         	axis:index+1,
 							name:'KUNDE',
 							value:'{KUNDE}'
                         })
+		bus.publish('app','onChangeDataSource');
+
                        // pieChart.setDataset(oDataset2); 
                 }      
         });
@@ -204,12 +219,15 @@ sap.ui.jsview("ui.whoiswhere", {
                         model.status.path.push(dataSelected);
                         dataSelected = '';
                         model.status.path.push("YEAR");
+                        model.status.dimensions = [];
                     	var index  = model.status.dimensions.length
                         model.status.dimensions.push({
                         	axis:index+1,
 							name:'YEAR',
 							value:'{YEAR}'
                         })
+		bus.publish('app','onChangeDataSource');
+
                 }        
         });
         aliYear.setText("By Year");
@@ -220,12 +238,15 @@ sap.ui.jsview("ui.whoiswhere", {
                         model.status.path.push(dataSelected);
                         dataSelected = '';
                         model.status.path.push("MONTH");
+                        model.status.dimensions = [];
                         var index  = model.status.dimensions.length
                         model.status.dimensions.push({
                         	axis:index+1,
 							name:'MONTH',
 							value:'{MONTH}'
                         })
+		bus.publish('app','onChangeDataSource');
+
                 }        
         });
         aliMonth.setText("By Month");

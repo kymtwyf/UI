@@ -5,7 +5,7 @@ model.dimensions = [
 	'LANDTEXT',
 	'ZORT1',//city类似
 
-	'CENTER_TEXT',
+	'CENTER__TEXT',
 	'CONTROL_AREA_TEXT',
 	'KUNDE',
 	

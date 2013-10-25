@@ -121,7 +121,7 @@ util.tools = {
              			flag = false;
              			break;
              		}
-             		if(model.status.path[j]=='CENTER_TEXT'&&model.dimensions[i]=='CONTROL_AREA_TEXT'){
+             		if(model.status.path[j]=='CENTER__TEXT'&&model.dimensions[i]=='CONTROL_AREA_TEXT'){
              			//already drill down by cost center  the drill down by controlling area is not useful
              			flag = false;
              			break;
