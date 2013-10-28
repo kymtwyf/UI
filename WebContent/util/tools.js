@@ -24,29 +24,33 @@ util.tools = {
 			case 8:break;//_D_YEAR_COST
 			}
 		},
-		saveData:function(s_oldPath){
+		saveData:function(){
+                  var s_oldPath = model.status.path.join();
+                  console.log(s_oldPath);
 			model.data[s_oldPath] = model.data.CURRENT_DATA;
 		},
 		onChangeDataSource:function(channelId,eventId,data){
-			
-
-			//1 save the old data
-
-
-            	 // var oldpath= "";	 
-            	 // var newpath= "";
-            	 // for(var i=0; i<model.status.path.length;i++)
-            		//  oldpath = oldpath + model.status.path[i] + "." ;
-            	 // model.data[oldpath]=oldpath;
+			var newPath = model.status.path.join();
+                  console.log("new Path "+newPath);
+                  if(model.data[newPath]){
+                        console.log("我使用了已经存储的数据");
+                        model.data.CURRENT_DATA = model.data[newPath];
+                        bus.publish('pieChart','refresh',model.data[newPath]);
+                  }
+                  else{
 			//2 prepare the new data
-                  var newDataSet = util.queries.getDataFromCurrentStatus();
-                  jQuery.when(newDataSet).done(function(data){
-                        var oData = {};
-                        oData.content = data.d.results;
-                        oData.dimensions = model.status.dimensions;
-                        oData.measures = model.status.measures;
-                        bus.publish('pieChart','refresh',oData);
-                  })
+                        console.log("I have to request for new data");
+                        var newDataSet = util.queries.getDataFromCurrentStatus();
+                        jQuery.when(newDataSet).done(function(data){
+                              var oData = {};
+                              oData.content = data.d.results;
+                              oData.dimensions = model.status.dimensions;
+                              oData.measures = model.status.measures;
+                              oData.time = new Date();
+                              model.data.CURRENT_DATA = oData;
+                              bus.publish('pieChart','refresh',oData);
+                        })
+                  }
 
 
             	  // model.status.path.push(data);

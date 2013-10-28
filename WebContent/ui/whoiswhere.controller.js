@@ -44,15 +44,15 @@ sap.ui.controller("ui.whoiswhere", {
 						bus.publish("refreshButton","stop",{
 							text:'loaded'
 						});
-						var template = function(){
-							var content,
-							time,
-							measures,
-							dimensions
-						}
+						// var template = function(){
+						// 	var content,
+						// 	time,
+						// 	measures,
+						// 	dimensions
+						// }
 						util.tools._F_Toast("success loaded data");
 						var name = "CURRENT_DATA";
-						model.data[name] = new template();
+						model.data[name] = new Object();
 						model.data[name].content = data.d.results;
 						model.data[name].time = new Date();
 						model.data[name].dimensions = model.status.dimensions.slice(0);

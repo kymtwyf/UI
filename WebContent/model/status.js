@@ -28,7 +28,7 @@ model.status = {
 	month:[],	
 	path:[],
 	changeIconTab:function(channelId, eventId, data){
-
+		
 		model.status.iconTab = data.s_newIconTab;
 		model.status.measure = data.s_newMeasure;
 		model.status.showType = data.s_showType;

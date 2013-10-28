@@ -7,7 +7,6 @@ sap.ui.jsview("ui.whoiswhere", {
         createContent : function(oController) {
 
 		jQuery.sap.require("util.tools");
-        // jQuery.sap.require("model.conditions");
         jQuery.sap.require("model.status");
         jQuery.sap.require("model.data");
         jQuery.sap.require("model.dimensions");
@@ -122,6 +121,7 @@ sap.ui.jsview("ui.whoiswhere", {
 		var aliArray = new Array();
         var aliCountry=new sap.m.ActionListItem({                                                                                        //action list item
                 tap:function(oControlEvent){
+                	util.tools.saveData();
                         model.status.path.push(dataSelected);
                         dataSelected = '';
                         model.status.path.push("LANDTEXT");
@@ -140,6 +140,7 @@ sap.ui.jsview("ui.whoiswhere", {
         aliArray.push(aliCountry);
         var aliLocation=new sap.m.ActionListItem({                                                                                        //action list item
                 tap:function(oControlEvent){
+                	util.tools.saveData();
                         model.status.path.push(dataSelected);
                         dataSelected = '';
                         model.status.path.push("ZORT1");
@@ -159,6 +160,7 @@ sap.ui.jsview("ui.whoiswhere", {
 
 		var aliCostCenter=new sap.m.ActionListItem({                                                                                        //action list item
                 press:function(oControlEvent){
+                	util.tools.saveData();
                         model.status.path.push(dataSelected);
                         dataSelected = '';
                         model.status.path.push("CENTER__TEXT");
@@ -178,6 +180,7 @@ sap.ui.jsview("ui.whoiswhere", {
 
         var aliControlArea=new sap.m.ActionListItem({                                                                                        //action list item
                 press:function(oControlEvent){
+                	util.tools.saveData();
                         model.status.path.push(dataSelected);
                         dataSelected = '';                  
                         model.status.path.push("CONTROL_AREA_TEXT");
@@ -197,6 +200,7 @@ sap.ui.jsview("ui.whoiswhere", {
 
         var aliReason=new sap.m.ActionListItem({                                                                                        //action list item
                 tap:function(oControlEvent){
+                	util.tools.saveData();
                         model.status.path.push(dataSelected);
                         dataSelected = '';
                         model.status.path.push("KUNDE");
@@ -217,6 +221,7 @@ sap.ui.jsview("ui.whoiswhere", {
                 
         var aliYear=new sap.m.ActionListItem({                                                                                        //action list item
                 tap:function(oControlEvent){
+                	util.tools.saveData();
                         model.status.path.push(dataSelected);
                         dataSelected = '';
                         model.status.path.push("YEAR");
@@ -236,6 +241,7 @@ sap.ui.jsview("ui.whoiswhere", {
 
 		var aliMonth=new sap.m.ActionListItem({                                                                                        //action list item
                 tap:function(oControlEvent){
+                	util.tools.saveData();
                         model.status.path.push(dataSelected);
                         dataSelected = '';
                         model.status.path.push("MONTH");
@@ -467,6 +473,7 @@ sap.ui.jsview("ui.whoiswhere", {
                                 content: [oVBoxpage],
                                 select: function (oEvent) {
                                         var selected = oEvent.getParameter("item") ;
+                                        util.tools.saveData();
                                         if(selected == 'Element sap.m.IconTabFilter#__filter0'&&model.status.iconTab!='LANDTEXT')
                                         { 
                                         	bus.publish('app','onChangeIconTab',{
