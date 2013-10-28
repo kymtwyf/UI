@@ -409,11 +409,7 @@ sap.ui.jsview("ui.whoiswhere", {
                 //when change value, trigger on the generatetoSelectItem()
                 
                 var toSelect = new sap.m.Select({
-                	width:"100%",
-                    change: function(oControlEvent){    
-                        fromSelect.removeAllItems();
-                        util.tools.generateFromSelectItems(fromSelect,toSelect.getSelectedItem().mProperties.text);
-                    }
+                	width:"100%"
                	});
                 
                 var Form = new sap.ui.commons.form.SimpleForm({ //simple form in the dialog
@@ -468,14 +464,17 @@ sap.ui.jsview("ui.whoiswhere", {
                             	var monthfromSelected = fromSelect.getSelectedItem().mProperties.text;
                             	//get the value of toSelect
                             	var monthtoSelected = toSelect.getSelectedItem().mProperties.text;
-                                console.log(monthfromSelected);
-                                console.log(monthtoSelected);
+                               
                             	//publish this event
+                                if(monthtoSelected == " NOW ")
+                                    monthtoSelected = util.tools.getCurrentMonth();
                             	 bus.publish("month","onChange",{
                     	    		 from: monthfromSelected,
                     	    		 to: monthtoSelected
                     	    	 },this);
                             	 //close this dialog
+                                  console.log(monthfromSelected);
+                                console.log(monthtoSelected);
                             	 stdDialog2.close();
                             }
                           }),

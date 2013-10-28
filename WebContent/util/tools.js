@@ -286,15 +286,16 @@ util.tools = {
 					fromSelect.insertItem(new sap.ui.core.Item( {text: util.tools.Months[i]}));
 				}
 
-				for(var i=util.tools.Months.length-1; i>1; i--)
-				{
-					toSelect.insertItem(new sap.ui.core.Item( {text: util.tools.Months[i]}));
-				}
+				
+					toSelect.insertItem(new sap.ui.core.Item( {text: " NOW "}));
 		 	  });
 			},
 			generateToSelectItems: function(Select,value){
 				//generaFfte items of all months according the Months and Selected
 				jQuery.when(this.getMonthInfoFromOdata()).done(function(){
+
+					Select.insertItem(new sap.ui.core.Item( {text: " NOW "}));
+					
 					for(var i = util.tools.Months.length-1; i>0; i--)
 					{
 						if(util.tools.Months[i]!= value)
@@ -302,20 +303,8 @@ util.tools = {
 						else
 							break;
 					}
-				});
-			},
-			generateFromSelectItems: function(Select,value){
-				//generaFfte items of all months according the Months and fromSelected
-				jQuery.when(this.getMonthInfoFromOdata()).done(function(){
-					for(var i = 0; i<util.tools.Months.length-1; i++)
-					{
-						if(util.tools.Months[i]!= value)
-						Select.insertItem(new sap.ui.core.Item( {text: util.tools.Months[i]}));
-						else
-							break;
-					}
-				});
 
+				});
 			}
 }
 
