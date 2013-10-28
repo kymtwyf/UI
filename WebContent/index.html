@@ -34,14 +34,15 @@
 				sap.ui.localResources("model");
 				jQuery.sap.require("util.queries");
 				jQuery.sap.require("model.data");
-				jQuery.sap.require("model.conditions");
+				jQuery.sap.require("model.status");
+
+				// jQuery.sap.require("model.conditions");
 				jQuery.sap.require("util.tools");
 				var app = new sap.m.App({initialPage:"idDemo2"});
 				var page = sap.ui.view({id:"idDemo1", viewName:"ui.index", type:sap.ui.core.mvc.ViewType.JS});
 				var page2 = sap.ui.view({id:"idDemo2", viewName:"ui.whoiswhere", type:sap.ui.core.mvc.ViewType.JS});
-				var page3 = sap.ui.view({id:"idDemo3", viewName:"ui.howcost", type:sap.ui.core.mvc.ViewType.JS});
 				//console.log(util.queries.getQuery("LANDX"));
-				app.addPage(page).addPage(page2).addPage(page3);
+				app.addPage(page).addPage(page2);
 				app.placeAt("content");
 		</script>
 
