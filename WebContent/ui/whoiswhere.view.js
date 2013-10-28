@@ -109,15 +109,16 @@ sap.ui.jsview("ui.whoiswhere", {
 			ev = ev || window.event;
 		    var mousePos = mousePosition(ev);
 			mousePositionX = mousePos.x;
+
 			mousePositionY = mousePos.y; 
-			if(popover.isOpen()){
-				popover.close();
-			}
+			console.log(model.data.currentData);
+			
+			//return false;
 		} 
-		
+
 		///********************************pop over 的items*******************************8/
 		//这个顺序不能随便换 是根据model.dimensions来的
-		var popoverlist = new sap.m.List();								//list 
+		var popoverlist = new sap.m.List("list");								//list 
 		var aliArray = new Array();
         var aliCountry=new sap.m.ActionListItem({                                                                                        //action list item
                 tap:function(oControlEvent){
@@ -134,7 +135,9 @@ sap.ui.jsview("ui.whoiswhere", {
                         })
 		bus.publish('app','onChangeDataSource');
 
+
                 }
+
         });
         aliCountry.setText("By Country");
         aliArray.push(aliCountry);
@@ -263,7 +266,7 @@ sap.ui.jsview("ui.whoiswhere", {
         
        
                
-        var popover = new sap.m.Popover({                                                                                                        //popover
+        var popover = new sap.m.Popover("popover",{                                                                                                        //popover
                 title: "Drilldown...",
                 placement: sap.m.PlacementType.Right,
                 content: popoverlist
@@ -274,19 +277,18 @@ sap.ui.jsview("ui.whoiswhere", {
         function mouseDBClick(ev){                                //double click will pop over
            console.log('event '+dataSelected);
            if(dataSelected != ''){
-                     adjustPopover(mousePositionX,mousePositionY);
+                  
                      util.tools.adjustPopoverList(popoverlist,aliArray);
+                     console.log($("#popover").width());
                      popover.openBy(pieChart);
+                     var height = $("#popover").height();    
+                      $("#popover").css({"top":mousePositionY-height/2,"left":mousePositionX+15});    
+                     //$("#popover").width('194px');
                  }
+
+               //  return true;;
         }
         
-        function adjustPopover(mousePositionX,mousePositionY){
-                var px=1299;
-                var py=477;
-                popover.setOffsetX(mousePositionX-px);
-                if(py>popover) popover.setOffsetY(py-mousePositionY);
-                else  popover.setOffsetY(mousePositionY-py);
-        }
         //这个refresh需要增加：多个dimensions的显示功能
         function refreshPieChart(channelId, eventId, oData) {
         		console.log(oData.content);
@@ -379,6 +381,42 @@ sap.ui.jsview("ui.whoiswhere", {
 		var barChart = sap.ui.view({id:"barchart", viewName:"ui.BarChart", type:sap.ui.core.mvc.ViewType.JS});
 		//bar chart of data
 		
+		// create listAsTable
+		var listAsTable = new sap.m.List({
+		  headerText: "Title",
+		  columns: [
+		    new sap.m.Column({
+		      header: new sap.m.Label({text: "ID"})
+		    }),
+		    new sap.m.Column({
+		      header: new sap.m.Label({text: "Name"})
+		    })
+		 
+		  ],
+		  items: {
+		    template: new sap.m.ColumnListItem({
+		      cells: [
+		        new sap.m.ObjectIdentifier({
+		          title: "{LANDTEXT}"
+		        }),
+		        new sap.m.Text({
+		          text: "{TRIP_TOTAL}"
+		        }),
+		        new sap.m.ObjectStatus({
+		          text: "{status}",
+		       
+		        }),
+		        new sap.m.Text({text: "{amount}"}),
+		        new sap.m.ObjectNumber({
+		          numberUnit: "€",
+		          number: "{price}"
+		        })
+		      ]
+		    })
+		  }
+		});
+		listAsTable.setModel(model.data.currentData);
+
 		
 		var button1 = new sap.m.Button('bt_showByCost', {
 			type: sap.m.ButtonType.Default,
@@ -409,9 +447,8 @@ sap.ui.jsview("ui.whoiswhere", {
                         press: function(){
                                 oVBoxpage.removeAllItems();
                                 oVBoxpage.addItem(bar);
-                                oVBoxpage.addItem(new sap.m.Text({
-                             text: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.  Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua."
-                            }));
+                                oVBoxpage.addItem( 
+                                	listAsTable);
                                 
                                 }
                 });

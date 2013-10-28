@@ -385,7 +385,6 @@ util.tools = {
 
 					for(var i = util.tools.Months.length-1; i>0; i--)
 					{
-						console.log("aa"+util.tools.Months[i]);
 						if(util.tools.decorateMonths(util.tools.Months[i])!= value)
 						Select.insertItem(new sap.ui.core.Item( {text: util.tools.decorateMonths(util.tools.Months[i])  }));
 						else
