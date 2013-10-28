@@ -7,7 +7,7 @@ sap.ui.jsview("ui.whoiswhere", {
         createContent : function(oController) {
 
 		jQuery.sap.require("util.tools");
-        jQuery.sap.require("model.conditions");
+        // jQuery.sap.require("model.conditions");
         jQuery.sap.require("model.status");
         jQuery.sap.require("model.data");
         jQuery.sap.require("model.dimensions");
