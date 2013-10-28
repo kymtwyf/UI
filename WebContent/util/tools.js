@@ -283,7 +283,8 @@ util.tools = {
 		 		//generate items of all months according to the months getting from ODATA
 				for(var i=util.tools.Months.length-2; i>0; i--)
 				{
-					fromSelect.insertItem(new sap.ui.core.Item( {text: util.tools.Months[i]}));
+
+					fromSelect.insertItem(new sap.ui.core.Item( { text: util.tools.decorateMonths(util.tools.Months[i]) }));
 				}
 
 				
@@ -295,17 +296,30 @@ util.tools = {
 				jQuery.when(this.getMonthInfoFromOdata()).done(function(){
 
 					Select.insertItem(new sap.ui.core.Item( {text: " NOW "}));
-					
+
 					for(var i = util.tools.Months.length-1; i>0; i--)
 					{
-						if(util.tools.Months[i]!= value)
-						Select.insertItem(new sap.ui.core.Item( {text: util.tools.Months[i]}));
+						console.log("aa"+util.tools.Months[i]);
+						if(util.tools.decorateMonths(util.tools.Months[i])!= value)
+						Select.insertItem(new sap.ui.core.Item( {text: util.tools.decorateMonths(util.tools.Months[i])  }));
 						else
 							break;
 					}
 
 				});
+			},
+			decorateMonths: function(string)
+			{
+				var first = string.slice(0,4);
+				var second = string.slice(4,6);
+				return string = first + '/'+ second;
+			},
+			UndoMonths: function(string){
+				var first = string.slice(0,4);
+				var second = string.slice(5,7);
+				return string = first + second;
 			}
+
 }
 
 var bus = sap.ui.getCore().getEventBus();

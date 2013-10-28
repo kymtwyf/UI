@@ -469,12 +469,12 @@ sap.ui.jsview("ui.whoiswhere", {
                                 if(monthtoSelected == " NOW ")
                                     monthtoSelected = util.tools.getCurrentMonth();
                             	 bus.publish("month","onChange",{
-                    	    		 from: monthfromSelected,
-                    	    		 to: monthtoSelected
+                    	    		 from: util.tools.UndoMonths(monthfromSelected),
+                    	    		 to: util.tools.UndoMonths(monthtoSelected)
                     	    	 },this);
                             	 //close this dialog
-                                  console.log(monthfromSelected);
-                                console.log(monthtoSelected);
+                                  console.log(util.tools.UndoMonths(monthfromSelected));
+                                console.log(util.tools.UndoMonths(monthtoSelected));
                             	 stdDialog2.close();
                             }
                           }),
