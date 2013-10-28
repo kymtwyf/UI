@@ -91,8 +91,10 @@ sap.ui.jsview("ui.whoiswhere", {
 		    var mousePos = mousePosition(ev);
 			mousePositionX = mousePos.x;
 			mousePositionY = mousePos.y;  
+            console.log(" x= " + mousePositionX + "y = "+mousePositionY);
 		} 
 		
+                           
 		var popoverlist = new sap.m.List();								//list 
 
                 var aliCountry=new sap.m.ActionListItem({                                                                                        //action list item
@@ -100,6 +102,8 @@ sap.ui.jsview("ui.whoiswhere", {
                     		util.tools.onChangeDataSource(pathdata,"Country");
                         }
                 });
+              
+                
                 aliCountry.setText("To Country");
                 
                 var aliReason=new sap.m.ActionListItem({                                                                                        //action list item
@@ -129,34 +133,28 @@ sap.ui.jsview("ui.whoiswhere", {
                         }        
                 });
                 aliTime.setText("To Time");
-                
-                
-               
                        
-                var popover = new sap.m.Popover({                                                                                                        //popover
+                var popover = new sap.m.Popover("popover",{                                                                                                        //popover
                         title: "Drilldown...",
                         placement: sap.m.PlacementType.Right,
                         content: popoverlist
                         });                
-                
-                document.ondblclick = mouseDBClick;
+
+                         
+
+               document.ondblclick = mouseDBClick;
                 
                 function mouseDBClick(ev){                                //double click will pop over
                    if(dataSelected != -1){
-                             adjustPopover(mousePositionX,mousePositionY);
                              util.tools.adjustPopoverList(popoverlist,aliCountry,aliReason,aliExpenseType,aliCostCenter,aliTime);
                              popover.openBy(pieChart);
+                             var height = $("#popover").height();
+                             $("#popover").css({"top":mousePositionY-height/2,"left":mousePositionX+15});    
+                             $("#popover").width('182px');
                          }
                    dataSelected = -1;
                 }
-                
-                function adjustPopover(mousePositionX,mousePositionY){
-                        var px=1299;
-                        var py=477;
-                        popover.setOffsetX(mousePositionX-px);
-                        if(py>popover) popover.setOffsetY(py-mousePositionY);
-                        else  popover.setOffsetY(mousePositionY-py);
-                }
+            
                 
                 function refreshPieChart(channelId, eventId, oData) {
                         var PieModel = {  data : oData.content};
