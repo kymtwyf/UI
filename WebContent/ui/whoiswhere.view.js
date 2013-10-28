@@ -401,15 +401,20 @@ sap.ui.jsview("ui.whoiswhere", {
                 var toLabel = new sap.m.Label({text:"To  "});
                 var fromSelect = new sap.m.Select({
                 	width:"100%",
-                	  items: [
-                	  ]
-                	});
+                    change: function(oControlEvent){    
+                        toSelect.removeAllItems();
+                    	util.tools.generateToSelectItems(toSelect,fromSelect.getSelectedItem().mProperties.text);
+                    }
+                });
+                //when change value, trigger on the generatetoSelectItem()
                 
                 var toSelect = new sap.m.Select({
                 	width:"100%",
-              	  items: [
-              	  ]
-              	});
+                    change: function(oControlEvent){    
+                        fromSelect.removeAllItems();
+                        util.tools.generateFromSelectItems(fromSelect,toSelect.getSelectedItem().mProperties.text);
+                    }
+               	});
                 
                 var Form = new sap.ui.commons.form.SimpleForm({ //simple form in the dialog
                           editable: true,
@@ -446,14 +451,8 @@ sap.ui.jsview("ui.whoiswhere", {
                     press: function () {
                              stdDialog.close();
                     }
-                  }),
-                  afterClose: function (oEvent) {
-                    // if dialog is closed by pressing on one of the buttons in dialog, 
-                    // a history back needs to be called.
-                    if (oEvent.getParameter("origin")) {
-                      sap.ui.getCore().getEventBus().publish("nav", "back");
-                    }
-                  }
+                  })
+                 
                 });
                 
              
@@ -466,8 +465,18 @@ sap.ui.jsview("ui.whoiswhere", {
                             text: "Ok",
                             press: function () {
                             	//get the value of fromSelect
+                            	var monthfromSelected = fromSelect.getSelectedItem().mProperties.text;
                             	//get the value of toSelect
-                            	
+                            	var monthtoSelected = toSelect.getSelectedItem().mProperties.text;
+                                console.log(monthfromSelected);
+                                console.log(monthtoSelected);
+                            	//publish this event
+                            	 bus.publish("month","onChange",{
+                    	    		 from: monthfromSelected,
+                    	    		 to: monthtoSelected
+                    	    	 },this);
+                            	 //close this dialog
+                            	 stdDialog2.close();
                             }
                           }),
                           rightButton: new sap.m.Button({
@@ -475,38 +484,35 @@ sap.ui.jsview("ui.whoiswhere", {
                             press: function () {
                                      stdDialog2.close();
                             }
-                          }),
-                          afterClose: function (oEvent) {
-                            // if dialog is closed by pressing on one of the buttons in dialog, 
-                            // a history back needs to be called.
-                        	  if (oEvent.getParameter("origin")) {
-                                  sap.ui.getCore().getEventBus().publish("nav", "back");
-                                }
-                          }
+                          })
+                        
                 });
                 
-
   	    	  
                 var monthActionSheet = new sap.m.ActionSheet({
                 	  buttons: [
                 	    new sap.m.Button({
                 	      icon: "sap-icon://past",
-                	      text: "From this Season to Now",
+                	      text: "Last Season Status",
                 	      press: function(){
                 	    	 bus.publish("month","onChange",{
-                	    		 from: util.tools.getCurrentSeason(),
-                	    		 to: util.tools.getCurrentMonth()
+                	    		 from: util.tools.getLastSeason(),
+                	    		 to: util.tools.getCurrentSeason()
                 	    	 },this);
+                            // console.log( util.tools.getLastSeason());
+                           //  console.log( util.tools.getCurrentSeason());
                 	      }
                 	    }),
                 	    new sap.m.Button({
                 	      icon: "sap-icon://past",
-                	      text: "From this Year to Now",
+                	      text: "Last Year Status",
                 	      press: function(){
                 	    	  bus.publish("month","onChange",{
-                 	    		 from: util.tools.getCurrentYear(),
-                 	    		 to: util.tools.getCurrentMonth()
+                 	    		 from: util.tools.getLastYear(),
+                 	    		 to: util.tools.getCurrentYear()
                  	    	 },this);
+                            //   console.log( util.tools.getCurrentYear());
+                            //  console.log( util.tools.getLastYear());
                 	      }
                 	    }),
                 	    new sap.m.Button({
@@ -514,6 +520,7 @@ sap.ui.jsview("ui.whoiswhere", {
                 	      text: "Customize the Time Interval",
                 	      press: function(){
                 	    	  stdDialog2.open();
+                              util.tools.generateAllItems(fromSelect,toSelect);
                 	      }
                 	    })
                 	  ],
