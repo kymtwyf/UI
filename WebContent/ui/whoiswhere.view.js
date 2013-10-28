@@ -7,6 +7,7 @@ sap.ui.jsview("ui.whoiswhere", {
         createContent : function(oController) {
 
 		jQuery.sap.require("util.tools");
+        jQuery.sap.require("model.conditions");
         jQuery.sap.require("model.status");
         jQuery.sap.require("model.data");
         jQuery.sap.require("model.dimensions");
@@ -422,7 +423,7 @@ sap.ui.jsview("ui.whoiswhere", {
                 
                 
                 var bar = new sap.m.Bar({                // bar of segment buttons
-                        contentLeft:[Segmented1,selecttimeinterval],
+                        contentLeft:[Segmented1],
                         contentRight:Segmented2,
                         translucent:true
                 });
@@ -522,15 +523,21 @@ sap.ui.jsview("ui.whoiswhere", {
                     });
                 
                 inputcostlimit.setValue(costlimit);
+
+                var fromLabel = new sap.m.Label({text:"From "});
+                var toLabel = new sap.m.Label({text:"To  "});
+                var fromSelect = new sap.m.Select({
+                	width:"100%",
+                    change: function(oControlEvent){    
+                        toSelect.removeAllItems();
+                    	util.tools.generateToSelectItems(toSelect,fromSelect.getSelectedItem().mProperties.text);
+                    }
+                });
+                //when change value, trigger on the generatetoSelectItem()
                 
-                var selecttimeinterval = new sap.m.Select({
-                          items: [
-                                  new sap.ui.core.Item("timeinterval1", {text: "Last month to Today"}),
-                                  new sap.ui.core.Item("timeinterval12", {text:"Last two months to Today"}),
-                                  new sap.ui.core.Item("timeinterval13", {text:"Last year to Today"})
-                                ]
-                              });
-        
+                var toSelect = new sap.m.Select({
+                	width:"100%"
+               	});
                 
                 var Form = new sap.ui.commons.form.SimpleForm({ //simple form in the dialog
                           editable: true,
@@ -542,15 +549,9 @@ sap.ui.jsview("ui.whoiswhere", {
                         });
                 
                 var Form2 = new sap.ui.commons.form.SimpleForm({ //simple form in the dialog
-                          editable: true,
-                          content : [
-                            new sap.m.Label({
-                              text: 'Time Interval'
-                            }), selecttimeinterval
-                          ]
-                        });
-                
-                             
+                	content : [ fromLabel,fromSelect,toLabel,toSelect],
+                	//width: "50%",
+                        });	
                 var stdDialog = new sap.m.Dialog();
                 var stdDialog2 = new sap.m.Dialog();
                 
@@ -573,28 +574,35 @@ sap.ui.jsview("ui.whoiswhere", {
                     press: function () {
                              stdDialog.close();
                     }
-                  }),
-                  afterClose: function (oEvent) {
-                    // if dialog is closed by pressing on one of the buttons in dialog, 
-                    // a history back needs to be called.
-                    if (oEvent.getParameter("origin")) {
-                      sap.ui.getCore().getEventBus().publish("nav", "back");
-                    }
-                  }
+                  })
+                 
                 });
                 
+             
                 
                 stdDialog2 = new sap.m.Dialog({// create standard dialog 
                           title: "Setting Time Interval",
                           content: Form2,
-                          
+                          width: "0%",
                           leftButton: new sap.m.Button({
                             text: "Ok",
                             press: function () {
-                                    costlimit=inputcostlimit.getValue();
-                                    util.tools.setCookie(costlimit,365);
-                                    setFirstStatus();
-                                    stdDialog2.close();
+                            	//get the value of fromSelect
+                            	var monthfromSelected = fromSelect.getSelectedItem().mProperties.text;
+                            	//get the value of toSelect
+                            	var monthtoSelected = toSelect.getSelectedItem().mProperties.text;
+                               
+                            	//publish this event
+                                if(monthtoSelected == " NOW ")
+                                    monthtoSelected = util.tools.getCurrentMonth();
+                            	 bus.publish("month","onChange",{
+                    	    		 from: util.tools.UndoMonths(monthfromSelected),
+                    	    		 to: util.tools.UndoMonths(monthtoSelected)
+                    	    	 },this);
+                            	 //close this dialog
+                                  console.log(util.tools.UndoMonths(monthfromSelected));
+                                console.log(util.tools.UndoMonths(monthtoSelected));
+                            	 stdDialog2.close();
                             }
                           }),
                           rightButton: new sap.m.Button({
@@ -602,15 +610,48 @@ sap.ui.jsview("ui.whoiswhere", {
                             press: function () {
                                      stdDialog2.close();
                             }
-                          }),
-                          afterClose: function (oEvent) {
-                            // if dialog is closed by pressing on one of the buttons in dialog, 
-                            // a history back needs to be called.
-                            if (oEvent.getParameter("origin")) {
-                              sap.ui.getCore().getEventBus().publish("nav", "back");
-                            }
-                          }
+                          })
+                        
                 });
+                
+  	    	  
+                var monthActionSheet = new sap.m.ActionSheet({
+                	  buttons: [
+                	    new sap.m.Button({
+                	      icon: "sap-icon://past",
+                	      text: "Last Season Status",
+                	      press: function(){
+                	    	 bus.publish("month","onChange",{
+                	    		 from: util.tools.getLastSeason(),
+                	    		 to: util.tools.getCurrentSeason()
+                	    	 },this);
+                            // console.log( util.tools.getLastSeason());
+                           //  console.log( util.tools.getCurrentSeason());
+                	      }
+                	    }),
+                	    new sap.m.Button({
+                	      icon: "sap-icon://past",
+                	      text: "Last Year Status",
+                	      press: function(){
+                	    	  bus.publish("month","onChange",{
+                 	    		 from: util.tools.getLastYear(),
+                 	    		 to: util.tools.getCurrentYear()
+                 	    	 },this);
+                            //   console.log( util.tools.getCurrentYear());
+                            //  console.log( util.tools.getLastYear());
+                	      }
+                	    }),
+                	    new sap.m.Button({
+                	      icon: "sap-icon://customer-history",
+                	      text: "Customize the Time Interval",
+                	      press: function(){
+                	    	  stdDialog2.open();
+                              util.tools.generateAllItems(fromSelect,toSelect);
+                	      }
+                	    })
+                	  ],
+                	  placement: sap.m.PlacementType.Top,
+                	});
 
 
                 var oVBox1 = new sap.m.VBox("hbox1", {        // shorten the mergin between the object header and tab
@@ -636,9 +677,10 @@ sap.ui.jsview("ui.whoiswhere", {
                 });
                 
                 var settingbutton2 = new sap.m.Button({
-                        icon: "sap-icon://past",
+                        icon: "sap-icon://history",
                   press : function() {
-                                    stdDialog2.open();
+                	  	monthActionSheet.openBy(this);
+                                   
                         }        
                 });
 

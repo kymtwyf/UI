@@ -57,7 +57,6 @@ util.tools = {
                
         
             	 // if(model.data[newpath]);
-            		 
 			//2.2 if not they send another request to get the data
             	 // else;
 			//3 show the new data
@@ -206,7 +205,202 @@ util.tools = {
             		}
             	}
             	return newData;
-            }
+            },
+		 	ArrayToString: function(array){
+		 		var string="";
+		 		for(var i = 0;i<array.length;i++){
+		 			string = string +array[i]+".";
+		 		}
+		 		return string;
+		 	},
+		 	getCurrentMonth: function(){
+		 		  var date = new Date();
+	  	    	  var year = date.getFullYear().toString();
+	  	    	  var month = date.getMonth()+1;
+	  	    	  month = month.toString();
+	  	    	 var currentMonth;
+	  	    	  if(month<10)
+	  	    	 currentMonth = year+'0'+month;
+	  	    	  else
+	  	    		currentMonth = year + month;
+	  	    	  return currentMonth;
+		 	},
+		 	getLastSeason: function(){ 
+		 		var date = new Date();
+		 		var year = date.getFullYear();
+		 		var month = date.getMonth()+1;
+		 		var season;
+		 		switch(month)
+		 		{
+		 		case 1:
+		 			season="10";
+		 			year=year-1;
+                    break;
+		 		case 2:
+		 			season="10";
+		 			year=year-1;
+                    break;
+		 		case 3:
+		 			season="10";
+		 			year=year-1;
+                    break;
+		 		case 4:
+		 			season="01";
+                    break;
+		 		case 5:
+		 			season="01";
+                    break;
+		 		case 6:
+		 			season="01";
+                    break;
+		 		case 7:
+		 			season="04";
+                    break;
+		 		case 8:
+		 			season="04";
+                    break;
+		 		case 9:
+		 			season="04";
+                    break;
+		 		case 10:
+		 			season="07";
+                    break;
+		 		case 11:
+		 			season="07";
+                    break;
+		 		case 12:
+		 			season="07";
+                    break;
+		 		}
+		 		var lastSeason = year.toString()+season.toString();
+		 		return lastSeason;
+		 		
+		 	},
+		 	getCurrentSeason: function(){ 
+		 		var date = new Date();
+		 		var year = date.getFullYear();
+		 		var month = date.getMonth()+1;
+		 		var season;
+		 		switch(month)
+		 		{
+		 		case 1:
+		 			season="01";
+                    break;
+		 		case 2:
+		 			season="01";
+                    break;
+		 		case 3:
+		 			season="01";
+                    break;
+		 		case 4:
+		 			season="04";
+                    break;
+		 		case 5:
+		 			season="04";
+                    break;
+		 		case 6:
+		 			season="04";
+                    break;
+		 		case 7:
+		 			season="07";
+                    break;
+		 		case 8:
+		 			season="07";
+                    break;
+		 		case 9:
+		 			season="07";
+                    break;
+		 		case 10:
+		 			season="10";
+                    break;
+		 		case 11:
+		 			season="10";
+                    break;
+		 		case 12:
+		 			season="10";
+                    break;
+		 		}
+		 		var currentSeason = year.toString()+season.toString();
+		 		return currentSeason;
+		 		
+		 	},
+		 	getCurrentYear: function(){
+		 		  var date = new Date();
+	  	    	  var year = date.getFullYear().toString();
+	  	    	 var currentYear = year + "01";
+	  	    	  return currentYear;
+		 	},
+		 	getLastYear: function(){
+		 		  var date = new Date();
+	  	    	  var year = date.getFullYear()-1;
+	  	    	 var LastYear = year.toString() + "01";
+	  	    	  return LastYear;
+		 	},
+			Months : [],
+		 	getMonthInfoFromOdata: function(){
+		 		var d = jQuery.Deferred();
+		 		jQuery.ajax({
+					url:"http://ld9415.wdf.sap.corp:8002/mouse/project/odata/Query.xsodata/Query?$select=MONTH&$filter=MANDT eq '578'&$format=json",
+				 	error:function(error){
+						util.tools._F_Toast("Fail to load data of months, Please check your network connection");
+					},
+					success:function(data){	
+						//get the  month and store in the Months[]
+						for(var i = 0; i<data.d.results.length;i++){
+							util.tools.Months.push(data.d.results[i].MONTH);
+						}
+			 			d.resolve();
+						
+					}
+				});
+
+		 		return d.promise();
+		 		
+		 		
+		 	},
+		 	generateAllItems: function(fromSelect,toSelect){
+		 		
+		 		jQuery.when(this.getMonthInfoFromOdata()).done(function(){
+
+		 		//generate items of all months according to the months getting from ODATA
+				for(var i=util.tools.Months.length-2; i>0; i--)
+				{
+
+					fromSelect.insertItem(new sap.ui.core.Item( { text: util.tools.decorateMonths(util.tools.Months[i]) }));
+				}
+
+				
+					toSelect.insertItem(new sap.ui.core.Item( {text: " NOW "}));
+		 	  });
+			},
+			generateToSelectItems: function(Select,value){
+				//generaFfte items of all months according the Months and Selected
+				jQuery.when(this.getMonthInfoFromOdata()).done(function(){
+
+					Select.insertItem(new sap.ui.core.Item( {text: " NOW "}));
+
+					for(var i = util.tools.Months.length-1; i>0; i--)
+					{
+						console.log("aa"+util.tools.Months[i]);
+						if(util.tools.decorateMonths(util.tools.Months[i])!= value)
+						Select.insertItem(new sap.ui.core.Item( {text: util.tools.decorateMonths(util.tools.Months[i])  }));
+						else
+							break;
+					}
+
+				});
+			},
+			decorateMonths: function(string)
+			{
+				var first = string.slice(0,4);
+				var second = string.slice(4,6);
+				return string = first + '/'+ second;
+			},
+			UndoMonths: function(string){
+				var first = string.slice(0,4);
+				var second = string.slice(5,7);
+				return string = first + second;
+			}
 
 }
 
