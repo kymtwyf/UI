@@ -25,7 +25,7 @@ model.status = {
 	filters:{
 		// "country":" eq Germany"
 	},
-	month:[],	
+	months:[],	
 	path:[],
 	changeIconTab:function(channelId, eventId, data){
 		
@@ -40,7 +40,7 @@ model.status = {
 			case 'LANDTEXT':
 								model.status.dimensions.push({
 								axis:1,
-								name:"LANDTEXT",
+								name:"Country",
 								value:"{LANDTEXT}",
 							}); 
 							model.status.path.push("LANDTEXT");
@@ -64,7 +64,7 @@ model.status = {
 			case 'KUNDE':
 								model.status.dimensions.push({
 								axis:1,
-								name:"KUNDE",
+								name:"Reason",
 								value:"{KUNDE}",
 							}); 
 							model.status.path.push("KUNDE");
@@ -85,7 +85,7 @@ model.status = {
 		switch(model.status.measure){
 			case 'cost':
 				model.status.measures.push({
-				name:"TRIP_TOTAL",
+				name:"total cost",
 				value:"{TRIP_TOTAL}",
 			});
 				break;
@@ -95,7 +95,7 @@ model.status = {
 			});
 				break;
 			default:model.status.measures.push({
-				name:"TRIP_TOTAL",
+				name:"total cost",
 				value:"{TRIP_TOTAL}",
 				});
 				break;
@@ -110,7 +110,7 @@ model.status = {
 			case 'LANDTEXT': var index = model.status.measures.length;
 								model.status.dimensions.push({
 								axis:index+1,
-								name:"LANDTEXT",
+								name:"Country",
 								value:"{LANDTEXT}",
 							}); 
 							model.status.path.push("LANDTEXT");
@@ -120,7 +120,7 @@ model.status = {
 		switch(model.status.measure){
 			case 'cost': 
 						model.status.measures.push({
-							name:"TRIP_TOTAL",
+							name:"total cost",
 							value:"{TRIP_TOTAL}",
 						});
 						break;
