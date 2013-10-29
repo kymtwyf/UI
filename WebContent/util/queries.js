@@ -33,7 +33,7 @@ util.queries = {
 			filter.push("MANDT eq \'"+temp.client+"\'");
 			if(temp.months.length==2){
 				filter.push('MONTH ge '+temp.months[0]);
-				filter.push(' and MONTH le '+temp.months[1]);
+				filter.push('MONTH le '+temp.months[1]);
 			}
 			console.log(temp.filters.year);
 			

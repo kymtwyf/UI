@@ -444,7 +444,7 @@ sap.ui.jsview("ui.whoiswhere", {
                         icon: "sap-icon://pie-chart",
                         press: function(){                                
                                 oVBoxpage.removeAllItems();
-                                oVBoxpage.addItem(bar);
+                                //oVBoxpage.addItem(bar);
                                 oVBoxpage.addItem(pieChart);
                                 }
                 });
@@ -455,16 +455,16 @@ sap.ui.jsview("ui.whoiswhere", {
                         //text: "Table"
                         press: function(){
                                oVBoxpage.removeAllItems();
-							   oVBoxpage.addItem(bar);
+							   //oVBoxpage.addItem(bar);
 					           oVBoxpage.addItem(scrolling);
                                 }
                 });
                 
                 
-                var Segmented1= new sap.m.SegmentedButton('Segmented1', {        //segment button 1
-                        buttons: [button1, button2], 
-                        selectedButton: button1
-                });
+                // var Segmented1= new sap.m.SegmentedButton('Segmented1', {        //segment button 1
+                //         buttons: [button1, button2], 
+                //         selectedButton: button1
+                // });
 
                 var Segmented2= new sap.m.SegmentedButton('Segmented2', {        //segment button 2
                         buttons: [button3, button4], 
@@ -472,22 +472,22 @@ sap.ui.jsview("ui.whoiswhere", {
                 });
                 
                 
-                var bar = new sap.m.Bar("bar",{                // bar of segment buttons
-                        contentLeft:[Segmented1],
-                        contentRight:Segmented2,
-                        translucent:true
-                });
+                // var bar = new sap.m.Bar("bar",{                // bar of segment buttons
+                //         contentLeft:[Segmented1],
+                //         contentRight:Segmented2,
+                //         translucent:true
+                // });
                 
 
                 var oVBoxpage = new sap.m.VBox("hboxpage", {                //contain bar and pie chart 
-                        items:[bar,pieChart]
+                        items:[pieChart]
                 });
                 function reloadPage()//这个需要改变
                 {
                         Segmented1.setSelectedButton(button1);
                         Segmented2.setSelectedButton(button3);
                         oVBoxpage.removeAllItems();
-                        oVBoxpage.addItem(bar);
+                       // oVBoxpage.addItem(bar);
                 }
                 
                 var tab = new sap.m.IconTabBar({        //icon tab  under the objectheader
@@ -706,8 +706,9 @@ sap.ui.jsview("ui.whoiswhere", {
                 	    	  {
                 	    	  	util.tools.generatefromExistedMonth(fromSelect,toSelect);
                 	    	  }
-                	    	  else
-                                util.tools.generateAllItems(fromSelect,toSelect);
+                	    	  else{
+                	    	    util.tools.generateAllItems(fromSelect,toSelect);
+                	    	}
                 	      }
                 	    })
                 	  ],
@@ -774,7 +775,8 @@ sap.ui.jsview("ui.whoiswhere", {
                 };
                 bus.subscribe('refreshTime','onChange',updateRefreshTime,this);
                 var footer = new sap.m.Bar({ 
-                        contentLeft: [refreshTimeLabel],
+                        contentMiddle:[refreshTimeLabel],
+                        contentLeft: [Segmented2],
                         contentRight: [settingbutton2,settingbutton]
                 });
 

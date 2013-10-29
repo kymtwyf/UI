@@ -425,7 +425,32 @@ util.tools = {
                         model.status.months = [];
                         model.status.months.push(data.from);
                         model.status.months.push(data.to);
-                        util.tools.filterDataByMonth();
+                        util.tools.onChangeDataSource();
+                        var totalUrl = "http://ld9415.wdf.sap.corp:8002/mouse/project/odata/Query.xsodata/Query?$select=TRIP_TOTAL&$filter=MANDT eq '002' and MONTH ge "+data.from+" and MONTH le "+data.to+"&$format=json"
+                        //util.tools.filterDataByMonth();
+                        jQuery.ajax({//get the total cost
+                        url:totalUrl,
+                        error:function(){
+                              jQuery.sap.require("sap.m.MessageToast");
+                               sap.m.MessageToast.show("Some error occurred when querying, please check the network and try again");
+                        },
+                        success:function(data){
+                              console.log("data d length "+data.d.results.length );
+                              if(data.d.results.length>0){
+                                    var total = data.d.results[0].TRIP_TOTAL;
+                                    console.log("TOTAL "+total);
+                                    model.data.TOTAL = total;
+                                    bus.publish("total","refresh",{
+                                          value:total
+                                    })
+                              }else{
+                                    bus.publish("total","refresh",{
+                                          value:0
+                                    })
+                              }
+
+                              }
+                        });
                   }
 
 }
