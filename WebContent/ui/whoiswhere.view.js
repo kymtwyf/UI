@@ -51,7 +51,7 @@ sap.ui.jsview("ui.whoiswhere", {
 				objectheader.setFirstStatus(overspend);
 		}			
 		function updateTotal(channelId,eventId,data){
-			console.log("data's value "+data.value);
+			//console.log("data's value "+data.value);
 			if((data.value)||data.value==0){
 				objectheader.setNumber(data.value);		
 			}
@@ -63,8 +63,8 @@ sap.ui.jsview("ui.whoiswhere", {
 		var pieChart = new sap.viz.ui5.Column({
 			width : "100%",
 			selectData: function(oControlEvent){
-				console.log('selectDat');
-				console.log(oControlEvent.getParameters());	
+				// console.log('selectDat');
+				// console.log(oControlEvent.getParameters());	
 				// console.log("oControlEvent");
 				// console.log(oControlEvent);
 				// dataSelected =  oControlEvent.mParameters.data[0].data[0].ctx.path.dii_a1;
@@ -78,9 +78,9 @@ sap.ui.jsview("ui.whoiswhere", {
 				// console.log("Selected: "+ oControlEvent.mParameters.data[0].data[0].ctx.path.dii_a1	);
 			},
 			showTooltip:function(oControlEvent){
-				console.log("showTooltip");
+				// console.log("showTooltip");
 			    var p = oControlEvent.getParameters();
-				console.log(p);
+				// console.log(p);
 				dataSelected = p.data.footer[0].value.val;
 				//console.log(dataselected);
 				// console.log(p.data);
@@ -111,7 +111,7 @@ sap.ui.jsview("ui.whoiswhere", {
 			mousePositionX = mousePos.x;
 
 			mousePositionY = mousePos.y; 
-			console.log(model.data.currentData);
+			// console.log(model.data.CURRENT_DATA);
 			
 			//return false;
 		} 
@@ -291,9 +291,9 @@ sap.ui.jsview("ui.whoiswhere", {
         
         //这个refresh需要增加：多个dimensions的显示功能
         function refreshPieChart(channelId, eventId, oData) {
-        		console.log(oData.content);
-        		console.log(oData.dimensions);
-        		console.log(oData.measures);
+        		// console.log(oData.content);
+        		// console.log(oData.dimensions);
+        		// console.log(oData.measures);
 
                 var PieModel = {  data : oData.content};
                 var PieData = {
@@ -323,11 +323,11 @@ sap.ui.jsview("ui.whoiswhere", {
 		var PieModel = {
 				  data : [
 					{country:'China',year:'2001',profit:25},
-					{country:'China',year:'2002',profit:58},
+					{country:'China',year:'2578',profit:58},
 					{country:'USA',year:'2001',profit:58},
-					{country:'USA',year:'2002',profit:159},
+					{country:'USA',year:'2578',profit:159},
 					{country:'Canada',year:'2001',profit:149},
-					{country:'Canada',year:'2002',profit:38},
+					{country:'Canada',year:'2578',profit:38},
 				  ]};
 				var PieData = {
 				  dimensions : [
@@ -351,11 +351,11 @@ sap.ui.jsview("ui.whoiswhere", {
 		var PieModel2 = {
 				  data : [
 					{country:'China',year:'2001',profit:25},
-					{country:'China',year:'2002',profit:58},
+					{country:'China',year:'2578',profit:58},
 					{country:'USA',year:'2001',profit:58},
-					{country:'USA',year:'2002',profit:159},
+					{country:'USA',year:'2578',profit:159},
 					{country:'Canada',year:'2001',profit:149},
-					{country:'Canada',year:'2002',profit:38},
+					{country:'Canada',year:'2578',profit:38},
 				  ]};
 				var PieData2 = {
 				  dimensions : [
@@ -639,13 +639,16 @@ sap.ui.jsview("ui.whoiswhere", {
                             	//publish this event
                                 if(monthtoSelected == " NOW ")
                                     monthtoSelected = util.tools.getCurrentMonth();
+                                else 
+                                	monthtoSelected = util.tools.UndoMonths(monthtoSelected);
+                                //console.log("going to trigger the press month onChange");
                             	 bus.publish("month","onChange",{
                     	    		 from: util.tools.UndoMonths(monthfromSelected),
-                    	    		 to: util.tools.UndoMonths(monthtoSelected)
+                    	    		 to: monthtoSelected
                     	    	 },this);
                             	 //close this dialog
                                   console.log(util.tools.UndoMonths(monthfromSelected));
-                                console.log(util.tools.UndoMonths(monthtoSelected));
+                                console.log(monthtoSelected);
                             	 stdDialog2.close();
                             }
                           }),

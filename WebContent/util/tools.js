@@ -35,20 +35,24 @@ util.tools = {
                   if(model.data[newPath]){
                         console.log("我使用了已经存储的数据");
                         model.data.CURRENT_DATA = model.data[newPath];
-                        bus.publish('pieChart','refresh',model.data[newPath]);
+                        util.tools.filterDataByMonth();
+                        
+                        //bus.publish('pieChart','refresh',model.data[newPath]);
                   }
                   else{
 			//2 prepare the new data
                         console.log("I have to request for new data");
                         var newDataSet = util.queries.getDataFromCurrentStatus();
                         jQuery.when(newDataSet).done(function(data){
+                              console.log('data loaded ');
                               var oData = {};
                               oData.content = data.d.results;
                               oData.dimensions = model.status.dimensions;
                               oData.measures = model.status.measures;
                               oData.time = new Date();
                               model.data.CURRENT_DATA = oData;
-                              bus.publish('pieChart','refresh',oData);
+                              //bus.publish('pieChart','refresh',oData);
+                              util.tools.filterDataByMonth();
                         })
                   }
 
@@ -194,21 +198,40 @@ util.tools = {
             	}
             	return result;
             },
-            filterDataByMonth:function(data,monthFrom,monthTo){
-            	var newData = new Array();
-            	if(typeof(monthFrom)=='string'){
-            		monthFrom = parseInt(monthFrom);
-            	}
-            	if(typeof(monthTo)=='string'){
-            		monthTo = parseInt(monthTo);
-            	}
-            	for(var i = 0 ;i < data.length; i ++){
-            		var month = parseInt(data[i].MONTH);
-            		if(month>=monthFrom&&month<=monthTo){
-            			newData.push(data[i]);
-            		}
-            	}
-            	return newData;
+            filterDataByMonth:function(){
+                  if(model.status.months.length==2){
+                        var newDataContent = new Array();
+                        var data = model.data.CURRENT_DATA.content;
+                        var monthFrom = model.status.months[0];
+                        var monthTo = model.status.months[1];
+                        if(typeof(monthFrom)=='string'){
+                              monthFrom = parseInt(monthFrom);
+                        }
+                        if(typeof(monthTo)=='string'){
+                              monthTo = parseInt(monthTo);
+                        }
+                        for(var i = 0 ;i < data.length; i ++){
+                              console.log('data i month ');
+                              console.log(data[i].MONTH);
+                              console.log(monthFrom);
+                              console.log(monthTo);
+                              var month = parseInt(data[i].MONTH);
+                              if(month>=monthFrom&&month<=monthTo){
+                                    newDataContent.push(data[i]);
+                              }
+                        }
+                        console.log("the new data is");
+                        console.log(newDataContent);
+                        sap.ui.getCore().getEventBus().publish('pieChart','refresh',{
+                              content:newDataContent,
+                              dimensions:model.data.CURRENT_DATA.dimensions,
+                              measures:model.data.CURRENT_DATA.measures,
+                              time:model.data.CURRENT_DATA.time
+                        });   
+                  }else{
+                        sap.ui.getCore().getEventBus().publish('pieChart','refresh',model.data.CURRENT_DATA);   
+                  }
+            	
             },
 		 	ArrayToString: function(array){
 		 		var string="";
@@ -403,9 +426,18 @@ util.tools = {
 				var first = string.slice(0,4);
 				var second = string.slice(5,7);
 				return string = first + second;
-			}
+			},
+                  updateMonth:function(channelId,eventId,data){
+                        console.log(data);
+                        console.log(data.from);
+                        model.status.months = [];
+                        model.status.months.push(data.from);
+                        model.status.months.push(data.to);
+                        util.tools.filterDataByMonth();
+                  }
 
 }
 
 var bus = sap.ui.getCore().getEventBus();
 bus.subscribe("app","onChangeDataSource",util.tools.onChangeDataSource,this);
+bus.subscribe("month","onChange",util.tools.updateMonth,this);

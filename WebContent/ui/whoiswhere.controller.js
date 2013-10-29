@@ -11,8 +11,8 @@ sap.ui.controller("ui.whoiswhere", {
 			
 		// }, this);
 		var year = new Date().getFullYear();
-		console.log("year is "+year);
-		var totalUrl = "http://ld9415.wdf.sap.corp:8002/mouse/project/odata/Query.xsodata/Query?$select=TRIP_TOTAL&$filter=MANDT eq '002' and YEAR eq '"+2010+"'&$format=json";
+//		console.log("year is "+year);
+		var totalUrl = "http://ld9415.wdf.sap.corp:8002/mouse/project/odata/Query.xsodata/Query?$select=TRIP_TOTAL&$filter=MANDT eq '578' and YEAR eq '"+2009+"'&$format=json";
 		console.log("totalUrl = "+totalUrl);
 		jQuery.ajax({//get the total cost
 			url:totalUrl,
@@ -36,7 +36,7 @@ sap.ui.controller("ui.whoiswhere", {
 				}
 
 				jQuery.ajax({
-					url:"http://ld9415.wdf.sap.corp:8002/mouse/project/odata/Query.xsodata/Query?$select=LANDTEXT,TRIP_TOTAL&$filter=MANDT%20eq%20'002'&$format=json",
+					url:"http://ld9415.wdf.sap.corp:8002/mouse/project/odata/Query.xsodata/Query?$select=LANDTEXT,MONTH,TRIP_TOTAL&$filter=MANDT%20eq%20'578'&$format=json",
 					error:function(error){
 						util.tools._F_Toast(error+"");
 					},
@@ -61,10 +61,10 @@ sap.ui.controller("ui.whoiswhere", {
 						oData.content = data.d.results;
 						oData.dimensions = {
 							axis:1,
-							name:"LANDTEXT",
+							name:"Country",
 							value:"{LANDTEXT}"};
 						oData.measures = {
-							name:"TRIP_TOTAL",
+							name:"total cost",
 							value:"{TRIP_TOTAL}"}
 						bus.publish("pieChart","refresh",oData);
 

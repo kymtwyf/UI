@@ -2,7 +2,7 @@ jQuery.sap.declare("util.queries");
 
 util.queries = {
 		getQuery:function(field,countOrCost,filters){
-			var client = filters.client?filters.client:"002";
+			var client = filters.client?filters.client:"578";
 			countOrCost = countOrCost?countOrCost:"ONE";//ONE for count and TRIP_TOTAL for total cost
 			var query = "http://ld9415.wdf.sap.corp:8002/mouse/project/odata/Query.xsodata/Query?"+"$select="+field+","+countOrCost+"&$filter=MANDT eq "+client+"&$format=json";
 			console.log("The query is "+query);
@@ -16,10 +16,15 @@ util.queries = {
 			// var selects ;
 			var tempSelects = new Array();
 			for(var i = 0 ; i < temp.dimensions.length; i ++){
-				tempSelects.push(temp.dimensions[i].name);
+				var nameFix = temp.dimensions[i].value;
+				nameFix = nameFix.substring(1,nameFix.length-1);
+
+				tempSelects.push(nameFix);
 			}
 			for(var i = 0 ; i < temp.measures.length; i ++){
-				tempSelects.push(temp.measures[i].name);
+				var nameFix = temp.measures[i].value;
+				nameFix = nameFix.substring(1,nameFix.length-1);
+				tempSelects.push(nameFix);
 			}
 			tempSelects.push("MONTH");
 			var selects = tempSelects.join();
