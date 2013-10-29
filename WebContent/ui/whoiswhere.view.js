@@ -14,9 +14,6 @@ sap.ui.jsview("ui.whoiswhere", {
 		var bus = sap.ui.getCore().getEventBus();
 		
 		var dataSelected = '';
-
-		var pathdata = -1;  
-		
 		var mousePositionX=0,
 			mousePositionY=0;
 		
@@ -63,8 +60,6 @@ sap.ui.jsview("ui.whoiswhere", {
 		var pieChart = new sap.viz.ui5.Column({
 			width : "100%",
 			selectData: function(oControlEvent){
-				// console.log('selectDat');
-				// console.log(oControlEvent.getParameters());	
 				// console.log("oControlEvent");
 				// console.log(oControlEvent);
 				// dataSelected =  oControlEvent.mParameters.data[0].data[0].ctx.path.dii_a1;
@@ -78,9 +73,7 @@ sap.ui.jsview("ui.whoiswhere", {
 				// console.log("Selected: "+ oControlEvent.mParameters.data[0].data[0].ctx.path.dii_a1	);
 			},
 			showTooltip:function(oControlEvent){
-				// console.log("showTooltip");
 			    var p = oControlEvent.getParameters();
-				// console.log(p);
 				dataSelected = p.data.footer[0].value.val;
 				//console.log(dataselected);
 				// console.log(p.data);
@@ -111,7 +104,6 @@ sap.ui.jsview("ui.whoiswhere", {
 			mousePositionX = mousePos.x;
 
 			mousePositionY = mousePos.y; 
-			// console.log(model.data.CURRENT_DATA);
 			
 			//return false;
 		} 
@@ -127,12 +119,12 @@ sap.ui.jsview("ui.whoiswhere", {
                         dataSelected = '';
                         model.status.path.push("LANDTEXT");
                         model.status.dimensions = [];
-                        var index  = model.status.dimensions.length
+                        var index  = model.status.dimensions.length;
                         model.status.dimensions.push({
                         	axis:index+1,
 							name:'LANDTEXT',
 							value:'{LANDTEXT}'
-                        })
+                        });
 		bus.publish('app','onChangeDataSource');
 
 
@@ -148,12 +140,12 @@ sap.ui.jsview("ui.whoiswhere", {
                         dataSelected = '';
                         model.status.path.push("ZORT1");
                         model.status.dimensions = [];
-                        var index  = model.status.dimensions.length
+                        var index  = model.status.dimensions.length;
                         model.status.dimensions.push({
                         	axis:index+1,
 							name:'ZORT1',
 							value:'{ZORT1}'
-                        })
+                        });
 		bus.publish('app','onChangeDataSource');
 
                 }
@@ -168,12 +160,12 @@ sap.ui.jsview("ui.whoiswhere", {
                         dataSelected = '';
                         model.status.path.push("CENTER__TEXT");
                         model.status.dimensions = [];
-                        var index  = model.status.dimensions.length
+                        var index  = model.status.dimensions.length;
                         model.status.dimensions.push({
                         	axis:index+1,
 							name:'CENTER__TEXT',
 							value:'{CENTER__TEXT}'
-                        })
+                        });
 		bus.publish('app','onChangeDataSource');
 
                 }
@@ -188,12 +180,12 @@ sap.ui.jsview("ui.whoiswhere", {
                         dataSelected = '';                  
                         model.status.path.push("CONTROL_AREA_TEXT");
                         model.status.dimensions = [];
-                        var index  = model.status.dimensions.length
+                        var index  = model.status.dimensions.length;
                         model.status.dimensions.push({
                         	axis:index+1,
 							name:'CONTROL_AREA_TEXT',
 							value:'{CONTROL_AREA_TEXT}'
-                        })
+                        });
 		bus.publish('app','onChangeDataSource');
 
                 }
@@ -208,12 +200,12 @@ sap.ui.jsview("ui.whoiswhere", {
                         dataSelected = '';
                         model.status.path.push("KUNDE");
                         model.status.dimensions = [];
-                    	var index  = model.status.dimensions.length
+                    	var index  = model.status.dimensions.length;
                         model.status.dimensions.push({
                         	axis:index+1,
 							name:'KUNDE',
 							value:'{KUNDE}'
-                        })
+                        });
 		bus.publish('app','onChangeDataSource');
 
                        // pieChart.setDataset(oDataset2); 
@@ -229,12 +221,12 @@ sap.ui.jsview("ui.whoiswhere", {
                         dataSelected = '';
                         model.status.path.push("YEAR");
                         model.status.dimensions = [];
-                    	var index  = model.status.dimensions.length
+                    	var index  = model.status.dimensions.length;
                         model.status.dimensions.push({
                         	axis:index+1,
 							name:'YEAR',
 							value:'{YEAR}'
-                        })
+                        });
 		bus.publish('app','onChangeDataSource');
 
                 }        
@@ -249,12 +241,12 @@ sap.ui.jsview("ui.whoiswhere", {
                         dataSelected = '';
                         model.status.path.push("MONTH");
                         model.status.dimensions = [];
-                        var index  = model.status.dimensions.length
+                        var index  = model.status.dimensions.length;
                         model.status.dimensions.push({
                         	axis:index+1,
 							name:'MONTH',
 							value:'{MONTH}'
-                        })
+                        });
 		bus.publish('app','onChangeDataSource');
 
                 }        
@@ -275,11 +267,11 @@ sap.ui.jsview("ui.whoiswhere", {
         document.ondblclick = mouseDBClick;
         
         function mouseDBClick(ev){                                //double click will pop over
-           console.log('event '+dataSelected);
+       //    console.log('event '+dataSelected);
            if(dataSelected != ''){
                   
                      util.tools.adjustPopoverList(popoverlist,aliArray);
-                     console.log($("#popover").width());
+                    // console.log($("#popover").width());
                      popover.openBy(pieChart);
                      var height = $("#popover").height();    
                       $("#popover").css({"top":mousePositionY-height/2,"left":mousePositionX+15});    
@@ -291,10 +283,6 @@ sap.ui.jsview("ui.whoiswhere", {
         
         //这个refresh需要增加：多个dimensions的显示功能
         function refreshPieChart(channelId, eventId, oData) {
-        		// console.log(oData.content);
-        		// console.log(oData.dimensions);
-        		// console.log(oData.measures);
-
                 var PieModel = {  data : oData.content};
                 var PieData = {
                   dimensions : oData.dimensions,
@@ -310,11 +298,9 @@ sap.ui.jsview("ui.whoiswhere", {
                 oModel = new sap.ui.model.json.JSONModel(PieModel);
                 oDataset.setModel(oModel);
                 pieChart.setDataset(oDataset);
-                                        
-
 		}
 		bus.subscribe("pieChart","refresh",refreshPieChart,this);
-//				
+
 //		var pieChart = CreatePieChart();
 //		//pie chart of data
 		
@@ -376,53 +362,61 @@ sap.ui.jsview("ui.whoiswhere", {
 				oModel2 = new sap.ui.model.json.JSONModel(PieModel2);
 				oDataset2.setModel(oModel2);
 				/////////////test data for changing the tab
-				
-				
-		var barChart = sap.ui.view({id:"barchart", viewName:"ui.BarChart", type:sap.ui.core.mvc.ViewType.JS});
+		var scrolling =   new sap.m.ScrollContainer({
+					horizontal: false,
+					vertical: true,
+					height: "490px"
+				});		
+		var listAsTable = new sap.m.List();		
+		//var barChart = sap.ui.view({id:"barchart", viewName:"ui.BarChart", type:sap.ui.core.mvc.ViewType.JS});
 		//bar chart of data
-		
-		// create listAsTable
-		var listAsTable = new sap.m.List({
-		  headerText: "Title",
-		  columns: [
-		    new sap.m.Column({
-		      header: new sap.m.Label({text: "ID"})
-		    }),
-		    new sap.m.Column({
-		      header: new sap.m.Label({text: "Name"})
-		    })
-		 
-		  ],
-		  items: {
-		    template: new sap.m.ColumnListItem({
-		      cells: [
-		        new sap.m.ObjectIdentifier({
-		          title: "{LANDTEXT}"
-		        }),
-		        new sap.m.Text({
-		          text: "{TRIP_TOTAL}"
-		        }),
-		        new sap.m.ObjectStatus({
-		          text: "{status}",
-		       
-		        }),
-		        new sap.m.Text({text: "{amount}"}),
-		        new sap.m.ObjectNumber({
-		          numberUnit: "€",
-		          number: "{price}"
-		        })
-		      ]
-		    })
-		  }
-		});
-		listAsTable.setModel(model.data.currentData);
+		//这个refresh需要增加：多个dimensions的显示功能
+        function refreshTable(channelId, eventId, oData) {
 
+        	console.log(oData.content);
+                // create listAsTable
+			listAsTable = new sap.m.List("items",{
+			  columns: [
+			    new sap.m.Column({
+			      header: new sap.m.Label({text: oData.dimensions.name})
+			    }),
+			    new sap.m.Column({
+			      header: new sap.m.Label({text: oData.measures.name})
+			    })
+			 
+			  ],
+			  items: {
+			  	 path: "/items",
+			    template: new sap.m.ColumnListItem({
+			      cells: [
+					new sap.m.Text({
+					    text: oData.dimensions.value
+					  }),
+			        new sap.m.Text({
+			          text: oData.measures.value
+			        })
+			      ]
+			    })
+			  }
+			});
+
+
+			
+			var model = new sap.ui.model.json.JSONModel({
+			  items: oData.content
+			});
+			listAsTable.setModel(model);
+			scrolling.insertContent(listAsTable);
+		}
 		
-		var button1 = new sap.m.Button('bt_showByCost', {
-			type: sap.m.ButtonType.Default,
-			icon: "sap-icon://lead",
-																//cost button
-		});
+         bus.subscribe("table","refresh",refreshTable,this);	
+
+				var button1 = new sap.m.Button('bt_showByCost', {
+                        type: sap.m.ButtonType.Default,
+                        icon: "sap-icon://lead",
+                                                                                                                                //cost button
+                });
+
 
                 var button2 = new sap.m.Button('bt_showByTimes', {
                         type: sap.m.ButtonType.Default,
@@ -445,11 +439,10 @@ sap.ui.jsview("ui.whoiswhere", {
                         icon: "sap-icon://table-chart",
                         //text: "Table"
                         press: function(){
-                                oVBoxpage.removeAllItems();
-                                oVBoxpage.addItem(bar);
-                                oVBoxpage.addItem( 
-                                	listAsTable);
                                 
+			oVBoxpage.removeAllItems();
+            oVBoxpage.addItem(bar);
+            oVBoxpage.addItem(scrolling);
                                 }
                 });
                 
@@ -465,7 +458,7 @@ sap.ui.jsview("ui.whoiswhere", {
                 });
                 
                 
-                var bar = new sap.m.Bar({                // bar of segment buttons
+                var bar = new sap.m.Bar("bar",{                // bar of segment buttons
                         contentLeft:[Segmented1],
                         contentRight:Segmented2,
                         translucent:true
@@ -475,7 +468,6 @@ sap.ui.jsview("ui.whoiswhere", {
                 var oVBoxpage = new sap.m.VBox("hboxpage", {                //contain bar and pie chart 
                         items:[bar,pieChart]
                 });
-                
                 function reloadPage()//这个需要改变
                 {
                         Segmented1.setSelectedButton(button1);
@@ -517,7 +509,7 @@ sap.ui.jsview("ui.whoiswhere", {
                                         		s_newIconTab:'LANDTEXT',
                                         		s_newMeasure:'TRIP_TOTAL',
                                         		s_showType:'barChart'
-                                        	})
+                                        	});
                                                 //model.status.iconTab = "LANDTEXT";        //
                                                 // model.status.path.length = [];         //remove all items in path when choosing a new icon tab
                                                 // model.status.path.push(model.status.iconTab); //push the icontab
@@ -532,7 +524,7 @@ sap.ui.jsview("ui.whoiswhere", {
                                         		s_newIconTab:'CONTROL_AREA_TEXT',
                                         		s_newMeasure:'TRIP_TOTAL',
                                         		s_showType:'barChart'
-                                        	})
+                                        	});
                                                // model.status.iconTab = "CONTROL_AREA_TEXT";
                                                 // model.status.path.length = [];         //remove all items in path when choosing a new icon tab
                                                 // model.status.path.push(model.status.iconTab); //push the icontab
@@ -546,7 +538,7 @@ sap.ui.jsview("ui.whoiswhere", {
                                         		s_newIconTab:'YEAR',
                                         		s_newMeasure:'TRIP_TOTAL',
                                         		s_showType:'barChart'
-                                        	})
+                                        	});
                                                // model.status.iconTab  = "YEAR";
                                                 // model.status.path.length = [];         //remove all items in path when choosing a new icon tab
                                                 // model.status.path.push(model.status.iconTab); //push the icontab
@@ -570,7 +562,8 @@ sap.ui.jsview("ui.whoiswhere", {
 
                 var fromLabel = new sap.m.Label({text:"From "});
                 var toLabel = new sap.m.Label({text:"To  "});
-                var fromSelect = new sap.m.Select({
+                var fromSelect = new sap.m.Select();
+                fromSelect = new sap.m.Select({
                 	width:"100%",
                     change: function(oControlEvent){    
                         toSelect.removeAllItems();
@@ -637,6 +630,8 @@ sap.ui.jsview("ui.whoiswhere", {
                             	var monthtoSelected = toSelect.getSelectedItem().mProperties.text;
                                
                             	//publish this event
+
+                              
                                 if(monthtoSelected == " NOW ")
                                     monthtoSelected = util.tools.getCurrentMonth();
                                 else 
@@ -647,8 +642,8 @@ sap.ui.jsview("ui.whoiswhere", {
                     	    		 to: monthtoSelected
                     	    	 },this);
                             	 //close this dialog
-                                  console.log(util.tools.UndoMonths(monthfromSelected));
-                                console.log(monthtoSelected);
+                                 console.log(util.tools.UndoMonths(monthfromSelected));
+                            	 console.log(monthtoSelected);
                             	 stdDialog2.close();
                             }
                           }),

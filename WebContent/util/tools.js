@@ -94,7 +94,7 @@ util.tools = {
 		},
 		///在cookie 存放cost limit到此结束
 
-		 adjustPopoverList:  function(popoverlist,aliArray){ 
+		 adjustPopoverList: function(popoverlist,aliArray){ 
        
              popoverlist.removeAllItems();
              console.log("aliArray");
@@ -200,6 +200,8 @@ util.tools = {
 	  	    	 currentMonth = year+'0'+month;
 	  	    	  else
 	  	    		currentMonth = year + month;
+
+	  	    	console.log(currentMonth);
 	  	    	  return currentMonth;
 		 	},
 		 	getLastSeason: function(){ 
