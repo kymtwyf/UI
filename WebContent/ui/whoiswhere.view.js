@@ -323,11 +323,11 @@ sap.ui.jsview("ui.whoiswhere", {
 		var PieModel = {
 				  data : [
 					{country:'China',year:'2001',profit:25},
-					{country:'China',year:'2578',profit:58},
+					{country:'China',year:'2002',profit:58},
 					{country:'USA',year:'2001',profit:58},
-					{country:'USA',year:'2578',profit:159},
+					{country:'USA',year:'2002',profit:159},
 					{country:'Canada',year:'2001',profit:149},
-					{country:'Canada',year:'2578',profit:38},
+					{country:'Canada',year:'2002',profit:38},
 				  ]};
 				var PieData = {
 				  dimensions : [
@@ -351,11 +351,11 @@ sap.ui.jsview("ui.whoiswhere", {
 		var PieModel2 = {
 				  data : [
 					{country:'China',year:'2001',profit:25},
-					{country:'China',year:'2578',profit:58},
+					{country:'China',year:'2002',profit:58},
 					{country:'USA',year:'2001',profit:58},
-					{country:'USA',year:'2578',profit:159},
+					{country:'USA',year:'2002',profit:159},
 					{country:'Canada',year:'2001',profit:149},
-					{country:'Canada',year:'2578',profit:38},
+					{country:'Canada',year:'2002',profit:38},
 				  ]};
 				var PieData2 = {
 				  dimensions : [

@@ -2,7 +2,7 @@ jQuery.sap.declare("util.queries");
 
 util.queries = {
 		getQuery:function(field,countOrCost,filters){
-			var client = filters.client?filters.client:"578";
+			var client = filters.client?filters.client:"002";
 			countOrCost = countOrCost?countOrCost:"ONE";//ONE for count and TRIP_TOTAL for total cost
 			var query = "http://ld9415.wdf.sap.corp:8002/mouse/project/odata/Query.xsodata/Query?"+"$select="+field+","+countOrCost+"&$filter=MANDT eq "+client+"&$format=json";
 			console.log("The query is "+query);
@@ -26,23 +26,30 @@ util.queries = {
 				nameFix = nameFix.substring(1,nameFix.length-1);
 				tempSelects.push(nameFix);
 			}
-			tempSelects.push("MONTH");
+			//tempSelects.push("MONTH");
 			var selects = tempSelects.join();
 
 			var filter = new Array();
 			filter.push("MANDT eq \'"+temp.client+"\'");
+			if(temp.months.length==2){
+				filter.push('MONTH ge '+temp.months[0]);
+				filter.push(' and MONTH le '+temp.months[1]);
+			}
 			console.log(temp.filters.year);
-			// for(var obj in temp.filters){
-			// 		//console.log("P j obj"+obj);
-			// 	if(typeof(temp.filters[obj])=='function'){
-			// 		//跳过function
-			// 	}else{
-			// 		filter.push(obj+temp.filters[obj]);
-			// 	}
-			// }
+			
 			var tempPath = model.status.path
 			for(var i = 0 ;i < tempPath.length-1; i +=2){
-				filter.push(tempPath[i]+" eq \'"+tempPath[i+1]+"\'");
+				switch(tempPath[i]){
+					case 'LANDTEXT':
+					case 'CENTER__TEXT':
+					case 'CONTROL_AREA_TEXT':
+						filter.push(tempPath[i]+" eq \'"+tempPath[i+1]+"\' ");
+						break;
+					case 'MONTH':
+					case 'YEAR':
+						filter.push(tempPath[i]+" eq "+tempPath[i+1]+" ");
+				}
+				
 			}
 			query += "$select="+selects;
 			query += "&$filter=" + filter.join(" and ");

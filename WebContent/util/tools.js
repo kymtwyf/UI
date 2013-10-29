@@ -25,19 +25,22 @@ util.tools = {
 			}
 		},
 		saveData:function(){
-                  var s_oldPath = model.status.path.join();
-                  console.log(s_oldPath);
+                  var s_oldPath = model.status.path.concat(model.status.months);
+                  s_oldPath = s_oldPath.join(); 
+                  console.log("old path "+s_oldPath);
 			model.data[s_oldPath] = model.data.CURRENT_DATA;
+
 		},
 		onChangeDataSource:function(channelId,eventId,data){
-			var newPath = model.status.path.join();
+
+			var newPath = model.status.path.concat(model.status.months).join();
                   console.log("new Path "+newPath);
                   if(model.data[newPath]){
                         console.log("我使用了已经存储的数据");
                         model.data.CURRENT_DATA = model.data[newPath];
-                        util.tools.filterDataByMonth();
-                        
-                        //bus.publish('pieChart','refresh',model.data[newPath]);
+                        //util.tools.filterDataByMonth();
+
+                        bus.publish('pieChart','refresh',model.data[newPath]);
                   }
                   else{
 			//2 prepare the new data
@@ -51,23 +54,12 @@ util.tools = {
                               oData.measures = model.status.measures;
                               oData.time = new Date();
                               model.data.CURRENT_DATA = oData;
-                              //bus.publish('pieChart','refresh',oData);
-                              util.tools.filterDataByMonth();
+                              bus.publish('pieChart','refresh',oData);
+                              //util.tools.filterDataByMonth();
                         })
                   }
 
 
-            	  // model.status.path.push(data);
-               //    model.status.path.push(drilldown);
-             	 // for(var i=0; i<model.status.path.length;i++)
-             		//  newpath = newpath + model.status.path[i] + "." ;
-			//2.1 search if the required data exists in the model.data["newPath"]
-               
-        
-            	 // if(model.data[newpath]);
-			//2.2 if not they send another request to get the data
-            	 // else;
-			//3 show the new data
 			
 		},
 		//这些是用来存放cost limit在cookie里面的
@@ -103,11 +95,7 @@ util.tools = {
 		///在cookie 存放cost limit到此结束
 
 		 adjustPopoverList:  function(popoverlist,aliArray){ 
-             //you may need to adjust the content of the popover list according to the current path
-             
-             // var arrayOfActionListItem = new Array();       //An array which contains all action list items
-             // var arrayOfFlag = new Array(true,true,true,true,true);				 //set the flag of items whose data is in path
-        
+       
              popoverlist.removeAllItems();
              console.log("aliArray");
              console.log(aliArray);
@@ -148,45 +136,7 @@ util.tools = {
              		popoverlist.addItem(aliArray[i]);
              	}
          	}
-             // arrayOfActionListItem.length=0;
-                             
-             // arrayOfActionListItem.push(aliCountry);
-             // arrayOfActionListItem.push(aliReason);
-             // arrayOfActionListItem.push(aliExpenseType);
-             // arrayOfActionListItem.push(aliCostCenter);
-             // arrayOfActionListItem.push(aliTime);         
-
-                                     
-             // for (var i=0; i<model.status.path.length; i++) {        //pop the action list item which exists in path
-             //         console.log(model.status.path[i]);
-             //         switch (model.status.path[i])
-             //         {
-             //         case "Country":
-             //         	arrayOfFlag[0]=false;
-             //           break;
-             //         case "Reason":
-             //         	arrayOfFlag[1]=false;
-             //           break;
-             //         case "Expense Type":
-             //         	arrayOfFlag[2]=false;
-             //           break;
-             //         case "Cost Center":
-             //         	arrayOfFlag[3]=false;
-             //           break;
-             //         case "Time":
-             //         	arrayOfFlag[4]=false;
-             //           break;
-             //         }         
-             // }
-             
-             // for(var k =arrayOfFlag.length; k>0; k--){
-             // 	if(arrayOfFlag[k-1] == false)
-             // 		arrayOfActionListItem.splice(k-1,1); 
-             // }
-
-             // for (var j = 0; j <= arrayOfActionListItem.length; j++) {
-             //         popoverlist.insertItem(arrayOfActionListItem[j], j);
-             // }
+            
 		 	},
             filterLabel:function(oDataContent,labelName){
             	var result = new Array();
@@ -367,7 +317,7 @@ util.tools = {
 		 	getMonthInfoFromOdata: function(){
 		 		var d = jQuery.Deferred();
 		 		jQuery.ajax({
-					url:"http://ld9415.wdf.sap.corp:8002/mouse/project/odata/Query.xsodata/Query?$select=MONTH&$filter=MANDT eq '578'&$format=json",
+					url:"http://ld9415.wdf.sap.corp:8002/mouse/project/odata/Query.xsodata/Query?$select=MONTH&$filter=MANDT eq '002'&$format=json",
 				 	error:function(error){
 						util.tools._F_Toast("Fail to load data of months, Please check your network connection");
 					},
