@@ -346,11 +346,14 @@ util.tools = {
 		 		
 		 	},
 		 	generateAllItems: function(fromSelect,toSelect){
-		 		
+		 		fromSelect.removeAllItems();
+		 		toSelect.removeAllItems();
+		 		console.log("all items");
+
 		 		jQuery.when(this.getMonthInfoFromOdata()).done(function(){
 
 		 		//generate items of all months according to the months getting from ODATA
-				for(var i=util.tools.Months.length-1; i>0; i--)
+				for(var i=util.tools.Months.length-1; i>=0; i--)
 				{
 
 					fromSelect.insertItem(new sap.ui.core.Item( { text: util.tools.decorateMonths(util.tools.Months[i].toString()   ) }));
@@ -359,28 +362,51 @@ util.tools = {
 				
 					toSelect.insertItem(new sap.ui.core.Item( {text: " NOW "}));
 
-				for(var i= 0 ; i<util.tools.Months.length-1; i--)
+				for(var i= util.tools.Months.length-1 ; i>0; i--)
 				{
 
 					toSelect.insertItem(new sap.ui.core.Item( { text: util.tools.decorateMonths(util.tools.Months[i].toString()   ) }));
 				}
 		 	  });
 			},
+			generatefromExistedMonth: function(fromSelect,toSelect){
+		 		fromSelect.removeAllItems();
+		 		toSelect.removeAllItems();
+
+		 		console.log("all existed months");
+		 		//generate items of all months according to the months getting from ODATA
+				for(var i=util.tools.Months.length-1; i>=0; i--)
+				{
+
+					fromSelect.insertItem(new sap.ui.core.Item( { text: util.tools.decorateMonths(util.tools.Months[i].toString()   ) }));
+				}
+
+					toSelect.insertItem(new sap.ui.core.Item( {text: " NOW "}));
+
+				for(var i= util.tools.Months.length-1 ; i>0; i--)
+				{
+
+					toSelect.insertItem(new sap.ui.core.Item( { text: util.tools.decorateMonths(util.tools.Months[i].toString()   ) }));
+				}
+			},
 			generateToSelectItems: function(Select,value){
 				//generaFfte items of all months according the Months and Selected
-				jQuery.when(this.getMonthInfoFromOdata()).done(function(){
-
+//					jQuery.when(this.getMonthInfoFromOdata()).done(function(){
+					var item = new sap.ui.core.Item();
+                    Select.removeAllItems();
+                        
 					Select.insertItem(new sap.ui.core.Item( {text: " NOW "}));
-
 					for(var i = util.tools.Months.length-1; i>0; i--)
 					{
-						if(util.tools.decorateMonths(util.tools.Months[i])!= value)
-						Select.insertItem(new sap.ui.core.Item( { text: util.tools.decorateMonths(util.tools.Months[i].toString()   )  }));
+						if(util.tools.decorateMonths(util.tools.Months[i].toString())!= value)
+							{var item = new sap.ui.core.Item({text:util.tools.decorateMonths(util.tools.Months[i].toString()) });
+							Select.insertItem(item);}
 						else
 							break;
 					}
+					Select.setSelectedItem(item);
 
-				});
+			//	});
 			},
 			decorateMonths: function(str)
 			{

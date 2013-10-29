@@ -580,8 +580,8 @@ sap.ui.jsview("ui.whoiswhere", {
                 fromSelect = new sap.m.Select({
                 	width:"100%",
                     change: function(oControlEvent){    
-                        toSelect.removeAllItems();
-                    	util.tools.generateToSelectItems(toSelect,fromSelect.getSelectedItem().mProperties.text);
+                    		toSelect.removeAllItems();
+                     		util.tools.generateToSelectItems(toSelect,fromSelect.getSelectedItem().mProperties.text);
                     }
                 });
                 //when change value, trigger on the generatetoSelectItem()
@@ -652,12 +652,12 @@ sap.ui.jsview("ui.whoiswhere", {
                                 	monthtoSelected = util.tools.UndoMonths(monthtoSelected);
                                 //console.log("going to trigger the press month onChange");
                             	 bus.publish("month","onChange",{
-                    	    		 from: util.tools.UndoMonths(monthfromSelected),
-                    	    		 to: monthtoSelected
+                    	    		 from: parseInt(util.tools.UndoMonths(monthfromSelected)),
+                    	    		 to: parseInt(monthtoSelected)
                     	    	 },this);
                             	 //close this dialog
-                                 console.log(util.tools.UndoMonths(monthfromSelected));
-                            	 console.log(monthtoSelected);
+                                // console.log(parseInt(util.tools.UndoMonths(monthfromSelected))+1);
+                            	// console.log(parseInt(monthtoSelected)+1);
                             	 stdDialog2.close();
                             }
                           }),
@@ -702,7 +702,12 @@ sap.ui.jsview("ui.whoiswhere", {
                 	      text: "Customize the Time Interval",
                 	      press: function(){
                 	    	  stdDialog2.open();
-                              util.tools.generateAllItems(fromSelect,toSelect);
+                	    	  if(util.tools.Months.length != 0)
+                	    	  {
+                	    	  	util.tools.generatefromExistedMonth(fromSelect,toSelect);
+                	    	  }
+                	    	  else
+                                util.tools.generateAllItems(fromSelect,toSelect);
                 	      }
                 	    })
                 	  ],
