@@ -386,8 +386,9 @@ sap.ui.jsview("ui.whoiswhere", {
                 // create listAsTable
              scrolling.removeAllContent();
              console.log(oData.content);   
-              console.log(oData.dimensions);   
-               console.log(oData.measures);   
+              console.log( oData.dimensions.name);   
+               console.log(oData.measures.name);   
+               
 
 			listAsTable = new sap.m.List({
 			  columns: [
@@ -424,7 +425,48 @@ sap.ui.jsview("ui.whoiswhere", {
 		}
 		bus.subscribe("table","refresh",refreshTable,this);
 	    
-	    	
+	     function reloadTable(channelId, eventId, oData) {
+                // create listAsTable
+             scrolling.removeAllContent();
+             console.log(oData.content);   
+              console.log( oData.dimensions[0]);   
+               console.log(oData.measures[0]);   
+               
+
+			listAsTable = new sap.m.List({
+			  columns: [
+			    new sap.m.Column({
+			      header: new sap.m.Label({text: oData.dimensions[0].name})
+			    }),
+			    new sap.m.Column({
+			      header: new sap.m.Label({text: oData.measures[0].name})
+			    })
+			 
+			  ],
+			  items: {
+			  	path: "/items",
+			    template: new sap.m.ColumnListItem({
+			      cells: [
+					new sap.m.Text({
+					    text: oData.dimensions[0].value
+					  }),
+			        new sap.m.Text({
+			          text: oData.measures[0].value
+			        })
+			      ]
+			    })
+			  }
+			});
+
+
+			
+			var model = new sap.ui.model.json.JSONModel({
+			  items: oData.content
+			});
+			listAsTable.setModel(model);
+			scrolling.insertContent(listAsTable);
+		}
+	    bus.subscribe("table","reload",reloadTable,this);	
 
 				var button1 = new sap.m.Button('bt_showByCost', {
                         type: sap.m.ButtonType.Default,
