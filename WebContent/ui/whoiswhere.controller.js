@@ -12,7 +12,7 @@ sap.ui.controller("ui.whoiswhere", {
 		// }, this);
 		var year = new Date().getFullYear();
 //		console.log("year is "+year);
-		var totalUrl = "http://ld9415.wdf.sap.corp:8002/mouse/project/odata/Query.xsodata/Query?$select=TRIP_TOTAL&$filter=MANDT eq '002' and YEAR eq "+2009+"&$format=json";
+		var totalUrl = "http://ld9415.wdf.sap.corp:8002/mouse/project/odata/Query.xsodata/Query?$select=TRIP_TOTAL&$filter=MANDT eq '002' &$format=json";
 		console.log("totalUrl = "+totalUrl);
 		jQuery.ajax({//get the total cost
 			url:totalUrl,
@@ -85,9 +85,9 @@ sap.ui.controller("ui.whoiswhere", {
 * This hook is the same one that SAPUI5 controls get after being rendered.
 * @memberOf demo.MainPage
 */
-//	onAfterRendering: function() {
-//
-//	},
+	// onAfterRendering: function() {
+	// 	console.log('after rendering');
+	// },
 
 /**
 * Called when the Controller is destroyed. Use this one to free resources and finalize activities.

@@ -36,7 +36,7 @@ sap.ui.jsview("ui.whoiswhere", {
 	      });
 		
 		
-		var objectheader = new sap.m.ObjectHeader({			//header 
+		var objectheader = new sap.m.ObjectHeader("headerInfo",{			//header 
 		      number : 0,
 		      numberUnit : "EUR"
 		 });
@@ -57,7 +57,7 @@ sap.ui.jsview("ui.whoiswhere", {
 		bus.subscribe("total","refresh",updateTotal,this);//triggerred when the data need to be refreshed 
 	
 
-		var pieChart = new sap.viz.ui5.Column({
+		var pieChart = new sap.viz.ui5.Column("chart",{
 			width : "100%",
 			selectData: function(oControlEvent){
 				// console.log("oControlEvent");
@@ -112,7 +112,7 @@ sap.ui.jsview("ui.whoiswhere", {
 		//这个顺序不能随便换 是根据model.dimensions来的
 		var popoverlist = new sap.m.List("list");								//list 
 		var aliArray = new Array();
-        var aliCountry=new sap.m.ActionListItem({                                                                                        //action list item
+        var aliCountry=new sap.m.ActionListItem('aliCountry',{                                                                                        //action list item
                 tap:function(oControlEvent){
                 	util.tools.saveData();
                         model.status.path.push(dataSelected);
@@ -133,7 +133,7 @@ sap.ui.jsview("ui.whoiswhere", {
         });
         aliCountry.setText("By Country");
         aliArray.push(aliCountry);
-        var aliLocation=new sap.m.ActionListItem({                                                                                        //action list item
+        var aliLocation=new sap.m.ActionListItem('aliLocation',{                                                                                        //action list item
                 tap:function(oControlEvent){
                 	util.tools.saveData();
                         model.status.path.push(dataSelected);
@@ -153,7 +153,7 @@ sap.ui.jsview("ui.whoiswhere", {
         aliLocation.setText("By Location");
         aliArray.push(aliLocation);
 
-		var aliCostCenter=new sap.m.ActionListItem({                                         //action list item
+		var aliCostCenter=new sap.m.ActionListItem('aliCostCenter',{                                         //action list item
                 press:function(oControlEvent){
                 	util.tools.saveData();
                         model.status.path.push(dataSelected);
@@ -173,7 +173,7 @@ sap.ui.jsview("ui.whoiswhere", {
         aliCostCenter.setText("By Cost Center");
         aliArray.push(aliCostCenter);
 
-        var aliControlArea=new sap.m.ActionListItem({                                                                                        //action list item
+        var aliControlArea=new sap.m.ActionListItem('aliControlArea',{                                                                                        //action list item
                 press:function(oControlEvent){
                 	util.tools.saveData();
                         model.status.path.push(dataSelected);
@@ -193,7 +193,7 @@ sap.ui.jsview("ui.whoiswhere", {
         aliControlArea.setText("By Controlling Area");
         aliArray.push(aliControlArea);
 
-        var aliReason=new sap.m.ActionListItem({                                                                                        //action list item
+        var aliReason=new sap.m.ActionListItem('aliReason',{                                                                                        //action list item
                 tap:function(oControlEvent){
                 	util.tools.saveData();
                         model.status.path.push(dataSelected);
@@ -214,7 +214,7 @@ sap.ui.jsview("ui.whoiswhere", {
         aliReason.setText("By Reason");
         aliArray.push(aliReason);
                 
-        var aliYear=new sap.m.ActionListItem({                                                                                        //action list item
+        var aliYear=new sap.m.ActionListItem('aliYear',{                                                                                        //action list item
                 tap:function(oControlEvent){
                 	util.tools.saveData();
                         model.status.path.push(dataSelected);
@@ -234,7 +234,7 @@ sap.ui.jsview("ui.whoiswhere", {
         aliYear.setText("By Year");
         aliArray.push(aliYear);
 
-		var aliMonth=new sap.m.ActionListItem({                                                                                        //action list item
+		var aliMonth=new sap.m.ActionListItem('aliMonth',{                                                                                        //action list item
                 tap:function(oControlEvent){
                 	util.tools.saveData();
                         model.status.path.push(dataSelected);
@@ -268,14 +268,18 @@ sap.ui.jsview("ui.whoiswhere", {
         
         function mouseDBClick(ev){                                //double click will pop over
        //    console.log('event '+dataSelected);
+      // $('#chart').css({"height":100});
            if(dataSelected != ''){
                   
                      util.tools.adjustPopoverList(popoverlist,aliArray);
                     // console.log($("#popover").width());
                      popover.openBy(pieChart);
+              //     console.log('list width123');
+              // console.log($('#popover').width());
+				$('#popover').width("198px");
                      var height = $("#popover").height();    
                       $("#popover").css({"top":mousePositionY-height/2,"left":mousePositionX+15});    
-                     //$("#popover").width('194px');
+                     // $("#popover").width('194px');
                  }
 
                //  return true;;
@@ -301,6 +305,29 @@ sap.ui.jsview("ui.whoiswhere", {
                 bus.publish('refreshTime','onChange',{
                 	time:oData.time
                 });
+                // adjustHeight();
+   //              console.log('fote sdf asagd ');
+			// console.log($('#hboxpage').height());
+			// console.log($('#hbox1').height());
+			// console.log($('#myPage').height());
+			// console.log($('#headerInfo').height());
+			var height = $('#myPage').height()-200;
+			console.log('height is '+height)
+			// $('#chart').css({"height":100});
+			pieChart.setHeight(height+"px");
+
+		}
+		function adjustHeight(){
+			console.log('fote sdf asagd ');
+			console.log($('#hboxpage').height());
+			console.log($('#hbox1').height());
+			console.log($('#myPage').height());
+			console.log($('#headerInfo').height());
+			var height = $('#myPage').height()-200;
+			console.log('height is '+height)
+			$('#chart').css({"height":100});
+
+
 		}
 		bus.subscribe("pieChart","refresh",refreshPieChart,this);
 
@@ -483,7 +510,7 @@ sap.ui.jsview("ui.whoiswhere", {
                 
                 var button3 = new sap.m.Button('bt_showbyChart', {                //chart button
                         type: sap.m.ButtonType.Default,
-                        icon: "sap-icon://pie-chart",
+                        icon: "sap-icon://bar-chart",
                         press: function(){                                
                                 oVBoxpage.removeAllItems();
                                 //oVBoxpage.addItem(bar);
@@ -765,7 +792,7 @@ sap.ui.jsview("ui.whoiswhere", {
                 });
                 oVBox1.setHeight("0%");
                 
-                var page =  new sap.m.Page({
+                var page =  new sap.m.Page("myPage",{
                         title: "Travel Analysis",
                         showNavButton: false,
                         enableScrolling:false,

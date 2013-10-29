@@ -99,10 +99,18 @@ util.tools = {
 		 adjustPopoverList: function(popoverlist,aliArray){ 
        
              popoverlist.removeAllItems();
-             console.log("aliArray");
-             console.log(aliArray);
+             console.log("aliArray width");
+             //console.log(aliArray);
+             // console.log($('#aliCountry').width());
+             // console.log($('#aliLocation').width());
+             // console.log($('#aliCostCenter').width());
+             // console.log($('#aliControlArea').width());
+             // console.log($('#aliReason').width());
+             // console.log($('#aliYear').width());
+             // console.log($('#aliMonth').width());
              for(var i = 0 ; i <aliArray.length; i ++){
              	var flag = true;
+                  //console(i+" no. "+ aliArray.)
              	for(var j = 0 ; j <model.status.path.length; j +=2){
              	
              		if(model.status.path[j]==model.dimensions[i]) {
@@ -137,6 +145,9 @@ util.tools = {
 
              		popoverlist.addItem(aliArray[i]);
              	}
+             //      console.log('list width');
+             // console.log($('#list').width());
+
          	}
             
 		 	},
