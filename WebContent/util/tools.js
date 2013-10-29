@@ -41,6 +41,7 @@ util.tools = {
                         //util.tools.filterDataByMonth();
 
                         bus.publish('pieChart','refresh',model.data[newPath]);
+                        bus.publish('table','reload',model.data[newPath]);
                   }
                   else{
 			//2 prepare the new data
@@ -55,6 +56,7 @@ util.tools = {
                               oData.time = new Date();
                               model.data.CURRENT_DATA = oData;
                               bus.publish('pieChart','refresh',oData);
+                              bus.publish('table','reload',oData);
                               //util.tools.filterDataByMonth();
                         })
                   }
