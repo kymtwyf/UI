@@ -7,7 +7,7 @@ model.status = {
 	measure : 'cost',//1 cost 2 times
 	showType : 'barChart',//1 barChart 2 table //可能需要PieChart
 
-	client : '578',//default client
+	client : '002',//default client
 	dimensions : [],
 	/*
 	{

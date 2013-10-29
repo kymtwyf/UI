@@ -12,7 +12,7 @@ sap.ui.controller("ui.whoiswhere", {
 		// }, this);
 		var year = new Date().getFullYear();
 //		console.log("year is "+year);
-		var totalUrl = "http://ld9415.wdf.sap.corp:8002/mouse/project/odata/Query.xsodata/Query?$select=TRIP_TOTAL&$filter=MANDT eq '578' and YEAR eq '"+2009+"'&$format=json";
+		var totalUrl = "http://ld9415.wdf.sap.corp:8002/mouse/project/odata/Query.xsodata/Query?$select=TRIP_TOTAL&$filter=MANDT eq '002' and YEAR eq "+2009+"&$format=json";
 		console.log("totalUrl = "+totalUrl);
 		jQuery.ajax({//get the total cost
 			url:totalUrl,
@@ -36,7 +36,7 @@ sap.ui.controller("ui.whoiswhere", {
 				}
 
 				jQuery.ajax({
-					url:"http://ld9415.wdf.sap.corp:8002/mouse/project/odata/Query.xsodata/Query?$select=LANDTEXT,MONTH,TRIP_TOTAL&$filter=MANDT%20eq%20'578'&$format=json",
+					url:"http://ld9415.wdf.sap.corp:8002/mouse/project/odata/Query.xsodata/Query?$select=LANDTEXT,TRIP_TOTAL&$filter=MANDT%20eq%20'002'&$format=json",
 					error:function(error){
 						util.tools._F_Toast(error+"");
 					},
@@ -44,12 +44,7 @@ sap.ui.controller("ui.whoiswhere", {
 						bus.publish("refreshButton","stop",{
 							text:'loaded'
 						});
-						// var template = function(){
-						// 	var content,
-						// 	time,
-						// 	measures,
-						// 	dimensions
-						// }
+					
 						util.tools._F_Toast("success loaded data");
 						var name = "CURRENT_DATA";
 						model.data[name] = new Object();
