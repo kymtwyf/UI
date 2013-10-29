@@ -67,7 +67,7 @@ sap.ui.controller("ui.whoiswhere", {
 							name:"TRIP_TOTAL",
 							value:"{TRIP_TOTAL}"}
 						bus.publish("pieChart","refresh",oData);
-
+						bus.publish("table","refresh",oData);
 					}
 				});
 			}

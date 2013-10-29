@@ -98,7 +98,7 @@ util.tools = {
 		},
 		///在cookie 存放cost limit到此结束
 
-		 adjustPopoverList:  function(popoverlist,aliArray){ 
+		 adjustPopoverList: function(popoverlist,aliArray){ 
              //you may need to adjust the content of the popover list according to the current path
              
              // var arrayOfActionListItem = new Array();       //An array which contains all action list items
@@ -227,6 +227,8 @@ util.tools = {
 	  	    	 currentMonth = year+'0'+month;
 	  	    	  else
 	  	    		currentMonth = year + month;
+
+	  	    	console.log(currentMonth);
 	  	    	  return currentMonth;
 		 	},
 		 	getLastSeason: function(){ 
