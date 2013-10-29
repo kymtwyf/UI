@@ -228,8 +228,16 @@ util.tools = {
                               measures:model.data.CURRENT_DATA.measures,
                               time:model.data.CURRENT_DATA.time
                         });   
+
+                        sap.ui.getCore().getEventBus().publish('table','refresh',{
+                              content:newDataContent,
+                              dimensions:model.data.CURRENT_DATA.dimensions,
+                              measures:model.data.CURRENT_DATA.measures,
+                              time:model.data.CURRENT_DATA.time
+                        });   
                   }else{
                         sap.ui.getCore().getEventBus().publish('pieChart','refresh',model.data.CURRENT_DATA);   
+                        sap.ui.getCore().getEventBus().publish('table','refresh',model.data.CURRENT_DATA);   
                   }
             	
             },
@@ -395,11 +403,16 @@ util.tools = {
 				for(var i=util.tools.Months.length-2; i>0; i--)
 				{
 
-					fromSelect.insertItem(new sap.ui.core.Item( { text: util.tools.decorateMonths(util.tools.Months[i]) }));
+					fromSelect.insertItem(new sap.ui.core.Item( { text: util.tools.decorateMonths(util.tools.Months[i].toString()   ) }));
 				}
 
 				
 					toSelect.insertItem(new sap.ui.core.Item( {text: " NOW "}));
+				for(var i= 0 ; i>util.tools.Months.length-2; i--)
+				{
+
+					fromSelect.insertItem(new sap.ui.core.Item( { text: util.tools.decorateMonths(util.tools.Months[i].toString()   ) }));
+				}
 		 	  });
 			},
 			generateToSelectItems: function(Select,value){
@@ -411,23 +424,23 @@ util.tools = {
 					for(var i = util.tools.Months.length-1; i>0; i--)
 					{
 						if(util.tools.decorateMonths(util.tools.Months[i])!= value)
-						Select.insertItem(new sap.ui.core.Item( {text: util.tools.decorateMonths(util.tools.Months[i])  }));
+						Select.insertItem(new sap.ui.core.Item( { text: util.tools.decorateMonths(util.tools.Months[i].toString()   )  }));
 						else
 							break;
 					}
 
 				});
 			},
-			decorateMonths: function(string)
+			decorateMonths: function(str)
 			{
 				var first = string.slice(0,4);
 				var second = string.slice(4,6);
-				return string = first + '/'+ second;
+				return str = first + '/'+ second;
 			},
-			UndoMonths: function(string){
+			UndoMonths: function(str){
 				var first = string.slice(0,4);
 				var second = string.slice(5,7);
-				return string = first + second;
+				return str = first + second;
 			},
                   updateMonth:function(channelId,eventId,data){
                         console.log(data);

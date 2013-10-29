@@ -367,15 +367,19 @@ sap.ui.jsview("ui.whoiswhere", {
 					vertical: true,
 					height: "490px"
 				});		
+
 		var listAsTable = new sap.m.List();		
 		//var barChart = sap.ui.view({id:"barchart", viewName:"ui.BarChart", type:sap.ui.core.mvc.ViewType.JS});
 		//bar chart of data
 		//这个refresh需要增加：多个dimensions的显示功能
         function refreshTable(channelId, eventId, oData) {
-
-        	console.log(oData.content);
                 // create listAsTable
-			listAsTable = new sap.m.List("items",{
+             scrolling.removeAllContents();
+             console.log(oData.content);   
+              console.log(oData.dimensions);   
+               console.log(oData.measures);   
+
+			listAsTable = new sap.m.List({
 			  columns: [
 			    new sap.m.Column({
 			      header: new sap.m.Label({text: oData.dimensions.name})
@@ -386,7 +390,7 @@ sap.ui.jsview("ui.whoiswhere", {
 			 
 			  ],
 			  items: {
-			  	 path: "/items",
+			  	path: "/items",
 			    template: new sap.m.ColumnListItem({
 			      cells: [
 					new sap.m.Text({
@@ -408,8 +412,9 @@ sap.ui.jsview("ui.whoiswhere", {
 			listAsTable.setModel(model);
 			scrolling.insertContent(listAsTable);
 		}
-		
-         bus.subscribe("table","refresh",refreshTable,this);	
+		bus.subscribe("table","refresh",refreshTable,this);
+	    
+	    
 
 				var button1 = new sap.m.Button('bt_showByCost', {
                         type: sap.m.ButtonType.Default,
@@ -439,10 +444,9 @@ sap.ui.jsview("ui.whoiswhere", {
                         icon: "sap-icon://table-chart",
                         //text: "Table"
                         press: function(){
-                                
-			oVBoxpage.removeAllItems();
-            oVBoxpage.addItem(bar);
-            oVBoxpage.addItem(scrolling);
+                               oVBoxpage.removeAllItems();
+							   oVBoxpage.addItem(bar);
+					           oVBoxpage.addItem(scrolling);
                                 }
                 });
                 
