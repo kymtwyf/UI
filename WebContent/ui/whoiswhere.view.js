@@ -104,7 +104,7 @@ sap.ui.jsview("ui.whoiswhere", {
 			mousePositionX = mousePos.x;
 
 			mousePositionY = mousePos.y; 
-			
+
 			//return false;
 		} 
 
@@ -371,13 +371,20 @@ sap.ui.jsview("ui.whoiswhere", {
 					height: "490px"
 				});		
 
+		window.onresize = function(event) { 		//change the table size when you change the window size
+			var offset = document.documentElement.clientHeight-285;
+			offset = offset.toString()+"px";
+			scrolling.setHeight(offset);
+		}
+
+
 		var listAsTable = new sap.m.List();		
 		//var barChart = sap.ui.view({id:"barchart", viewName:"ui.BarChart", type:sap.ui.core.mvc.ViewType.JS});
 		//bar chart of data
 		//这个refresh需要增加：多个dimensions的显示功能
         function refreshTable(channelId, eventId, oData) {
                 // create listAsTable
-             scrolling.removeAllContents();
+             scrolling.removeAllContent();
              console.log(oData.content);   
               console.log(oData.dimensions);   
                console.log(oData.measures);   
@@ -417,7 +424,7 @@ sap.ui.jsview("ui.whoiswhere", {
 		}
 		bus.subscribe("table","refresh",refreshTable,this);
 	    
-	    
+	    	
 
 				var button1 = new sap.m.Button('bt_showByCost', {
                         type: sap.m.ButtonType.Default,

@@ -350,7 +350,7 @@ util.tools = {
 		 		jQuery.when(this.getMonthInfoFromOdata()).done(function(){
 
 		 		//generate items of all months according to the months getting from ODATA
-				for(var i=util.tools.Months.length-2; i>0; i--)
+				for(var i=util.tools.Months.length-1; i>0; i--)
 				{
 
 					fromSelect.insertItem(new sap.ui.core.Item( { text: util.tools.decorateMonths(util.tools.Months[i].toString()   ) }));
@@ -358,10 +358,11 @@ util.tools = {
 
 				
 					toSelect.insertItem(new sap.ui.core.Item( {text: " NOW "}));
-				for(var i= 0 ; i>util.tools.Months.length-2; i--)
+
+				for(var i= 0 ; i<util.tools.Months.length-1; i--)
 				{
 
-					fromSelect.insertItem(new sap.ui.core.Item( { text: util.tools.decorateMonths(util.tools.Months[i].toString()   ) }));
+					toSelect.insertItem(new sap.ui.core.Item( { text: util.tools.decorateMonths(util.tools.Months[i].toString()   ) }));
 				}
 		 	  });
 			},
@@ -383,13 +384,13 @@ util.tools = {
 			},
 			decorateMonths: function(str)
 			{
-				var first = string.slice(0,4);
-				var second = string.slice(4,6);
+				var first = str.slice(0,4);
+				var second = str.slice(4,6);
 				return str = first + '/'+ second;
 			},
 			UndoMonths: function(str){
-				var first = string.slice(0,4);
-				var second = string.slice(5,7);
+				var first = str.slice(0,4);
+				var second = str.slice(5,7);
 				return str = first + second;
 			},
                   updateMonth:function(channelId,eventId,data){
