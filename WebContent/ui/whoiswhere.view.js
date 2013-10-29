@@ -153,7 +153,7 @@ sap.ui.jsview("ui.whoiswhere", {
         aliLocation.setText("By Location");
         aliArray.push(aliLocation);
 
-		var aliCostCenter=new sap.m.ActionListItem({                                                                                        //action list item
+		var aliCostCenter=new sap.m.ActionListItem({                                         //action list item
                 press:function(oControlEvent){
                 	util.tools.saveData();
                         model.status.path.push(dataSelected);
@@ -298,6 +298,9 @@ sap.ui.jsview("ui.whoiswhere", {
                 oModel = new sap.ui.model.json.JSONModel(PieModel);
                 oDataset.setModel(oModel);
                 pieChart.setDataset(oDataset);
+                bus.publish('refreshTime','onChange',{
+                	time:oData.time
+                });
 		}
 		bus.subscribe("pieChart","refresh",refreshPieChart,this);
 
@@ -730,32 +733,36 @@ sap.ui.jsview("ui.whoiswhere", {
                         }        
                 });
 
-                var pullRefresh = new sap.m.PullToRefresh();
+                // var pullRefresh = new sap.m.PullToRefresh();
                 
-                pullRefresh = new sap.m.PullToRefresh({
-                        //description:"description here",
-                        iconDensityAware:false,
-                        refresh:function(){
-                                pullRefresh.hide();
-                                refreshLabel.setText("clicked to refresh");
-                                //pullRefresh.setDescription("helloPul");
-                        }
+                // pullRefresh = new sap.m.PullToRefresh({
+                //         //description:"description here",
+                //         iconDensityAware:false,
+                //         refresh:function(){
+                //                 pullRefresh.hide();
+                //                 // refreshLabel.setText("clicked to refresh");
+                //                 //pullRefresh.setDescription("helloPul");
+                //         }
+                // });
+                // pullRefresh.addStyleClass('refresh');
+                
+                var refreshTimeLabel = new sap.m.Label({
+                        text:""
                 });
                 
-                var refreshLabel = new sap.m.Label({
-                        text:"hello"
-                });
                 
-                pullRefresh.addStyleClass('refresh');
-                
-                var refreshHBox = new sap.m.HBox({
-                        items:[
-                        pullRefresh,refreshLabel
-                        ]
-                });
-                
+                // var refreshHBox = new sap.m.HBox({
+                //         items:[
+                //         refreshTimeLabel
+                //         ]
+                // });
+                function updateRefreshTime(channelId, eventId, data){
+                	var newTime = data.time.toLocaleString();
+                	refreshTimeLabel.setText('Last updated on '+newTime);
+                };
+                bus.subscribe('refreshTime','onChange',updateRefreshTime,this);
                 var footer = new sap.m.Bar({ 
-                        contentLeft: [refreshHBox],
+                        contentLeft: [refreshTimeLabel],
                         contentRight: [settingbutton2,settingbutton]
                 });
 

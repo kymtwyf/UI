@@ -60,7 +60,8 @@ sap.ui.controller("ui.whoiswhere", {
 							value:"{LANDTEXT}"};
 						oData.measures = {
 							name:"total cost",
-							value:"{TRIP_TOTAL}"}
+							value:"{TRIP_TOTAL}"};
+						oData.time = new Date();
 						bus.publish("pieChart","refresh",oData);
 						bus.publish("table","refresh",oData);
 					}
