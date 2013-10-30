@@ -123,7 +123,7 @@ sap.ui.jsview("ui.whoiswhere", {
                         var index  = model.status.dimensions.length;
                         model.status.dimensions.push({
                         	axis:index+1,
-							name:'LANDTEXT',
+							name:'Country',
 							value:'{LANDTEXT}'
                         });
 		bus.publish('app','onChangeDataSource');
@@ -140,13 +140,13 @@ sap.ui.jsview("ui.whoiswhere", {
                 	util.tools.saveData();
                         model.status.path.push(dataSelected);
                         dataSelected = '';
-                        model.status.path.push("ZORT1");
+                        model.status.path.push("LOCATION");
                         model.status.dimensions = [];
                         var index  = model.status.dimensions.length;
                         model.status.dimensions.push({
                         	axis:index+1,
-							name:'ZORT1',
-							value:'{ZORT1}'
+							name:'Location',
+							value:'{LOCATION}'
                         });
 		bus.publish('app','onChangeDataSource');
 
@@ -165,7 +165,7 @@ sap.ui.jsview("ui.whoiswhere", {
                         var index  = model.status.dimensions.length;
                         model.status.dimensions.push({
                         	axis:index+1,
-							name:'CENTER__TEXT',
+							name:'Cost Center',
 							value:'{CENTER__TEXT}'
                         });
 		bus.publish('app','onChangeDataSource');
@@ -185,7 +185,7 @@ sap.ui.jsview("ui.whoiswhere", {
                         var index  = model.status.dimensions.length;
                         model.status.dimensions.push({
                         	axis:index+1,
-							name:'CONTROL_AREA_TEXT',
+							name:'Controlling Area',
 							value:'{CONTROL_AREA_TEXT}'
                         });
 		bus.publish('app','onChangeDataSource');
@@ -205,7 +205,7 @@ sap.ui.jsview("ui.whoiswhere", {
                     	var index  = model.status.dimensions.length;
                         model.status.dimensions.push({
                         	axis:index+1,
-							name:'KUNDE',
+							name:'Reason',
 							value:'{KUNDE}'
                         });
 		bus.publish('app','onChangeDataSource');
@@ -226,7 +226,7 @@ sap.ui.jsview("ui.whoiswhere", {
                     	var index  = model.status.dimensions.length;
                         model.status.dimensions.push({
                         	axis:index+1,
-							name:'YEAR',
+							name:'Year',
 							value:'{YEAR}'
                         });
 		bus.publish('app','onChangeDataSource');
@@ -246,7 +246,7 @@ sap.ui.jsview("ui.whoiswhere", {
                         var index  = model.status.dimensions.length;
                         model.status.dimensions.push({
                         	axis:index+1,
-							name:'MONTH',
+							name:'Month',
 							value:'{MONTH}'
                         });
 		bus.publish('app','onChangeDataSource');
@@ -812,6 +812,7 @@ sap.ui.jsview("ui.whoiswhere", {
                         title: "Travel Analysis",
                         showNavButton: false,
                         navButtonPress:function(){
+
                         	bus.publish('nav','back');
                         },
                         enableScrolling:false,
@@ -833,7 +834,12 @@ sap.ui.jsview("ui.whoiswhere", {
                                    
                         }        
                 });
-
+                bus.subscribe('settingbutton2','hide',function(){
+                	settingbutton2.setVisible(false);
+                });
+                bus.subscribe('settingbutton2','show',function(){
+                	settingbutton2.setVisible(true);
+                });
                 // var pullRefresh = new sap.m.PullToRefresh();
                 
                 // pullRefresh = new sap.m.PullToRefresh({
@@ -881,6 +887,7 @@ sap.ui.jsview("ui.whoiswhere", {
                 	page.setShowNavButton(false);
                 },this);
                 bus.subscribe('nav','back',function(channelId,eventId,data){
+                	util.tools.saveData();
                 	model.status.popPath();
                 },this);
                 window.onresize = function(event){

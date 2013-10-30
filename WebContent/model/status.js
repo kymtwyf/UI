@@ -45,13 +45,13 @@ model.status = {
 							}); 
 							model.status.path.push("LANDTEXT");
 							break;
-			case 'ZORT1':
+			case 'LOCATION':
 								model.status.dimensions.push({
 								axis:1,
-								name:"ZORT1",
-								value:"{ZORT1}",
+								name:"LOCATION",
+								value:"{LOCATION}",
 							}); 
-							model.status.path.push("ZORT1");
+							model.status.path.push("LOCATION");
 							break;
 			case 'CONTROL_AREA_TEXT':
 								model.status.dimensions.push({
@@ -148,6 +148,60 @@ model.status = {
 		if(model.status.path.length>2){
 			model.status.path.pop();
 			model.status.path.pop();
+		}
+		var dim = model.status.path;
+		dim = dim[dim.length-1];
+		model.status.dimensions = [];
+		switch(dim){
+			case 'LANDTEXT':var index = model.status.measures.length;
+								model.status.dimensions.push({
+								axis:index+1,
+								name:"Country",
+								value:"{LANDTEXT}",
+							});
+								break;
+			case 'LOCATION':var index = model.status.measures.length;
+								model.status.dimensions.push({
+								axis:index+1,
+								name:"Location",
+								value:"{LOCATION}",
+							});
+								break;
+			case 'CENTER__TEXT':var index = model.status.measures.length;
+								model.status.dimensions.push({
+								axis:index+1,
+								name:"Cost Center",
+								value:"{CENTER__TEXT}",
+							});
+								break;
+			case 'CONTROL_AREA_TEXT':var index = model.status.measures.length;
+								model.status.dimensions.push({
+								axis:index+1,
+								name:"Controlling Area",
+								value:"{CONTROL_AREA_TEXT}",
+							});
+								break;
+			case 'KUNDE':var index = model.status.measures.length;
+								model.status.dimensions.push({
+								axis:index+1,
+								name:"Reason",
+								value:"{KUNDE}",
+							});
+								break;
+			case 'YEAR':var index = model.status.measures.length;
+								model.status.dimensions.push({
+								axis:index+1,
+								name:"Year",
+								value:"{YEAR}",
+							});
+								break;
+			case 'MONTH':var index = model.status.measures.length;
+								model.status.dimensions.push({
+								axis:index+1,
+								name:"Month",
+								value:"{MONTH}",
+							});
+								break;
 		}
 		bus.publish('app','onChangeDataSource');
 

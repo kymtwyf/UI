@@ -41,8 +41,10 @@ util.queries = {
 			for(var i = 0 ;i < tempPath.length-1; i +=2){
 				switch(tempPath[i]){
 					case 'LANDTEXT':
+					case 'LOCATION':
 					case 'CENTER__TEXT':
 					case 'CONTROL_AREA_TEXT':
+					case 'KUNDE':
 						filter.push(tempPath[i]+" eq \'"+tempPath[i+1]+"\' ");
 						break;
 					case 'MONTH':

@@ -65,9 +65,11 @@ util.tools = {
                   }
                   if(model.status.path.length>1){
                         bus.publish('nav','show');
+                        bus.publish('settingbutton2','hide');
                   }else{
                         bus.publish('nav','hide');
 
+                        bus.publish('settingbutton2','show');
                   }
 
 
@@ -130,7 +132,7 @@ util.tools = {
              			flag = false;
              			break;
              		}
-             		if(model.status.path[j]=='ZORT1'&& model.dimensions[i]=='LANDTEXT'){
+             		if(model.status.path[j]=='LOCATION'&& model.dimensions[i]=='LANDTEXT'){
              			//已经drill down by location了，不需要再添加drill down by country
              			flag = false;
              			break;

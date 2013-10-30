@@ -3,7 +3,7 @@ jQuery.sap.declare("model.dimensions");
 model.dimensions = [
 	//地理位置的dimension
 	'LANDTEXT',
-	'ZORT1',//city类似
+	'LOCATION',//city类似
 
 	'CENTER__TEXT',
 	'CONTROL_AREA_TEXT',

@@ -15,7 +15,7 @@ sap.ui.controller("ui.whoiswhere", {
 		var totalUrl = "http://ld9415.wdf.sap.corp:8002/mouse/project/odata/Query.xsodata/Query?$select=TRIP_TOTAL&$filter=MANDT eq '002' &$format=json";
 		console.log("totalUrl = "+totalUrl);
                         bus.publish('busyDialog','show');
-		
+
 		jQuery.ajax({//get the total cost
 			url:totalUrl,
 			error:function(){
@@ -73,7 +73,7 @@ sap.ui.controller("ui.whoiswhere", {
 			}
 		});
 
-		bus.subscribe('nav','back',this.navBack,this);
+		// bus.subscribe('nav','back',this.navBack,this);
 		
 	},
 	// navBack:function(channelId,eventId,data){
