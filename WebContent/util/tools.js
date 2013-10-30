@@ -32,7 +32,7 @@ util.tools = {
 
 		},
 		onChangeDataSource:function(channelId,eventId,data){
-
+                  bus.publish('pieChart','clear');
 			var newPath = model.status.path.concat(model.status.months).join();
                   console.log("new Path "+newPath);
                   if(model.data[newPath]){
@@ -45,6 +45,7 @@ util.tools = {
                   }
                   else{
 			//2 prepare the new data
+                        bus.publish('busyDialog','show');
                         console.log("I have to request for new data");
                         var newDataSet = util.queries.getDataFromCurrentStatus();
                         jQuery.when(newDataSet).done(function(data){
@@ -57,6 +58,8 @@ util.tools = {
                               model.data.CURRENT_DATA = oData;
                               bus.publish('pieChart','refresh',oData);
                               bus.publish('table','reload',oData);
+                              bus.publish('busyDialog','hide');
+
                               //util.tools.filterDataByMonth();
                         })
                   }

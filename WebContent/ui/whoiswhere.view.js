@@ -317,9 +317,13 @@ sap.ui.jsview("ui.whoiswhere", {
 			console.log('height is '+height)
 			// $('#chart').css({"height":100});
 			pieChart.setHeight(height+"px");
+			// pieChart.setDataset(null);
 
 		}
-		
+		function setNodata(channelId,eventId,data){
+			pieChart.setDataset(null);
+
+		}
 		function adjustHeight(){
 			console.log('fote sdf asagd ');
 			console.log($('#hboxpage').height());
@@ -333,10 +337,21 @@ sap.ui.jsview("ui.whoiswhere", {
 
 		}
 		bus.subscribe("pieChart","refresh",refreshPieChart,this);
+		bus.subscribe("pieChart","clear",setNodata,this);
 
 //		var pieChart = CreatePieChart();
 //		//pie chart of data
-		
+		var busyDialog = new sap.m.BusyDialog({
+	      title: "Loading Data",
+	      text: 'Loading data from the server',
+	      // showCancelButton: true
+	    });
+	    bus.subscribe('busyDialog','show',function(channelId,eventId,data){
+	    	busyDialog.open();
+	    },this);
+	     bus.subscribe('busyDialog','hide',function(channelId,eventId,data){
+	    	busyDialog.close();
+	    },this);
 		var temp ="{country}";
 		///////////////////////////////////////////////////////////////////////////////////////////////
 		var PieModel = {

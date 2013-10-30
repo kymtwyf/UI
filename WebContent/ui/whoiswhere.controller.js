@@ -14,6 +14,8 @@ sap.ui.controller("ui.whoiswhere", {
 //		console.log("year is "+year);
 		var totalUrl = "http://ld9415.wdf.sap.corp:8002/mouse/project/odata/Query.xsodata/Query?$select=TRIP_TOTAL&$filter=MANDT eq '002' &$format=json";
 		console.log("totalUrl = "+totalUrl);
+                        bus.publish('busyDialog','show');
+		
 		jQuery.ajax({//get the total cost
 			url:totalUrl,
 			error:function(){
@@ -41,9 +43,11 @@ sap.ui.controller("ui.whoiswhere", {
 						util.tools._F_Toast(error+"");
 					},
 					success:function(data){
-						bus.publish("refreshButton","stop",{
-							text:'loaded'
-						});
+                      bus.publish('busyDialog','hide');
+
+						// bus.publish("refreshButton","stop",{
+						// 	text:'loaded'
+						// });
 					
 						util.tools._F_Toast("success loaded data");
 						var name = "CURRENT_DATA";
@@ -73,7 +77,7 @@ sap.ui.controller("ui.whoiswhere", {
 		
 	},
 	// navBack:function(channelId,eventId,data){
-		
+
 	// }
 
 /**
