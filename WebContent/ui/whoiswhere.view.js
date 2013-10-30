@@ -398,14 +398,12 @@ sap.ui.jsview("ui.whoiswhere", {
 		var scrolling =   new sap.m.ScrollContainer({
 					horizontal: false,
 					vertical: true,
-					height: "490px"
+					height: "530px"
 				});		
 
-		window.onresize = function(event) { 		//change the table size when you change the window size
-			var offset = document.documentElement.clientHeight-285;
-			offset = offset.toString()+"px";
-			scrolling.setHeight(offset);
-		}
+		// window.onresize = function(event) { 		//change the table size when you change the window size
+			
+		// }
 
 
 		var listAsTable = new sap.m.List();		
@@ -874,6 +872,9 @@ sap.ui.jsview("ui.whoiswhere", {
 					var height = $('#myPage').height()-200;
 					console.log('height is sdfadsfadsf adf  '+height)
 					$('#chart').css({"height":height});
+					var offset = document.documentElement.clientHeight-250;
+					offset = offset.toString()+"px";
+					scrolling.setHeight(offset);
 					// pieChart.setHeight(height+"px");
 				}
                  return oShell;
