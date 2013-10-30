@@ -68,8 +68,13 @@ sap.ui.controller("ui.whoiswhere", {
 				});
 			}
 		});
+
+		bus.subscribe('nav','back',this.navBack,this);
 		
 	},
+	// navBack:function(channelId,eventId,data){
+		
+	// }
 
 /**
 * Similar to onAfterRendering, but this hook is invoked before the controller's View is re-rendered

@@ -60,6 +60,12 @@ util.tools = {
                               //util.tools.filterDataByMonth();
                         })
                   }
+                  if(model.status.path.length>1){
+                        bus.publish('nav','show');
+                  }else{
+                        bus.publish('nav','hide');
+
+                  }
 
 
 			

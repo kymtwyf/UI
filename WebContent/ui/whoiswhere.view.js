@@ -114,6 +114,7 @@ sap.ui.jsview("ui.whoiswhere", {
 		var aliArray = new Array();
         var aliCountry=new sap.m.ActionListItem('aliCountry',{                                                                                        //action list item
                 tap:function(oControlEvent){
+
                 	util.tools.saveData();
                         model.status.path.push(dataSelected);
                         dataSelected = '';
@@ -135,6 +136,7 @@ sap.ui.jsview("ui.whoiswhere", {
         aliArray.push(aliCountry);
         var aliLocation=new sap.m.ActionListItem('aliLocation',{                                                                                        //action list item
                 tap:function(oControlEvent){
+                	// page.setShowNavButton(true);
                 	util.tools.saveData();
                         model.status.path.push(dataSelected);
                         dataSelected = '';
@@ -317,6 +319,7 @@ sap.ui.jsview("ui.whoiswhere", {
 			pieChart.setHeight(height+"px");
 
 		}
+		
 		function adjustHeight(){
 			console.log('fote sdf asagd ');
 			console.log($('#hboxpage').height());
@@ -795,6 +798,9 @@ sap.ui.jsview("ui.whoiswhere", {
                 var page =  new sap.m.Page("myPage",{
                         title: "Travel Analysis",
                         showNavButton: false,
+                        navButtonPress:function(){
+                        	bus.publish('nav','back');
+                        },
                         enableScrolling:false,
                         content: [oVBox1]
                 });
@@ -855,6 +861,21 @@ sap.ui.jsview("ui.whoiswhere", {
                 oShell.setAppWidthLimited(true);
                 oShell.setApp(oApp);
                 
+                bus.subscribe('nav','show',function(channelId,eventId,data){
+                	page.setShowNavButton(true);
+                },this);
+                bus.subscribe('nav','hide',function(channelId,eventId,data){
+                	page.setShowNavButton(false);
+                },this);
+                bus.subscribe('nav','back',function(channelId,eventId,data){
+                	model.status.popPath();
+                },this);
+                window.onresize = function(event){
+					var height = $('#myPage').height()-200;
+					console.log('height is sdfadsfadsf adf  '+height)
+					$('#chart').css({"height":height});
+					// pieChart.setHeight(height+"px");
+				}
                  return oShell;
         }
 
